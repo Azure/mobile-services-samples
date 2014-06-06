@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<manifest android:hardwareAccelerated="true" android:versionCode="1" android:versionName="1.0.0" android:windowSoftInputMode="adjustPan" package="com.mobileservices.todolist" xmlns:android="http://schemas.android.com/apk/res/android">
+    <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application android:debuggable="true" android:hardwareAccelerated="true" android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" android:label="@string/app_name" android:name="todolist" android:theme="@android:style/Theme.Black.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.plugin.gcm.PushHandlerActivity" />
+        <receiver android:name="com.plugin.gcm.CordovaGCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="com.mobileservices.todolistglenn" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.plugin.gcm.GCMIntentService" />
+    </application>
+    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="17" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <permission android:name="com.mobileservices.todolist.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="com.mobileservices.todolist.permission.C2D_MESSAGE" />
+    <permission android:name="com.mobileservices.todolistglenn.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="com.mobileservices.todolistglenn.permission.C2D_MESSAGE" />
+</manifest>
