@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Deployment AppPlatformVersion="8.0" xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment">
+    <DefaultLanguage code="en-US" xmlns="" />
+    <Languages xmlns="">
+        <Language code="en-US" />
+    </Languages>
+    <App Author="todolist Author" BitsPerPixel="32" Description="Apache Cordova for Windows Phone" Genre="apps.normal" ProductID="{15DFBD99-C90B-4B1B-87A7-D5273D789B9C}" Publisher="todolist Publisher" PublisherID="{db093ed5-53b1-45f7-af72-751e8f36ab80}" RuntimeType="Silverlight" Title="todolist" Version="1.0.0" xmlns="">
+        <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
+        <Capabilities>
+            <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
+            <Capability Name="ID_CAP_PUSH_NOTIFICATION" />
+            <Capability Name="ID_CAP_IDENTITY_DEVICE" />
+        </Capabilities>
+        <Tasks>
+            <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />
+        </Tasks>
+        <Tokens>
+            <PrimaryToken TaskName="_default" TokenID="todolist">
+                <TemplateFlip>
+                    <SmallImageURI IsRelative="true" IsResource="false">Background.png</SmallImageURI>
+                    <Count>0</Count>
+                    <BackgroundImageURI IsRelative="true" IsResource="false">Background.png</BackgroundImageURI>
+                    <Title>todolist</Title>
+                    <BackContent />
+                    <BackBackgroundImageURI />
+                    <BackTitle />
+                    <LargeBackgroundImageURI />
+                    <LargeBackContent />
+                    <LargeBackBackgroundImageURI />
+                    <DeviceLockImageURI />
+                    <HasLarge>false</HasLarge>
+                </TemplateFlip>
+            </PrimaryToken>
+        </Tokens>
+        <ScreenResolutions>
+            <ScreenResolution Name="ID_RESOLUTION_WVGA" />
+            <ScreenResolution Name="ID_RESOLUTION_WXGA" />
+            <ScreenResolution Name="ID_RESOLUTION_HD720P" />
+        </ScreenResolutions>
+    </App>
+</Deployment>
