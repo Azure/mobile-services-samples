@@ -18,14 +18,15 @@
  */
  
 // Set these global variables to the settings for your
-// Azure Mobile Service and Azure Notification Hub. 
-var HUB_NAME = '<notification_hub_name>';
-var HUB_ENDPOINT = '<shared_access_connection_string>';
+// Azure Mobile Service. 
 var MOBILE_SERVICE_URL = '<mobile_service_url>';
 var MOBILE_SERVICE_APP_KEY = '<mobile_service_application_key>';
 
 // Numeric part of the project ID assigned by the Google API console.
 var GCM_SENDER_ID = '<gcm_sender_id>';
+
+// Define the MobileServiceClient as a global variable.
+var mobileClient;
 
 var app = {
     // Application Constructor
@@ -46,8 +47,8 @@ var app = {
     onDeviceReady: function() {
         
 		// Define the Mobile Services client.
-        var client = new WindowsAzure.MobileServiceClient(MOBILE_SERVICE_URL, MOBILE_SERVICE_APP_KEY);
-        todoItemTable = client.getTable('TodoItem');
+        mobileClient = new WindowsAzure.MobileServiceClient(MOBILE_SERVICE_URL, MOBILE_SERVICE_APP_KEY);
+        todoItemTable = mobileClient.getTable('TodoItem');
 	    
         // #region notification-registration			
         // Define the PushPlugin.
@@ -172,23 +173,21 @@ var app = {
                 if (e.regid.length > 0) {
                     console.log("gcm id " + e.regid);
 
-                    var hub = new NotificationHub(HUB_NAME, HUB_ENDPOINT);
-                    
-					// Template registration.
-					var template = "{ \"data\" : {\"message\":\"$(message)\"}}";
-					
-					hub.gcm.registerTemplate(e.regid, "myTemplate", template).done(function () {
-                        alert("Registered with hub!");
-                    }).fail(function (error) {
-                        alert("Failed registering with hub: " + error);
-                    });
-					
-					// // Native registration.
-					// hub.gcm.register(e.regid).done(function () {
-                        // alert("Registered with hub!");
-                    // }).fail(function (error) {
-                        // alert("Failed registering with hub: " + error);
-                    // });
+                    if (mobileClient) {
+
+                        // Call the integrated Notification Hub client.
+                        var hub = new NotificationHub(mobileClient);
+
+                        // Template registration.
+                        var template = "{ \"data\" : {\"message\":\"$(message)\"}}";
+
+                        // (gcmRegId, ["tag1","tag2"], templateName, templateBody)
+                        hub.gcm.register(e.regid, null, "myTemplate", template).done(function () {
+                            alert("Registered with hub!");
+                        }).fail(function (error) {
+                            alert("Failed registering with hub: " + error);
+                        });
+                    }
                 }
                 break;
 
@@ -216,24 +215,22 @@ var app = {
     tokenHandler: function (result) {
         console.log('device token = ' + result);
 
-        // Define the Notification Hubs client.
-        var hub = new NotificationHub(HUB_NAME, HUB_ENDPOINT);
+        if (mobileClient) {
 
-		// This is a template registration.
-		var template = "{\"aps\":{\"alert\":\"$(message)\"}}";
-		
-        hub.apns.registerTemplate(result, "myTemplate", template).done(function () {	
-            alert("Registered with hub!");
-        }).fail(function (error) {
-            alert("Failed registering with hub: " + error);
-        });
-		
-		// // Native registration.
-		// hub.apns.register(result).done(function () {	
-            // alert("Registered with hub!");
-        // }).fail(function (error) {
-            // alert("Failed registering with hub: " + error);
-        // });
+            // Call the integrated Notification Hub client.
+            // Define the Notification Hubs client.
+            var hub = new NotificationHub(HUB_NAME, HUB_ENDPOINT);
+
+            // This is a template registration.
+            var template = "{\"aps\":{\"alert\":\"$(message)\"}}";
+
+            // (deviceId, ["tag1","tag2"], templateName, templateBody, expiration)
+            hub.apns.register(result, null, "myTemplate", template, null).done(function () {
+                alert("Registered with hub!");
+            }).fail(function (error) {
+                alert("Failed registering with hub: " + error);
+            });
+        }
     },
 
     // Handle the notification when the iOS app is running.
@@ -263,32 +260,29 @@ var app = {
         if (result.uri !== "")
         {
             console.log('channel URI = ' + result.uri);
-					
-            // Define the Notification Hubs client.
-            var hub = new NotificationHub(HUB_NAME, HUB_ENDPOINT);
-					
-            // This is a template registration.
-            var template = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-				"<wp:Notification xmlns:wp=\"WPNotification\">" +
-					"<wp:Toast>" +
-						"<wp:Text1>$(message)</wp:Text1>" +
-					"</wp:Toast>" +
-				"</wp:Notification>";
 
-            console.log("template: " + template);
+            if (mobileClient) {
 
-            hub.mpns.registerTemplate(result.uri, "myTemplate", template).done(function () {	
-            alert("Registered with hub!");
-            }).fail(function (error) {
-            alert("Failed registering with hub: " + error);
-            });			
-			
-			// // Native registration.	
-            // hub.mpns.register(result.uri).done(function () {	
-                // alert("Registered with hub!");
-            // }).fail(function (error) {
-                // alert("Failed registering with hub: " + error);
-            // });			
+                // Call the integrated Notification Hub client.
+
+                // Define the Notification Hubs client.
+                var hub = new NotificationHub(mobileClient);
+
+                // This is a template registration.
+                var template = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                    "<wp:Notification xmlns:wp=\"WPNotification\">" +
+                        "<wp:Toast>" +
+                            "<wp:Text1>$(message)</wp:Text1>" +
+                        "</wp:Toast>" +
+                    "</wp:Notification>";
+               
+                // (channelUri, ["tag1","tag2"] , templateName, templateBody)
+                hub.mpns.register(result.uri, null, "myTemplate", template).done(function () {
+                    alert("Registered with hub!");
+                }).fail(function (error) {
+                    alert("Failed registering with hub: " + error);
+                });
+            }
         }
         else{
             console.log('channel URI could not be obtained!');
@@ -312,5 +306,4 @@ var app = {
     errorHandler: function (error) {
         alert(error);
     },
-
 };
