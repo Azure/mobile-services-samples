@@ -1,6 +1,6 @@
 # TodoList notifications sample for PhoneGap 
 
-This sample shows how to use Azure Mobile Services and Azure Notification Hubs to send push notifications to your PhoneGap app on three client platforms: iOS, Android, and Windows Phone 8. This sample uses a Mobile Service that is integrated with Notification Hubs, so that you can create the native push platform registration in the Mobile Services  
+This sample shows how to use Azure Mobile Services integrated with Azure Notification Hubs to send push notifications to your PhoneGap app on three client platforms: iOS, Android, and Windows Phone 8. This sample uses a mobile service that is integrated with Notification Hubs, so that you can use Mobile Services REST APIs to create push notification registrations in the Notification Hubs.
 
 ## Prerequisites 
 To run this PhoneGap sample app on one or more of the supported client platforms, you must have the following:
@@ -44,7 +44,9 @@ To run this PhoneGap sample app on one or more of the supported client platforms
 		
 2. Log on to the [Azure Management Portal](https://manage.windowsazure.com/), click **Mobile Services**, click your app, then click the **Push** tab. 
 
-3. Supply the authentication credentials for the supported push notification platforms:
+3. If integration with Notification Hubs has not been completed, click **Enable Enhanced Push**. 
+
+4. Supply the authentication credentials for the supported push notification platforms:
 
 	+ **APNS**
 		
@@ -61,7 +63,7 @@ To run this PhoneGap sample app on one or more of the supported client platforms
  
 	Now, Notification Hubs can send push notifications on behalf of your app.
 
-4. Click the **Data** tab, click the **TodoItem** table, click **Script** and replace the existing insert script with the following code from the `\service\table\todoitem.insert.js` project file:
+5. Click the **Data** tab, click the **TodoItem** table, click **Script** and replace the existing insert script with the following code from the `\service\table\todoitem.insert.js` project file:
 
 		function insert(item, user, request) {
 		    // Execute the request and send notifications.
@@ -102,17 +104,11 @@ Now that you have push notifications configured, you need to update the sample a
 
 	This allows your app to access data from the mobile service.
 
-3. Navigate to the `\phonegap\www\js` subfolder and open the index.js file in your favorite JavaScript or text editor.
+4. Navigate to the `\phonegap\www\js` subfolder and open the index.js file in your favorite JavaScript or text editor.
 
-4. Replace the values of the `MOBILE_SERVICE_URL` and `MOBILE_SERVICE_APP_KEY` variables with the values you just obtained for your mobile service.
+5. Replace the values of the `MOBILE_SERVICE_URL` and `MOBILE_SERVICE_APP_KEY` variables with the values you just obtained for your mobile service.
 
-5. Back in the management portal, click the **Push** tab of your mobile service, then click the Notification Hub link.
-
-	This takes you to the notification hub namespace associated with your mobile service.
-
-6. Make a note of the **Name** of the notification hub, then click **Connection Information** and make a copy of the connection string for the **DefaultFullSharedAccessSignature** profile.  
-
-7. Back in the index.js file, replace the values of the `HUB_NAME` and `HUB_ENDPOINT` variables with the values you just obtained for your notification hub. 
+6. For Android, replace the value of the `GCM_SENDER_ID` variable with the project number value assigned when you registered your app in the Google Developers Console.
 
 ##Build and test the app
 
@@ -138,7 +134,7 @@ Now that you have push notifications configured, you need to update the sample a
 
     		phonegap local build wp8
 
-2.	Open and run the project on the device according to the instructions below for each platform:
+3.	Open and run the project on the device according to the instructions below for each platform:
 
 	+ **Windows Phone 8**
 
@@ -155,15 +151,16 @@ Now that you have push notifications configured, you need to update the sample a
 	+ **Android**
 
 		1. In Eclipse, click **File** then **Import**, expand **Android**, click **Existing Android Code into Workspace**, and then click **Next.** 
-		
+				
 		2. Click **Browse**, browse to the **\phonegap\platforms\android** folder, click **OK**, make sure that the todoitem project is checked, then click **Finish**. 
 		 
 			This imports the project files into the current workspace.
 		
 		3. From the **Run** menu, click **Run** to start the project in the Android emulator.
 			
-	
-3. After launching the app in one of the mobile emulators above, type some text into the textbox and then click **Add**.
+	After launching the app in one of the mobile emulators above, you will see a registration success alert. 
+
+6. Type some text into the textbox and then click **Add**.
 
 	This sends a POST request to the new mobile service hosted in Azure. Data from the request is inserted into the **TodoItem** table and a push notification is generated and sent to all registered devices. 
 
