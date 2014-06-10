@@ -178,11 +178,11 @@ The last thing we need to do to use the Core Data framework is to define the dat
 
 In the project, select "New File", and under the Core Data section, select Data Model.
 
-!(New Core Data Model)[images/008-AddCoreDataModel.png]
+![New Core Data Model](images/008-AddCoreDataModel.png)
 
 Select an appropriate name (I'll use QSTodoDataModel.xcdatamodeld) and click Create. Select the data model in the folder view, then add the entities required for the application, by selecting the "Add Entity" button in the bottom of the page.
 
-!(Add Entity button)[images/009-AddEntity.png]
+![Add Entity button](images/009-AddEntity.png)
 
 Add three entities, named "TodoItem", "MS_TableOperations" and "MS_TableOperationErrors" (the first to store the items themselves; the last two are framework-specific tables required for the offline feature to work) with attributes defined as below:
 
