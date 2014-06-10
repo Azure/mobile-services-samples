@@ -26,7 +26,7 @@ In the code you can download you'll see that I've updated the app to allow for e
 
 ## Updating the framework
 
-The first thing we'll need to do to add offline support in our application is to get a version of the Mobile Services iOS SDK which supports it. Since we're launching it as a preview feature, it won't be in the official download location. So go to **ADD THE LINK TO THE FRAMEWORK HERE** and download it locally.
+The first thing we'll need to do to add offline support in our application is to get a version of the Mobile Services iOS SDK which supports it. Since we're launching it as a preview feature, it won't be in the official download location. For now you can go to http://aka.ms/Gc6fex and download it locally.
 
 Then, remove the existing framework from the project in Xcode, selecting "Move to Trash" to really delete the files.
 
@@ -176,8 +176,6 @@ At this point the application is (almost) ready to use Core Data, but it's not d
 
 The last thing we need to do to use the Core Data framework is to define the data model which will be stored in the persistent store. If you're not familiar with Core Data you can think of it as a simplified "schema" of the local database. We need to define the tables used by the application, but we also need to define a couple of tables which will be used by the Mobile Services framework itself (both to track the items which need to be synchronized with the server, and any errors which may happen during this synchronization).
 
-*** NEED TO DEFINE THE STORY FOR THIS; ONCE WE HAVE A FRAMEWORK "ZIP" WITH THE SYSTEM TABLES WE SHOULD BE ABLE TO TELL A BETTER STORY. FOR NOW I'LL SAY WHAT WORKS ***
-
 In the project, select "New File", and under the Core Data section, select Data Model.
 
 !(New Core Data Model)[images/008-AddCoreDataModel.png]
@@ -221,7 +219,7 @@ And let's start caching some data offline! There are a few things we'll need to 
 
     @property (nonatomic, strong) MSSyncTable *syncTable;
 
-Now, in the initializer for the QSTodoService class, remove the line that creates the MSTable object and replace it with the following lines (you'll also need to `#include "QSAppDelegate.h"):
+Now, in the initializer for the QSTodoService class, remove the line that creates the MSTable object and replace it with the following lines (you'll also need to `#include "QSAppDelegate.h"`):
 
     QSAppDelegate *delegate = (QSAppDelegate *)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = delegate.managedObjectContext;
@@ -441,6 +439,8 @@ In this code we're using a helper class which shows an alert view and takes a de
 ## Wrapping up
 
 We're now adding offline support for native iOS applications, and just like we did in the managed SDK, we're making an early release available. We really appreciate your feedback so we can continue improving in the SDKs for Azure Mobile Services. As usual, please leave comments / suggestions / questions in this post, or in or [MSDN Forum](http://social.msdn.microsoft.com/Forums/windowsazure/en-US/home?forum=azuremobile).
+
+If you want to download the code used in this post, you can get it in the mobile services samples repository in GitHub, under https://github.com/Azure/mobile-services-samples/tree/master/TodoOffline/iOS/blog20140611.
 
 ## Appendix: updates to the TodoItem project to make it ready for this post
 
