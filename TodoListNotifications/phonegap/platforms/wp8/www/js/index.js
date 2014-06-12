@@ -55,8 +55,7 @@ var app = {
 		var pushNotification = window.plugins.pushNotification;
 		
 		// Platform-specific registrations.
-        if ( device.platform == 'android' || device.platform == 'Android' 
-				|| device.platform == "amazon-fireos" ){
+        if ( device.platform == 'android' || device.platform == 'Android' ){
             console.log('Android registration');
 			
 			// Register with GCM for Android apps.
