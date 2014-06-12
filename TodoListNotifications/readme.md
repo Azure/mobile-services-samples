@@ -164,4 +164,4 @@ Now that you have push notifications configured, you need to update the sample a
 
 	This sends a POST request to the new mobile service hosted in Azure. Data from the request is inserted into the **TodoItem** table and a push notification is generated and sent to all registered devices. 
 
-[Create a new mobile service]: http://azure.microsoft.com/en-us/documentation/articles/mobile-services-javascript-backend-phonegap-get-started/mobile-services-how-to-create-new-service.md
+[Create a new mobile service]: http://azure.microsoft.com/en-us/documentation/articles/mobile-services-how-to-create-new-service/
