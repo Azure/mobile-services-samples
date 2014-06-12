@@ -133,17 +133,17 @@
     // #region local storage
     // object: {regId: '', deviceToken: ''}
     var storeInContainer = function (key, object) {
-        window.localStorage.setItem(key, JSON.stringify(object));
+        localStorage.setItem(key, JSON.stringify(object));
     };
 
     var deleteFromContainer = function (key) {
-        window.localStorage.removeItem(key);
+        localStorage.removeItem(key);
     };
 
     var getFromContainer = function (key) {
  
-        if (typeof window.localStorage.getItem(key) === 'string') {
-            return JSON.parse(window.localStorage.getItem(key));
+        if (typeof localStorage.getItem(key) === 'string') {
+            return JSON.parse(localStorage.getItem(key));
         }
         return undefined;
     };
