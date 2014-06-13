@@ -188,6 +188,9 @@ var app = {
 					// Handle the received notification when the app is running
 					// and display the alert message. 
 					alert(e.payload.message);
+					
+					// Reload the items list.
+					refreshTodoItems();
 				}
                 break;
 
@@ -203,8 +206,6 @@ var app = {
 
     // Handle the token from APNS and create a new hub registration.
     tokenHandler: function (result) {
-        console.log('device token = ' + result);
-
         if (mobileClient) {
 
             // Call the integrated Notification Hub client.
@@ -228,6 +229,9 @@ var app = {
 
         // Display the alert message in an alert.
         alert(event.alert);
+		
+		// Reload the items list.
+		refreshTodoItems();
 			
         // Do some even fancier stuff here if we requested them in the registration.    
         // if (event.sound)
@@ -248,8 +252,6 @@ var app = {
     channelHandler: function(result) {
         if (result.uri !== "")
         {
-            console.log('channel URI = ' + result.uri);
-
             if (mobileClient) {
 
                 // Call the integrated Notification Hub client.
@@ -284,6 +286,10 @@ var app = {
         {
             // Display the alert message in an alert.
             alert(event.jsonContent['wp:Text1']);
+			
+			// Reload the items list.
+			refreshTodoItems();
+
         }
     },
     // #endregion notification-callbacks
