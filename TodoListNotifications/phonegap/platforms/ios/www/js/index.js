@@ -56,8 +56,6 @@ var app = {
 		
 		// Platform-specific registrations.
         if ( device.platform == 'android' || device.platform == 'Android' ){
-            console.log('Android registration');
-			
 			// Register with GCM for Android apps.
             pushNotification.register(
                app.successHandler, app.errorHandler,
@@ -66,21 +64,14 @@ var app = {
 				"ecb": "app.onNotificationGCM" 
 				});
         } else if (device.platform === 'iOS') {
-            console.log('iOS registration');
-
-			// Register with APNS for iOS apps.
+            // Register with APNS for iOS apps.
             pushNotification.register(
                 app.tokenHandler,
-                app.errorHandler, {
-                    "badge": "true",
-                    "sound": "true",
-                    "alert": "true",
+                app.errorHandler, {                    
                     "ecb": "app.onNotificationAPN"
                 });
         }
 		else if(device.platform === "Win32NT"){
-			console.log('WP8 registration');
-			
 			// Register with MPNS for WP8 apps.
 			pushNotification.register(
 				app.channelHandler,
@@ -217,8 +208,7 @@ var app = {
         if (mobileClient) {
 
             // Call the integrated Notification Hub client.
-            // Define the Notification Hubs client.
-            var hub = new NotificationHub(HUB_NAME, HUB_ENDPOINT);
+			var hub = new NotificationHub(mobileClient);
 
             // This is a template registration.
             var template = "{\"aps\":{\"alert\":\"$(message)\"}}";
@@ -239,7 +229,7 @@ var app = {
         // Display the alert message in an alert.
         alert(event.alert);
 			
-        // Do some even fancier stuff here...    
+        // Do some even fancier stuff here if we requested them in the registration.    
         // if (event.sound)
         // {
         //	   // Play a custom sound file.
