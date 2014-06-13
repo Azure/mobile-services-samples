@@ -203,8 +203,6 @@ var app = {
 
     // Handle the token from APNS and create a new hub registration.
     tokenHandler: function (result) {
-        console.log('device token = ' + result);
-
         if (mobileClient) {
 
             // Call the integrated Notification Hub client.
@@ -248,8 +246,6 @@ var app = {
     channelHandler: function(result) {
         if (result.uri !== "")
         {
-            console.log('channel URI = ' + result.uri);
-
             if (mobileClient) {
 
                 // Call the integrated Notification Hub client.
