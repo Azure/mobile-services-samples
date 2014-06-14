@@ -65,9 +65,13 @@ var app = {
 				});
         } else if (device.platform === 'iOS') {
             // Register with APNS for iOS apps.
+			// Registration can include these optional fields:
+				// "badge":"true",
+				// "sound":"true",
+				// "alert":"true",
             pushNotification.register(
                 app.tokenHandler,
-                app.errorHandler, {                    
+                app.errorHandler, { 
                     "ecb": "app.onNotificationAPN"
                 });
         }
@@ -225,27 +229,23 @@ var app = {
 
     // Handle the notification when the iOS app is running.
     onNotificationAPN: function (event) {
-        console.log("event.alert " + event.alert);
+ 
+		if (event.alert){
+			 // Display the alert message in an alert.
+			alert(event.alert);
+		}
 
-        // Display the alert message in an alert.
-        alert(event.alert);
-		
-		// Reload the items list.
-		refreshTodoItems();
+		// // Other possible notification stuff we don't use in this sample.
+		// if (event.sound){
+			// var snd = new Media(event.sound);
+			// snd.play();
+		// }
+
+		// if (event.badge){
 			
-        // Do some even fancier stuff here if we requested them in the registration.    
-        // if (event.sound)
-        // {
-        //	   // Play a custom sound file.
-        //     var snd = new Media(event.sound);
-        //     snd.play();
-        // }
-        //     
-        // if (event.badge)
-        // {
-        //	   // Display a badge number.
-        //     pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, event.badge);
-        // }
+			// pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, event.badge);
+		// }
+
     },
 		
     // Handle the channel URI from MPNS and create a new hub registration. 
