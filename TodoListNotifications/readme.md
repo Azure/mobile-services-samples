@@ -17,7 +17,8 @@ To run this PhoneGap sample app on one or more of the supported client platforms
 
 	**Android**
 	+ (Optional) A physical Android device (an emulator could work, but it's a bit more complicated and not covered here).
-	+ [Android Developer Tools](). Android 4.4.2 (API 19) is required.
+	+ [Android Developer Tools](). Android 4.4.2 (API 19) only has been tested.
+	+ Google Play Services and Google APIs must also be installed.
 	+ Google account that has a verified email address. To create a new Google account, go to <a href="http://go.microsoft.com/fwlink/p/?linkid=268302&clcid=0x409" target="_blank">accounts.google.com</a>.
 
 	**Windows Phone 8**
@@ -36,7 +37,9 @@ To run this PhoneGap sample app on one or more of the supported client platforms
 
 	+ **Android:** Google Cloud Messaging (GCM)
 
-		Complete the topic [How to enable Google Cloud Messaging](http://azure.microsoft.com/en-us/documentation/articles/mobile-services-how-to-enable-google-cloud-messaging/).
+		Complete the topic [How to enable Google Cloud Messaging](http://azure.microsoft.com/en-us/documentation/articles/mobile-services-how-to-enable-google-cloud-messaging/). 
+		
+		<!---To add Google Play Services to your Android app, you will also need to follow the steps in the **Add Google Play Services to the project** section of [Get started with Notification Hubs](http://azure.microsoft.com/en-us/documentation/articles/notification-hubs-android-get-started/).-->
 
 	+ **Windows Phone 8:** Microsoft Push Notification Service (MPNS)
 	 
