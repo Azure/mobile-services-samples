@@ -189,7 +189,6 @@
             // create new registration.
             return createRegistration(hub, registration).then(
                 function (regId) {
-
                     // Store registration info with the returned ID.
                     regInfo = {};
                     regInfo.regId = regId;
@@ -203,7 +202,6 @@
                     deferred.reject(error);
                 });
         }
-
         return deferred.promise();
     };
 
@@ -229,7 +227,6 @@
             }
             deferred.reject(error);
             });
-
         return deferred;
     };
 
