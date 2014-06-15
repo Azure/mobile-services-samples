@@ -169,12 +169,13 @@ var app = {
 
                     if (mobileClient) {
 
-                        // Call the integrated Notification Hub client.
+                        // Create the integrated Notification Hub client.
                         var hub = new NotificationHub(mobileClient);
 
                         // Template registration.
                         var template = "{ \"data\" : {\"message\":\"$(message)\"}}";
 
+						// Register for notifications.
                         // (gcmRegId, ["tag1","tag2"], templateName, templateBody)
                         hub.gcm.register(e.regid, null, "myTemplate", template).done(function () {
                             alert("Registered with hub!");
@@ -212,12 +213,13 @@ var app = {
     tokenHandler: function (result) {
         if (mobileClient) {
 
-            // Call the integrated Notification Hub client.
+            // Create the integrated Notification Hub client.
 			var hub = new NotificationHub(mobileClient);
 
             // This is a template registration.
             var template = "{\"aps\":{\"alert\":\"$(message)\"}}";
 
+			// Register for notifications.
             // (deviceId, ["tag1","tag2"], templateName, templateBody, expiration)
             hub.apns.register(result, null, "myTemplate", template, null).done(function () {
                 alert("Registered with hub!");
@@ -254,9 +256,7 @@ var app = {
         {
             if (mobileClient) {
 
-                // Call the integrated Notification Hub client.
-
-                // Define the Notification Hubs client.
+                // Create the integrated Notification Hub client.
                 var hub = new NotificationHub(mobileClient);
 
                 // This is a template registration.
@@ -267,6 +267,7 @@ var app = {
                         "</wp:Toast>" +
                     "</wp:Notification>";
                
+				// Register for notifications.
                 // (channelUri, ["tag1","tag2"] , templateName, templateBody)
                 hub.mpns.register(result.uri, null, "myTemplate", template).done(function () {
                     alert("Registered with hub!");
@@ -289,7 +290,6 @@ var app = {
 			
 			// Reload the items list.
 			refreshTodoItems();
-
         }
     },
     // #endregion notification-callbacks
