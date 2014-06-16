@@ -38,7 +38,7 @@
             }
         });
         return deferred.promise();
-    };
+    }
 
     // Update an existing registration--includes payload.
     var updateRegistration = function (hub, regId, registration) {
@@ -83,7 +83,7 @@
                 }
             });
         return deferred.promise();
-    };
+    }
 
     // Create registration as an insert + update (POST + PUT).
     var createRegistration = function (hub, registration) {
@@ -110,7 +110,7 @@
             regKey = regKey + '/' + registration.templateName;
         }
         return regKey;
-    };
+    }
 
     var buildCreatePayload = function (registration) {
 
@@ -189,6 +189,7 @@
             // create new registration.
             return createRegistration(hub, registration).then(
                 function (regId) {
+
                     // Store registration info with the returned ID.
                     regInfo = {};
                     regInfo.regId = regId;
@@ -202,6 +203,7 @@
                     deferred.reject(error);
                 });
         }
+
         return deferred.promise();
     };
 
@@ -227,6 +229,7 @@
             }
             deferred.reject(error);
             });
+
         return deferred;
     };
 
@@ -282,7 +285,7 @@
             });
         }
     };
-
+	
     var mpns = function (hub) {
         this.hub = hub;
     };
