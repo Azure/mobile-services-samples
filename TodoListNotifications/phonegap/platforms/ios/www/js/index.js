@@ -49,11 +49,11 @@ var app = {
 		// Define the Mobile Services client.
         mobileClient = new WindowsAzure.MobileServiceClient(MOBILE_SERVICE_URL, MOBILE_SERVICE_APP_KEY);
         todoItemTable = mobileClient.getTable('TodoItem');
-	    
+
         // #region notification-registration			
         // Define the PushPlugin.
 		var pushNotification = window.plugins.pushNotification;
-		
+
 		// Platform-specific registrations.
         if ( device.platform == 'android' || device.platform == 'Android' ){
 			// Register with GCM for Android apps.
@@ -88,7 +88,7 @@ var app = {
 			});
 		}
         // #endregion notifications-registration
-		
+
         // #region todolist-quickstart
         // Read current data and rebuild UI.
         // If you plan to generate complex UIs like this, consider using a JavaScript templating library.
@@ -153,7 +153,7 @@ var app = {
 
         // On initial load, start by fetching the current data
         refreshTodoItems();
-		
+
         app.receivedEvent('deviceready');
         // #endregion todolist-quickstart
     },
@@ -169,12 +169,13 @@ var app = {
 
                     if (mobileClient) {
 
-                        // Call the integrated Notification Hub client.
+                        // Create the integrated Notification Hub client.
                         var hub = new NotificationHub(mobileClient);
 
                         // Template registration.
                         var template = "{ \"data\" : {\"message\":\"$(message)\"}}";
 
+						// Register for notifications.
                         // (gcmRegId, ["tag1","tag2"], templateName, templateBody)
                         hub.gcm.register(e.regid, null, "myTemplate", template).done(function () {
                             alert("Registered with hub!");
@@ -186,13 +187,13 @@ var app = {
                 break;
 
             case 'message':
-			
+
 				if (e.foreground)
 				{
 					// Handle the received notification when the app is running
 					// and display the alert message. 
 					alert(e.payload.message);
-					
+
 					// Reload the items list.
 					refreshTodoItems();
 				}
@@ -212,12 +213,13 @@ var app = {
     tokenHandler: function (result) {
         if (mobileClient) {
 
-            // Call the integrated Notification Hub client.
+            // Create the integrated Notification Hub client.
 			var hub = new NotificationHub(mobileClient);
 
             // This is a template registration.
             var template = "{\"aps\":{\"alert\":\"$(message)\"}}";
 
+			// Register for notifications.
             // (deviceId, ["tag1","tag2"], templateName, templateBody, expiration)
             hub.apns.register(result, null, "myTemplate", template, null).done(function () {
                 alert("Registered with hub!");
@@ -242,21 +244,19 @@ var app = {
 		// }
 
 		// if (event.badge){
-			
+
 			// pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, event.badge);
 		// }
 
     },
-		
+
     // Handle the channel URI from MPNS and create a new hub registration. 
     channelHandler: function(result) {
         if (result.uri !== "")
         {
             if (mobileClient) {
 
-                // Call the integrated Notification Hub client.
-
-                // Define the Notification Hubs client.
+                // Create the integrated Notification Hub client.
                 var hub = new NotificationHub(mobileClient);
 
                 // This is a template registration.
@@ -267,6 +267,7 @@ var app = {
                         "</wp:Toast>" +
                     "</wp:Notification>";
                
+				// Register for notifications.
                 // (channelUri, ["tag1","tag2"] , templateName, templateBody)
                 hub.mpns.register(result.uri, null, "myTemplate", template).done(function () {
                     alert("Registered with hub!");
@@ -279,17 +280,16 @@ var app = {
             console.log('channel URI could not be obtained!');
         }
     },
-		
+
     // Handle the notification when the WP8 app is running.
     onNotificationWP8: function(event){
         if (event.jsonContent)
         {
             // Display the alert message in an alert.
             alert(event.jsonContent['wp:Text1']);
-			
+
 			// Reload the items list.
 			refreshTodoItems();
-
         }
     },
     // #endregion notification-callbacks
