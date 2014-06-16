@@ -64,13 +64,14 @@ var app = {
 				"ecb": "app.onNotificationGCM" 
 				});
         } else if (device.platform === 'iOS') {
-            // Register with APNS for iOS apps.			
+            // Register with APNS for iOS apps.
+			// Registration can include these optional fields:
+				// "badge":"true",
+				// "sound":"true",
+				// "alert":"true",
             pushNotification.register(
                 app.tokenHandler,
                 app.errorHandler, { 
-					"badge":"true",
-					"sound":"true",
-					"alert":"true",
                     "ecb": "app.onNotificationAPN"
                 });
         }
