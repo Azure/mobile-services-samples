@@ -18,14 +18,15 @@
  */
  
 // Set these global variables to the settings for your
-// Azure Mobile Service and Azure Notification Hub. 
-var HUB_NAME = '<notification_hub_name>';
-var HUB_ENDPOINT = '<shared_access_connection_string>';
+// Azure Mobile Service. 
 var MOBILE_SERVICE_URL = '<mobile_service_url>';
 var MOBILE_SERVICE_APP_KEY = '<mobile_service_application_key>';
 
 // Numeric part of the project ID assigned by the Google API console.
 var GCM_SENDER_ID = '<gcm_sender_id>';
+
+// Define the MobileServiceClient as a global variable.
+var mobileClient;
 
 var app = {
     // Application Constructor
@@ -46,18 +47,15 @@ var app = {
     onDeviceReady: function() {
         
 		// Define the Mobile Services client.
-        var client = new WindowsAzure.MobileServiceClient(MOBILE_SERVICE_URL, MOBILE_SERVICE_APP_KEY);
-        todoItemTable = client.getTable('TodoItem');
+        mobileClient = new WindowsAzure.MobileServiceClient(MOBILE_SERVICE_URL, MOBILE_SERVICE_APP_KEY);
+        todoItemTable = mobileClient.getTable('TodoItem');
 	    
         // #region notification-registration			
         // Define the PushPlugin.
 		var pushNotification = window.plugins.pushNotification;
 		
 		// Platform-specific registrations.
-        if ( device.platform == 'android' || device.platform == 'Android' 
-				|| device.platform == "amazon-fireos" ){
-            console.log('Android registration');
-			
+        if ( device.platform == 'android' || device.platform == 'Android' ){
 			// Register with GCM for Android apps.
             pushNotification.register(
                app.successHandler, app.errorHandler,
@@ -66,21 +64,17 @@ var app = {
 				"ecb": "app.onNotificationGCM" 
 				});
         } else if (device.platform === 'iOS') {
-            console.log('iOS registration');
-
-			// Register with APNS for iOS apps.
+            // Register with APNS for iOS apps.			
             pushNotification.register(
                 app.tokenHandler,
-                app.errorHandler, {
-                    "badge": "true",
-                    "sound": "true",
-                    "alert": "true",
+                app.errorHandler, { 
+					"badge":"true",
+					"sound":"true",
+					"alert":"true",
                     "ecb": "app.onNotificationAPN"
                 });
         }
 		else if(device.platform === "Win32NT"){
-			console.log('WP8 registration');
-			
 			// Register with MPNS for WP8 apps.
 			pushNotification.register(
 				app.channelHandler,
@@ -172,23 +166,22 @@ var app = {
                 if (e.regid.length > 0) {
                     console.log("gcm id " + e.regid);
 
-                    var hub = new NotificationHub(HUB_NAME, HUB_ENDPOINT);
-                    
-					// Template registration.
-					var template = "{ \"data\" : {\"message\":\"$(message)\"}}";
-					
-					hub.gcm.registerTemplate(e.regid, "myTemplate", template).done(function () {
-                        alert("Registered with hub!");
-                    }).fail(function (error) {
-                        alert("Failed registering with hub: " + error);
-                    });
-					
-					// // Native registration.
-					// hub.gcm.register(e.regid).done(function () {
-                        // alert("Registered with hub!");
-                    // }).fail(function (error) {
-                        // alert("Failed registering with hub: " + error);
-                    // });
+                    if (mobileClient) {
+
+                        // Create the integrated Notification Hub client.
+                        var hub = new NotificationHub(mobileClient);
+
+                        // Template registration.
+                        var template = "{ \"data\" : {\"message\":\"$(message)\"}}";
+
+						// Register for notifications.
+                        // (gcmRegId, ["tag1","tag2"], templateName, templateBody)
+                        hub.gcm.register(e.regid, null, "myTemplate", template).done(function () {
+                            alert("Registered with hub!");
+                        }).fail(function (error) {
+                            alert("Failed registering with hub: " + error);
+                        });
+                    }
                 }
                 break;
 
@@ -199,6 +192,9 @@ var app = {
 					// Handle the received notification when the app is running
 					// and display the alert message. 
 					alert(e.payload.message);
+					
+					// Reload the items list.
+					refreshTodoItems();
 				}
                 break;
 
@@ -214,81 +210,73 @@ var app = {
 
     // Handle the token from APNS and create a new hub registration.
     tokenHandler: function (result) {
-        console.log('device token = ' + result);
+        if (mobileClient) {
 
-        // Define the Notification Hubs client.
-        var hub = new NotificationHub(HUB_NAME, HUB_ENDPOINT);
+            // Create the integrated Notification Hub client.
+			var hub = new NotificationHub(mobileClient);
 
-		// This is a template registration.
-		var template = "{\"aps\":{\"alert\":\"$(message)\"}}";
-		
-        hub.apns.registerTemplate(result, "myTemplate", template).done(function () {	
-            alert("Registered with hub!");
-        }).fail(function (error) {
-            alert("Failed registering with hub: " + error);
-        });
-		
-		// // Native registration.
-		// hub.apns.register(result).done(function () {	
-            // alert("Registered with hub!");
-        // }).fail(function (error) {
-            // alert("Failed registering with hub: " + error);
-        // });
+            // This is a template registration.
+            var template = "{\"aps\":{\"alert\":\"$(message)\"}}";
+
+			// Register for notifications.
+            // (deviceId, ["tag1","tag2"], templateName, templateBody, expiration)
+            hub.apns.register(result, null, "myTemplate", template, null).done(function () {
+                alert("Registered with hub!");
+            }).fail(function (error) {
+                alert("Failed registering with hub: " + error);
+            });
+        }
     },
 
     // Handle the notification when the iOS app is running.
     onNotificationAPN: function (event) {
-        console.log("event.alert " + event.alert);
-
-        // Display the alert message in an alert.
-        alert(event.alert);
+ 
+		if (event.alert){
+			 // Display the alert message in an alert.
+			alert(event.alert);
 			
-        // Do some even fancier stuff here...    
-        // if (event.sound)
-        // {
-        //	   // Play a custom sound file.
-        //     var snd = new Media(event.sound);
-        //     snd.play();
-        // }
-        //     
-        // if (event.badge)
-        // {
-        //	   // Display a badge number.
-        //     pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, event.badge);
-        // }
+			// Reload the items list.
+			refreshTodoItems();
+		}
+
+		// // Other possible notification stuff we don't use in this sample.
+		// if (event.sound){
+			// var snd = new Media(event.sound);
+			// snd.play();
+		// }
+
+		// if (event.badge){
+			
+			// pushNotification.setApplicationIconBadgeNumber(successHandler, errorHandler, event.badge);
+		// }
+
     },
 		
     // Handle the channel URI from MPNS and create a new hub registration. 
     channelHandler: function(result) {
         if (result.uri !== "")
         {
-            console.log('channel URI = ' + result.uri);
-					
-            // Define the Notification Hubs client.
-            var hub = new NotificationHub(HUB_NAME, HUB_ENDPOINT);
-					
-            // This is a template registration.
-            var template = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-				"<wp:Notification xmlns:wp=\"WPNotification\">" +
-					"<wp:Toast>" +
-						"<wp:Text1>$(message)</wp:Text1>" +
-					"</wp:Toast>" +
-				"</wp:Notification>";
+            if (mobileClient) {
 
-            console.log("template: " + template);
+                // Create the integrated Notification Hub client.
+                var hub = new NotificationHub(mobileClient);
 
-            hub.mpns.registerTemplate(result.uri, "myTemplate", template).done(function () {	
-            alert("Registered with hub!");
-            }).fail(function (error) {
-            alert("Failed registering with hub: " + error);
-            });			
-			
-			// // Native registration.	
-            // hub.mpns.register(result.uri).done(function () {	
-                // alert("Registered with hub!");
-            // }).fail(function (error) {
-                // alert("Failed registering with hub: " + error);
-            // });			
+                // This is a template registration.
+                var template = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                    "<wp:Notification xmlns:wp=\"WPNotification\">" +
+                        "<wp:Toast>" +
+                            "<wp:Text1>$(message)</wp:Text1>" +
+                        "</wp:Toast>" +
+                    "</wp:Notification>";
+               
+				// Register for notifications.
+                // (channelUri, ["tag1","tag2"] , templateName, templateBody)
+                hub.mpns.register(result.uri, null, "myTemplate", template).done(function () {
+                    alert("Registered with hub!");
+                }).fail(function (error) {
+                    alert("Failed registering with hub: " + error);
+                });
+            }
         }
         else{
             console.log('channel URI could not be obtained!');
@@ -301,6 +289,9 @@ var app = {
         {
             // Display the alert message in an alert.
             alert(event.jsonContent['wp:Text1']);
+			
+			// Reload the items list.
+			refreshTodoItems();
         }
     },
     // #endregion notification-callbacks
@@ -312,5 +303,4 @@ var app = {
     errorHandler: function (error) {
         alert(error);
     },
-
 };

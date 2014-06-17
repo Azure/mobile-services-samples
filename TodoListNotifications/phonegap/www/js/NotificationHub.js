@@ -1,319 +1,213 @@
 (function () {
 
-    //#region Constants
-    var API_VERSION = "?api-version=2013-10";
+    NotificationHub = function (mobileClient) {
 
-    // #endregion
-
-    var parseConnectionString = function (hub, connectionString) {
-        var parts = connectionString.split(';');
-        if (parts.length !== 3) {
-            throw "Error parsing connection string";
-        }
-
-        parts.forEach(function (part) {
-            if (part.indexOf('Endpoint') === 0) {
-                hub.endpoint = 'https' + part.substring(11);
-            } else if (part.indexOf('SharedAccessKeyName') === 0) {
-                hub.sasKeyName = part.substring(20);
-            } else if (part.indexOf('SharedAccessKey') === 0) {
-                hub.sasKeyValue = part.substring(16);
-            }
-        });
-    };
-
-    NotificationHub = function (hubPath, connectionString) {
-        console.log("building hub");
-
-        // parse connection string
-        parseConnectionString(this, connectionString);
-        this.hubPath = hubPath;
-
+        // Set the client to use to register for push.
+        this.mobileClient = mobileClient;
+        
         this.gcm = new gcm(this);
         this.apns = new apns(this);
-		this.mpns = new mpns(this);
+        this.mpns = new mpns(this);
     };
-
-    var getSelfSignedToken = function (targetUri, sharedKey, ruleId, expiresInMins) {
-        targetUri = encodeURIComponent(targetUri.toLowerCase()).toLowerCase();
-
-        // Set expiration in seconds
-        var expireOnDate = new Date();
-        expireOnDate.setMinutes(expireOnDate.getMinutes() + expiresInMins);
-        var expires = Date.UTC(expireOnDate.getUTCFullYear(), expireOnDate
-            .getUTCMonth(), expireOnDate.getUTCDate(), expireOnDate
-            .getUTCHours(), expireOnDate.getUTCMinutes(), expireOnDate
-            .getUTCSeconds()) / 1000;
-        var tosign = targetUri + '\n' + expires;
-
-        var signature = CryptoJS.HmacSHA256(tosign, sharedKey);
-        var base64signature = signature.toString(CryptoJS.enc.Base64);
-        var base64UriEncoded = encodeURIComponent(base64signature);
-
-        // construct authorization string
-        var token =
-            "SharedAccessSignature sr=" + targetUri + "&sig="
-            + base64UriEncoded + "&se=" + expires + "&skn=" + ruleId;
-
-        // console.log("signature:" + token);
-        return token;
-    };
-
-    // #region Local storage
-    // object: {location: '', deviceToken: ''}
-    var storeInContainer = function (key, object) {
-        window.localStorage.setItem(key, JSON.stringify(object));
-    };
-
-    var deleteFromContainer = function (key) {
-        window.localStorage.removeItem(key);
-    };
-
-    var getFromContainer = function (key) {
-        console.log("get from container: " + window.localStorage.getItem(key));
-
-        if (typeof window.localStorage.getItem(key) === 'string') {
-            return JSON.parse(window.localStorage.getItem(key));
-        }
-        return undefined;
-    };
-    // #endregion End of local storage
-
-    // #region Payload
-    var gcmNativePayload = '<?xml version="1.0" encoding="utf-8"?><entry xmlns="http://www.w3.org/2005/Atom"><content type="application/xml"><GcmRegistrationDescription xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect">{0}<GcmRegistrationId>{1}</GcmRegistrationId></GcmRegistrationDescription></content></entry>';
-    var gcmTemplatePayload = '<?xml version="1.0" encoding="utf-8"?><entry xmlns="http://www.w3.org/2005/Atom"><content type="application/xml"><GcmTemplateRegistrationDescription xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect">{0}<GcmRegistrationId>{1}</GcmRegistrationId><BodyTemplate><![CDATA[{2}]]></BodyTemplate></GcmTemplateRegistrationDescription></content></entry>';
-    var apnsNativePayload = '<?xml version="1.0" encoding="utf-8"?><entry xmlns="http://www.w3.org/2005/Atom"><content type="application/xml"><AppleRegistrationDescription xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect">{0}<DeviceToken>{1}</DeviceToken></AppleRegistrationDescription></content></entry>';
-	var apnsTemplatePayload = '<?xml version="1.0" encoding="utf-8"?><entry xmlns="http://www.w3.org/2005/Atom"><content type="application/xml"><AppleTemplateRegistrationDescription xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect">{0}<DeviceToken>{1}</DeviceToken><BodyTemplate><![CDATA[{2}]]></BodyTemplate></AppleTemplateRegistrationDescription></content></entry>';
-    var mpnsNativePayload = '<?xml version="1.0" encoding="utf-8"?><entry xmlns="http://www.w3.org/2005/Atom"><content type="application/xml"><MpnsRegistrationDescription xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect">{0}<ChannelUri>{1}</ChannelUri></MpnsRegistrationDescription></content></entry>';
-	var mpnsTemplatePayload = '<?xml version="1.0" encoding="utf-8"?><entry xmlns="http://www.w3.org/2005/Atom"><content type="application/xml"><MpnsTemplateRegistrationDescription xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect">{0}<ChannelUri>{1}</ChannelUri><BodyTemplate><![CDATA[{2}]]></BodyTemplate><MpnsHeaders><MpnsHeader><Header>X-WindowsPhone-Target</Header><Value>toast</Value></MpnsHeader><MpnsHeader><Header>X-NotificationClass</Header><Value>2</Value></MpnsHeader></MpnsHeaders></MpnsTemplateRegistrationDescription></content></entry>';
-    var buildCreatePayload = function (registration) {
-        /* expecting: tags, deviceToken */
-
-        var nativePayload;
-        var templatePayload;
-
-        console.log("registration: " + JSON.stringify(registration));
- 
-        switch (registration.platform) {
-            case 'gcm':
-                nativePayload = gcmNativePayload;
-                templatePayload = gcmTemplatePayload;
-                break;
-            case 'apns':
-                nativePayload = apnsNativePayload;
-				templatePayload = apnsTemplatePayload;
-                break;
-			case 'mpns':
-                nativePayload = mpnsNativePayload;
-				templatePayload = mpnsTemplatePayload
-                break;
-        }
-
-        var registrationPayload;
-
-        // if templateBody != undefined use template
-        if (typeof registration.templateBody !== 'undefined') {
-            registrationPayload =
-                templatePayload.replace('{1}', registration.deviceToken)
-                    .replace('{2}', registration.templateBody);
-
-            var tagstring = '';
-            if (typeof registration.tags === 'object') {
-                tagstring = '<Tags>' + registration.tags.join(',') + '</Tags>';
-            }
-            registrationPayload = registrationPayload.replace('{0}', tagstring);
-        } else // native
-        {
-            registrationPayload = nativePayload.replace('{1}', registration.deviceToken);
-            var tagstring = '';
-            if (typeof registration.tags === 'object') {
-                tagstring = '<Tags>' + registration.tags.join(',') + '</Tags>';
-            }
-            registrationPayload = registrationPayload.replace('{0}', tagstring);
-        }
-
-		console.log("registration payload: " + registrationPayload);
-        return registrationPayload;
-    };
-
-    // #endregion Payload
 
     // #region CRUD ops
-
-    // Create registration ID
+    // Create registration ID--payload on upsert.
     var createRegistrationId = function (hub) {
-        var serverUrl = hub.endpoint + hub.hubPath + "/registrationIDs" + API_VERSION;
 
-        var token = getSelfSignedToken(serverUrl, hub.sasKeyValue, hub.sasKeyName, 60);
+        // Variables needed to make the request to the mobile service.
+        var method = "POST";
+        var uriFragment = "/push/registrationids";
 
         var deferred = $.Deferred();
-        $.ajax({
-            type: "POST",
-            url: serverUrl,
-            headers: {
-                "Authorization": token
-            },
-        }).done(function (data, status, response) {
-            var location = response.getResponseHeader("Location");
-            console.log('create registration ID success: ' + location);
 
-            var regex = /\S+\/registrationIDs\/([^?]+).*/;
-            var regId = regex.exec(location)[1];
-            console.log("regId: " + regId);
-            deferred.resolve(regId);
+        // Send a Notification Hubs registration request to the Mobile Service.
+        hub.mobileClient._request(method, uriFragment, null, null, null,
+            function (error, response) {
+            if (error) {
+                console.log("Error: " + error);
+                deferred.reject("Error: " + error);
+            } else {
 
-        }).fail(function (response, status, error) {
-            console.log("Error: " + error);
-            deferred.reject("Error: " + error);
+                // Get the unique registration ID from the Location header.
+                var location = response.getResponseHeader("Location");            
+                var regex = /\S+\/registrations\/([^?]+).*/;
+                var regId = regex.exec(location)[1];
+
+                // Return the registration ID.
+                deferred.resolve(regId);
+            }
         });
-
         return deferred.promise();
     };
 
-    // CREATE
+    // Update an existing registration--includes payload.
+    var updateRegistration = function (hub, regId, registration) {
+
+        // Variables needed to make the request to the mobile service.
+        var registrationPayload = buildCreatePayload(registration);
+        var method = "PUT";
+        var uriFragment = "/push/registrations/" + regId;
+
+        var deferred = $.Deferred();
+
+        // Send a Notification Hubs registration update to the Mobile Service.
+        hub.mobileClient._request(method, uriFragment, registrationPayload, null,
+            null, function (error, response) {
+            if (error) {
+                console.log("Error: " + error);
+                deferred.reject("Error: " + error);
+            } else {
+                console.log("Updated registration: " + regId);
+                deferred.resolve();
+            }
+        });
+        return deferred.promise();
+    };
+
+    var deleteRegistration = function (hub, regId) {
+
+        var method = "DELETE";
+        var uriFragment = "/push/registrations/" + regId;
+
+        var deferred = $.Deferred();
+
+        // Send a Notification Hubs registration update to the Mobile Service.
+        hub.mobileClient._request(method, uriFragment, null, null,
+            null, function (error, response) {                
+                if (error) {
+                    console.log("Error: " + error);
+                    deferred.reject("Error: " + error);
+                } else {
+                    console.log("Deleted registration");
+                    deferred.resolve();
+                }
+            });
+        return deferred.promise();
+    };
+
+    // Create registration as an insert + update (POST + PUT).
     var createRegistration = function (hub, registration) {
         return createRegistrationId(hub).then(function (regId) {
-            return updateRegistration(hub, regId, registration).then(function (location) {
+            return updateRegistration(hub, regId, registration).then(function () {
                 return regId;
             });
         });
     };
 
-    // UPDATE
-    var updateRegistration = function (hub, regId, registration) {
-        /* expecting: registration.regId, registration.deviceToken */
-
-        var registrationPayload = buildCreatePayload(registration);
-
-        var serverUrl = hub.endpoint + hub.hubPath + "/registrations/" + regId + API_VERSION;
-
-        console.log('serverUrl:' + serverUrl);
-        console.log('payload:' + registrationPayload);
-
-        var token = getSelfSignedToken(serverUrl, hub.sasKeyValue, hub.sasKeyName, 60);
-
-        var deferred = $.Deferred();
-        $.ajax({
-            type: "PUT",
-            url: serverUrl,
-            headers: {
-                "Content-Type": "application/atom+xml",
-                "Authorization": token,
-                // "If-Match:": '*'
-            },
-            data: registrationPayload
-        }).done(function (data, status, response) {
-            console.log("update registration data: " + JSON.stringify(data));
-            console.log("update registration data: " + JSON.stringify(status));
-            var location = response.getResponseHeader("Content-Location");
-            deferred.resolve(location);
-        }).fail(function (response, status, error) {
-            console.log("Error: " + error);
-            console.log("Response: " + JSON.stringify(response));
-            console.log("Status: " + status);
-            deferred.reject("Error: " + error);
-        });
-
-        return deferred.promise();
-    };
-
-    // DELETE
-    var deleteRegistration = function (hub, regId) {
-        var serverUrl = hub.endpoint + hub.hubPath + "/registrations/" + regId + API_VERSION;
-
-        console.log('url:' + serverUrl);
-        console.log('registration ID:' + regId);
-
-        var token = getSelfSignedToken(serverUrl, hub.sasKeyValue, hub.sasKeyName, 60);
-
-        var deferred = $.Deferred();
-        $.ajax({
-            type: "DELETE",
-            url: serverUrl,
-            headers: {
-                "Content-Type": "application/atom+xml",
-                "Authorization": token,
-                "If-Match:": '*'
-            },
-        }).done(function (data, status, response) {
-            console.log("Deleted registration");
-            deferred.resolve();
-        }).fail(function (response, status, error) {
-            console.log("Error: " + error);
-            deferred.reject("Error: " + error);
-        });
-
-        return deferred.promise();
-    };
-
     // #endregion CRUD ops
 
-    var register = function (hub, registration) {
+    // #region helper functions
+    var buildRegKey = function (hub, registration) {
+
         var tileKey = 'application';
         if (typeof registration.tileId !== 'undefined') {
             tileKey = registration.tileId;
         }
 
         // create key
-        var regKey = hub.endpoint + hub.hubPath + '/' + tileKey + '/' + registration.name;
+        var regKey = hub.mobileClient.applicationUrl + tileKey;
+        if (registration.templateName) {
+            regKey = regKey + '/' + registration.templateName;
+        }
+        return regKey;
+    };
 
-        // if key exists
-        var deferred = $.Deferred();
+    var buildCreatePayload = function (registration) {
+
+        // The payload matches the registration object, so all 
+        // we need to do is add any extra info not part of the registration.
+        var payload = registration;
+
+        // Add static headers required by MPNS template
+        if (payload.platform === 'mpns' && payload.templateBody) {
+
+            // Add the MPNS headers required for a template registration.
+            payload.headers = { "X-WindowsPhone-Target": "toast", "X-NotificationClass": "2" };
+        }
+
+        // Return the payload as a string.
+        return JSON.stringify(payload);
+    };
+    // #endregion helper functions
+
+    // #region local storage
+    // object: {regId: '', deviceToken: ''}
+    var storeInContainer = function (key, object) {
+        localStorage.setItem(key, JSON.stringify(object));
+    };
+
+    var deleteFromContainer = function (key) {
+        localStorage.removeItem(key);
+    };
+
+    var getFromContainer = function (key) {
+ 
+        if (typeof localStorage.getItem(key) === 'string') {
+            return JSON.parse(localStorage.getItem(key));
+        }
+        return undefined;
+    };
+    // #endregion local storage
+
+    // #region public API
+    var register = function (hub, registration) {
+
+        // Build the key used to store info in local storage,
+        // then get the stored registration--if it exists.
+        var regKey = buildRegKey(hub, registration);
         var regInfo = getFromContainer(regKey);
-        if (typeof regInfo !== 'undefined') {
-            // update registration
-            console.log("stored registration found, updating existing registration for ID: " + regInfo.regId);
 
+        var retries = 0;
+        var deferred = $.Deferred();
+
+        if (typeof regInfo !== 'undefined') {
+
+            // If we find stored registration, then this should be 
+            // an update of the existing registration.
             updateRegistration(hub, regInfo.regId, registration).then(
-                function (location) {
-                    deferred.resolve(location);
+                function () {
+                    deferred.resolve();
                 }, function (error) {
                     // if not exists / recreate
-                    if (error === '404' || error === '410') {
+                    if ((error === '404' || error === '410') && retries < 2 ) {
                         deferred.resolve(createRegistration(hub, registration));
                     } else {
                         deferred.reject(error);
                     }
-                }).then(function (location) {
+                }).then(function () {
                     // update regInfo with new location
-                    regInfo.location = location;
+                    //regInfo.location = location;
+                    // Store the latest device token.
                     regInfo.deviceToken = registration.deviceToken;
                     storeInContainer(regKey, regInfo);
 
-                    deferred.resolve(location);
+                    deferred.resolve();
                 }, function (error) {
                     deferred.reject(error);
                 });
         } else {
-            // create new
+            // create new registration.
             return createRegistration(hub, registration).then(
                 function (regId) {
+                    // Store registration info with the returned ID.
                     regInfo = {};
                     regInfo.regId = regId;
-                    regInfo.location = location;
                     regInfo.deviceToken = registration.deviceToken;
 
                     storeInContainer(regKey, regInfo);
                     getFromContainer(regKey);
 
-                    deferred.resolve(location);
+                    deferred.resolve();
                 }, function (error) {
                     deferred.reject(error);
                 });
         }
-
         return deferred.promise();
     };
 
     var unregister = function (hub, registration) {
-        // create key
-        var tileKey = 'application';
-        if (typeof registration.tileId !== 'undefined') {
-            tileKey = registration.tileId;
-        }
 
-        // create key
-        var regKey = hub.endpoint + hub.hubPath + '/' + tileKey + '/' + registration.name;
+        var regKey = buildRegKey(hub, registration);
 
         var deferred = $.Deferred();
         var regInfo = getFromContainer(regKey);
@@ -333,7 +227,6 @@
             }
             deferred.reject(error);
             });
-
         return deferred;
     };
 
@@ -342,31 +235,23 @@
     };
 
     gcm.prototype = {
-        register: function (gcmRegId, tags) {
-            return this.hub._register(this.hub, {
-                platform: "gcm",
-                deviceToken: gcmRegId,
-                tags: tags,
-                name: '$native'
-            });
-        },
 
-        registerTemplate: function (gcmRegId, templateName, templateBody, tags) {
+        register: function (gcmRegId, tags, templateName, templateBody) {
             return this.hub._register(this.hub, {
                 platform: "gcm",
-                deviceToken: gcmRegId,
+                deviceId: gcmRegId,
                 tags: tags,
-                name: templateName,
+                templateName: templateName,
                 templateBody: templateBody
             });
         },
 
-        unregister: function (gcmRegId, tags) {
+        unregister: function (gcmRegId, tags, templateName) {
             return this.hub._unregister(this.hub, {
                 platform: "gcm",
-                deviceToken: gcmRegId,
+                deviceId: gcmRegId,
                 tags: tags,
-                name: '$native'
+                templateName: templateName
             });
         },
     };
@@ -376,68 +261,53 @@
     };
 
     apns.prototype = {
-        register: function (deviceToken, tags) {
+
+        register: function (deviceToken, tags, templateName, templateBody, expiration) {
             return this.hub._register(this.hub, {
                 platform: "apns",
-                deviceToken: deviceToken,
+                deviceId: deviceToken,
                 tags: tags,
-                name: '$native'
+                templateName: templateName,
+                templateBody: templateBody,
+                expiration: expiration
             });
         },
 
-        registerTemplate: function (deviceToken, templateName, templateBody, tags) {
-            return this.hub._register(this.hub, {
-                platform: "apns",
-                deviceToken: deviceToken,
-                tags: tags,
-                name: templateName,
-                templateBody: templateBody
-            });
-        },
-
-        unregister: function (deviceToken, tags) {
+        unregister: function (deviceToken, tags, templateName) {
             return this.hub._unregister(this.hub, {
                 platform: "apns",
-                handle: deviceToken,
+                deviceId: deviceToken,
                 tags: tags,
-                name: '$native'
+                templateName: templateName
             });
         }
     };
 	
-	 var mpns = function (hub) {
+    var mpns = function (hub) {
         this.hub = hub;
     };
 
-    mpns.prototype = {
-        register: function (channel, tags) {
-            return this.hub._register(this.hub, {
-                platform: "mpns",
-                deviceToken: channel,
-                tags: tags,
-                name: '$native'
-            });
-        },
+	 mpns.prototype = {
 
-        registerTemplate: function (channel, templateName, templateBody, tags) {
-            return this.hub._register(this.hub, {
-                platform: "mpns",
-                deviceToken: channel,
-                tags: tags,
-                name: templateName,
-                templateBody: templateBody
-            });
-        },
+	     register: function (channel, tags, templateName, templateBody) {
+	         return this.hub._register(this.hub, {
+	             platform: "mpns",
+	             deviceId: channel,
+	             tags: tags,
+	             templateName: templateName,
+	             templateBody: templateBody
+	         });
+	     },
 
-        unregister: function (channel, tags) {
-            return this.hub._unregister(this.hub, {
-                platform: "mpns",
-                handle: channel,
-                tags: tags,
-                name: '$native'
-            });
-        }
-    };
+	     unregister: function (channel, tags, templateName) {
+	         return this.hub._unregister(this.hub, {
+	             platform: "mpns",
+	             deviceId: channel,
+	             tags: tags,
+	             templateName: templateName
+	         });
+	     }
+	 };
 
     NotificationHub.prototype = {        
         _register: register,
@@ -447,5 +317,5 @@
         apns: this.apns,
 		mpns: this.mpns
     };
-
+    // #endregion public API
 }());

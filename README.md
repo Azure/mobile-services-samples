@@ -1,2 +1,4 @@
-mobile-services-samples
-=======================
+# Mobile Services Samples 
+
+##[TodoListNotifications (PhoneGap)](./TodoListNotifications/readme.md) 
+PhoneGap is a free and open source framework, which makes it easier to create app for key mobile device platforms using standardized web APIs, HTML and JavaScript. This sample shows how to use Azure Mobile Services (JavaScript backend) integrated with Azure Notification Hubs to send push notifications to a PhoneGap app on three client platforms: iOS, Android, and Windows Phone 8. This sample adds push notifications, using Notification Hubs, to the [PhoneGap quickstart project](http://azure.microsoft.com/en-us/documentation/articles/mobile-services-javascript-backend-phonegap-get-started/) for Mobile Services. The sample uses the PhoneGap [PushPlugin](https://github.com/phonegap-build/PushPlugin) and Mobile Services REST APIs to create push notification registrations in the Notification Hubs. For more information, see the [sample readme file](./TodoListNotifications/readme.md).
