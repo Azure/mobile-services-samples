@@ -235,6 +235,9 @@ var app = {
 		if (event.alert){
 			 // Display the alert message in an alert.
 			alert(event.alert);
+
+			// Reload the items list.
+			refreshTodoItems();			
 		}
 
 		// // Other possible notification stuff we don't use in this sample.
