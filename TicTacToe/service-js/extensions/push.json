@@ -1,0 +1,7 @@
+{
+  "routes": {
+    "*": {
+      "permission": "user"
+    }
+  }
+}
