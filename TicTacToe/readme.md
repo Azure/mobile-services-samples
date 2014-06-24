@@ -6,13 +6,63 @@ There are two versions of the mobile services backend, the JavaScript backend (i
 
 # Installation and Setup
 
+## Create the JavaScript backend Mobile Service
+
+1. Extract the files from TicTacToe.zip and then open the TicTacToe solution.
+
+
+2. Download a subscription file for your Azure subscription. If you have Azure SDK installed, you can download this by following these steps:
+
+	1. In Server Explorer, open the shortcut menu for the **Azure** node, and then choose **Manage Subscriptions**.
+
+
+	2. On the **Certificates** tab, choose the **Import** button, and then choose the **Download subscription file** link.
+
+
+	3. If prompted, sign in with the credentials that you use to access your Azure subscription.
+
+
+	4. Confirm the download, and note the file location.
+
+
+	5. In Visual Studio, choose the **Cancel** button, and then choose the **Close** button.
+
+
+3. If Windows PowerShell scripts aren't enabled, follow these steps.
+
+	1. In a Visual Studio Command Prompt window with Administrator permissions, enter powershell.
+
+
+	2. In the Windows PowerShell command prompt that appears, enter Set-ExecutionPolicy remotesigned.
+
+
+4. Change directories to the TicTacToe\TicTacToeCSharp\Script subdirectory of the directory where you installed the sample, and then run one of the following commands. Specify a new value for the mobile service that you're creating.  (You'll need a unique name for your copy of the mobile service, such as TicTacToeYourName.)
+
+Use this command line if you want to create a database and use the first subscription in the subscription file. Specify new values for the ID and password of the administrator for the database that you're creating.
+
+	powershell -File "tictactoesetup.ps1" --subscriptionFile "YourSubscriptionFile" --serviceName "YourMobileServiceName" --serverAdmin "DatabaseAdminUserId" --serverPassword "DatabaseAdminPassword"
+
+The script might take some time to run, as it creates a mobile service and all the tables and server-side scripts that the sample needs.
+
+Add one or both optional parameters if you want to use an existing SQL Database in Azure or if you have multiple subscriptions and you don't want to use the first one in the list. Specify the ID and password of the administrator for the existing database.
+ 
+	powershell -File "tictactoesetup.ps1" --subscriptionFile "YourSubscriptionFile" --subscriptionId "YourSubscriptionId" --serviceName "YourMobileServiceName" --serverName "YourSQLServerInAzure" --databaseName "YourSQLDatabaseName" --serverAdmin "YourDatabaseAdminUserId" --serverPassword "YourDatabaseAdminPassword" 
+
+If you've never created a mobile service with your Azure subscription before, the script may fail with an error that your subscription isn't registered to use mobile services. If this error appears, go to the Azure management portal, create a mobile service, and then re-run these steps. You can then create mobile services by using the Azure CLI. 
+
+5. In Internet Explorer, open the Azure management portal, and then choose your mobile service.
+ 
+6. On the **Data** tab, verify that the tables were created: games, moves, userfriends, and users.  
+
+
 ## Setting up Permissions and Authentication
+
 1. In Solution Explorer, open the shortcut menu for the TicTacToeCSharp project, and then choose **Associate App With the Store**.
 2. Specify an app name that isn't already in use. Visual Studio updates the Package.appxmanifest file and adds a store key file with the .pfx extension to your project. 
 3. Navigate to the **My Applications** page in the [Live Connect Developer Center](http://go.microsoft.com/fwlink/p/?LinkId=262039), log on with your Microsoft account, if required, then click the app that you just registered with the Store. 
 4. Click **Edit Settings**, then click **API settings**, and in the **Redirect domain** text box, enter the URL of the mobile service, http://YourMobileServiceName.azure-mobile.net/signin-microsoft, then click **Save**. 
 5. Make a note of the values of Client ID, Client Secret, and Package SID, which you'll need in the next steps. 
-6. In the Windows Azure management portal, click the **Identity** tab and under **Microsoft Account** enter the Client ID and Client Secret values obtained from your identity provider, then click Save. 
+6. In the Azure management portal, click the **Identity** tab and under **Microsoft Account** enter the Client ID and Client Secret values obtained from your identity provider, then click Save. 
 7. Click the **Push** tab, and enter the Package SID value (the Client Secret is already there), then click Save. Now, you are ready to build and run the sample. 
 8. On the Dashboard tab, choose the **Manage Keys** button. 
 9. Choose the **Copy** button to copy the application key for your mobile service to the clipboard. 
