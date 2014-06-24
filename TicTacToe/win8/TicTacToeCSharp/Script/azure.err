@@ -1,0 +1,13 @@
+Tue Jun 17 2014 16:30:20 GMT-0700 (Pacific Daylight Time):
+[Error: Service name must be between 2 and 48 characters.]
+Error: Service name must be between 2 and 48 characters.
+    at ___ (C:\Program Files (x86)\Microsoft SDKs\Windows Azure\CLI\lib\commands\asm\mobile.js:1450:1074)
+    at ___ (C:\Program Files (x86)\Microsoft SDKs\Windows Azure\CLI\node_modules\streamline\lib\callbacks\runtime.js:85:13)
+    at C:\Program Files (x86)\Microsoft SDKs\Windows Azure\CLI\node_modules\streamline\lib\callbacks\runtime.js:77:14
+    at Object.__g.trampoline.flush (C:\Program Files (x86)\Microsoft SDKs\Windows Azure\CLI\node_modules\kuduscript\node_modules\streamline\lib\callbacks\runtime.js:20:29)
+    at ___ (C:\Program Files (x86)\Microsoft SDKs\Windows Azure\CLI\node_modules\streamline\lib\callbacks\runtime.js:93:61)
+    at C:\Program Files (x86)\Microsoft SDKs\Windows Azure\CLI\lib\util\channel.js:140:24
+    at parseContent (C:\Program Files (x86)\Microsoft SDKs\Windows Azure\CLI\lib\util\channel.js:161:14)
+    at IncomingMessage.<anonymous> (C:\Program Files (x86)\Microsoft SDKs\Windows Azure\CLI\lib\util\channel.js:128:7)
+    at IncomingMessage.EventEmitter.emit (events.js:117:20)
+    at _stream_readable.js:920:16
