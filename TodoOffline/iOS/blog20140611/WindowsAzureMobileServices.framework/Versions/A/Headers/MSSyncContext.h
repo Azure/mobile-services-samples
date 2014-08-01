@@ -26,9 +26,9 @@ typedef void (^MSSyncPushCompletionBlock)(void);
 /// @{
 
 @optional
-/// Called once for each entry on the queue, allowing for any adjustments to the item to the server, or custom handling
-/// of the server's response (such as conflict handling). Errors returned from this function will be collected and sent
-/// as a group to the [syncContext: onPushCompleteWithError: completion:] function.
+/// Called once for each entry on the queue, allowing for any adjustments to the item before it is sent to the server,
+/// or custom handling of the server's response (such as conflict handling). Errors returned from this function will
+/// be collected and sent as a group to the [syncContext: onPushCompleteWithError: completion:] function.
 -(void) tableOperation:(MSTableOperation *)operation onComplete:(MSSyncItemBlock)completion;
 
 /// Called when all operations that were triggered due to a [pushWithCompletion:] call have completed. If not provided, any
@@ -71,6 +71,17 @@ typedef void (^MSSyncPushCompletionBlock)(void);
 
 /// Should remove all entries from the specified table in the local store
 -(BOOL) deleteUsingQuery:(MSQuery *)query orError:(NSError **)error;
+
+/// @}
+
+/// @name Controlling system properties in local tables
+/// @{
+
+@optional
+
+/// Returns the MSSystemProperties that should be stored locally (example: __createdAt, __updatedAt)
+/// If not implemented, the default of __version will be asked for from the server
+-(NSUInteger) systemPropetiesForTable:(NSString *)table;
 
 /// @}
 

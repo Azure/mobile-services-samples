@@ -15,6 +15,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WindowsAzureMobileServices/WindowsAzureMobileServices.h>
 
 @interface QSTodoListViewController : UITableViewController <MSSyncContextDelegate>
 
