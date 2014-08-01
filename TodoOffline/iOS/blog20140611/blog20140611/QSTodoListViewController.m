@@ -14,11 +14,11 @@
 // limitations under the License.
 //
 
-#import <WindowsAzureMobileServices/WindowsAzureMobileServices.h>
 #import "QSTodoListViewController.h"
 #import "QSTodoService.h"
 #import "QSTodoItemViewController.h"
 #import "QSUIAlertViewWithBlock.h"
+#import <WindowsAzureMobileServices/WindowsAzureMobileServices.h>
 
 #pragma mark * Private Interface
 
@@ -67,6 +67,8 @@
         }
     };
     
+    [[self navigationItem] setTitle:@"Azure Mobile Services"];
+
     // add the refresh control to the table (iOS6+ only)
     [self addRefreshControl];
     

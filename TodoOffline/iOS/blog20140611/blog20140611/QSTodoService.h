@@ -14,9 +14,8 @@
 // limitations under the License.
 //
 
-#import <WindowsAzureMobileServices/WindowsAzureMobileServices.h>
 #import <Foundation/Foundation.h>
-
+#import <WindowsAzureMobileServices/WindowsAzureMobileServices.h>
 
 #pragma mark * Block Definitions
 

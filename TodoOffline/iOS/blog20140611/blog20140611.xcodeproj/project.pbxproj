@@ -25,10 +25,10 @@
 		03D1006716ED41D20005A1A9 /* connected114.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D1006316ED41D20005A1A9 /* connected114.png */; };
 		03D1006816ED41D20005A1A9 /* connected144.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D1006416ED41D20005A1A9 /* connected144.png */; };
 		8799117F194693FC006E1D57 /* QSTodoItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8799117E194693FC006E1D57 /* QSTodoItemViewController.m */; };
-		879911811946BC16006E1D57 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879911801946BC16006E1D57 /* WindowsAzureMobileServices.framework */; };
 		879911831946BFB9006E1D57 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879911821946BFB9006E1D57 /* CoreData.framework */; };
 		879911861946C67B006E1D57 /* QSTodoDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 879911841946C67B006E1D57 /* QSTodoDataModel.xcdatamodeld */; };
 		879911891946E366006E1D57 /* QSUIAlertViewWithBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 879911881946E366006E1D57 /* QSUIAlertViewWithBlock.m */; };
+		A2A7FF73198C3B2A00B7A2F1 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A7FF72198C3B2A00B7A2F1 /* WindowsAzureMobileServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,11 +57,11 @@
 		03D1006416ED41D20005A1A9 /* connected144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connected144.png; sourceTree = "<group>"; };
 		8799117D194693FC006E1D57 /* QSTodoItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSTodoItemViewController.h; path = ../QSTodoItemViewController.h; sourceTree = "<group>"; };
 		8799117E194693FC006E1D57 /* QSTodoItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSTodoItemViewController.m; path = ../QSTodoItemViewController.m; sourceTree = "<group>"; };
-		879911801946BC16006E1D57 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
 		879911821946BFB9006E1D57 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		879911851946C67B006E1D57 /* QSTodoDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QSTodoDataModel.xcdatamodel; sourceTree = "<group>"; };
 		879911871946E366006E1D57 /* QSUIAlertViewWithBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSUIAlertViewWithBlock.h; path = ../QSUIAlertViewWithBlock.h; sourceTree = "<group>"; };
 		879911881946E366006E1D57 /* QSUIAlertViewWithBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSUIAlertViewWithBlock.m; path = ../QSUIAlertViewWithBlock.m; sourceTree = "<group>"; };
+		A2A7FF72198C3B2A00B7A2F1 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,8 +72,8 @@
 				879911831946BFB9006E1D57 /* CoreData.framework in Frameworks */,
 				03D1001E16EC579A0005A1A9 /* UIKit.framework in Frameworks */,
 				03D1002016EC579A0005A1A9 /* Foundation.framework in Frameworks */,
-				879911811946BC16006E1D57 /* WindowsAzureMobileServices.framework in Frameworks */,
 				03D1002216EC579A0005A1A9 /* CoreGraphics.framework in Frameworks */,
+				A2A7FF73198C3B2A00B7A2F1 /* WindowsAzureMobileServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,8 +101,8 @@
 		03D1001C16EC579A0005A1A9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A2A7FF72198C3B2A00B7A2F1 /* WindowsAzureMobileServices.framework */,
 				879911821946BFB9006E1D57 /* CoreData.framework */,
-				879911801946BC16006E1D57 /* WindowsAzureMobileServices.framework */,
 				03D1001D16EC579A0005A1A9 /* UIKit.framework */,
 				03D1001F16EC579A0005A1A9 /* Foundation.framework */,
 				03D1002116EC579A0005A1A9 /* CoreGraphics.framework */,
@@ -269,7 +269,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -294,7 +294,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
