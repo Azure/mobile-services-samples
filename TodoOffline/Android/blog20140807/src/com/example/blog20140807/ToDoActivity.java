@@ -7,10 +7,13 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -53,6 +56,13 @@ public class ToDoActivity extends Activity {
 	private ProgressBar mProgressBar;
 
 	/**
+	 * The position of the item which is being edited
+	 */
+	private int mEditedItemPosition = -1;
+
+	private static final int EDIT_ACTIVITY_REQUEST_CODE = 1234;
+
+	/**
 	 * Initializes the activity
 	 */
 	@Override
@@ -80,9 +90,23 @@ public class ToDoActivity extends Activity {
 
 			// Create an adapter to bind the items with the view
 			mAdapter = new ToDoItemAdapter(this, R.layout.row_list_to_do);
-			ListView listViewToDo = (ListView) findViewById(R.id.listViewToDo);
+			final ListView listViewToDo = (ListView) findViewById(R.id.listViewToDo);
 			listViewToDo.setAdapter(mAdapter);
-		
+
+			listViewToDo.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					Intent i = new Intent(getApplicationContext(), EditToDoActivity.class);
+					mEditedItemPosition = position;
+					ToDoItem item = mAdapter.getItem(position);
+					i.putExtra(EditToDoActivity.ITEM_COMPLETE_KEY, item.isComplete());
+					i.putExtra(EditToDoActivity.ITEM_TEXT_KEY, item.getText());
+					startActivityForResult(i, EDIT_ACTIVITY_REQUEST_CODE);
+				}
+			});
+
 			// Load the items from the Mobile Service
 			refreshItemsFromTable();
 
@@ -90,7 +114,22 @@ public class ToDoActivity extends Activity {
 			createAndShowDialog(new Exception("There was an error creating the Mobile Service. Verify the URL"), "Error");
 		}
 	}
-	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if (requestCode == EDIT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && mEditedItemPosition >= 0) {
+			ToDoItem item = mAdapter.getItem(mEditedItemPosition);
+			String text = intent.getExtras().getString(EditToDoActivity.ITEM_TEXT_KEY);
+			boolean complete = intent.getExtras().getBoolean(EditToDoActivity.ITEM_COMPLETE_KEY);
+
+			if (!item.getText().equals(text) || item.isComplete() != complete) {
+				item.setText(text);
+				item.setComplete(complete);
+				updateItem(item);
+			}
+		}
+	}
+
 	/**
 	 * Initializes the activity menu
 	 */
@@ -113,18 +152,15 @@ public class ToDoActivity extends Activity {
 	}
 
 	/**
-	 * Mark an item as completed
+	 * Updates an item as completed
 	 * 
 	 * @param item
 	 *            The item to mark
 	 */
-	public void checkItem(ToDoItem item) {
+	private void updateItem(ToDoItem item) {
 		if (mClient == null) {
 			return;
 		}
-
-		// Set the item as completed and update it in the table
-		item.setComplete(true);
 		
 		mToDoTable.update(item, new TableOperationCallback<ToDoItem>() {
 
@@ -133,6 +169,8 @@ public class ToDoActivity extends Activity {
 					if (entity.isComplete()) {
 						mAdapter.remove(entity);
 					}
+
+					refreshItemsFromTable();
 				} else {
 					createAndShowDialog(exception, "Error");
 				}
