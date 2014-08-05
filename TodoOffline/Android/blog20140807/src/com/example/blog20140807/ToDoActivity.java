@@ -1,6 +1,8 @@
 package com.example.blog20140807;
 
 import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,7 +27,12 @@ import com.microsoft.windowsazure.mobileservices.http.NextServiceFilterCallback;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilter;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilterRequest;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
-import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
+import com.microsoft.windowsazure.mobileservices.table.query.Query;
+import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncContext;
+import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncTable;
+import com.microsoft.windowsazure.mobileservices.table.sync.localstore.ColumnDataType;
+import com.microsoft.windowsazure.mobileservices.table.sync.localstore.SQLiteLocalStore;
+import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.SimpleSyncHandler;
 
 public class ToDoActivity extends Activity {
 
@@ -37,7 +44,12 @@ public class ToDoActivity extends Activity {
 	/**
 	 * Mobile Service Table used to access data
 	 */
-	private MobileServiceTable<ToDoItem> mToDoTable;
+	private MobileServiceSyncTable<ToDoItem> mToDoTable;
+
+	/**
+	 * The query used to pull data from the remote server
+	 */
+	private Query mPullQuery;
 
 	/**
 	 * Adapter to sync the items list with the view
@@ -82,8 +94,23 @@ public class ToDoActivity extends Activity {
 					"VQdzkFyLODXjByoRgXuMJdIxoZupwA43",
 					this).withFilter(new ProgressFilter());
 
+			// Saves the query which will be used for pulling data
+			mPullQuery = mClient.getTable(ToDoItem.class).where().field("complete").eq(false);
+
+			SQLiteLocalStore localStore = new SQLiteLocalStore(mClient.getContext(), "ToDoItem", null, 1);
+			SimpleSyncHandler handler = new SimpleSyncHandler();
+			MobileServiceSyncContext syncContext = mClient.getSyncContext();
+
+			Map<String, ColumnDataType> tableDefinition = new HashMap<String, ColumnDataType>();
+			tableDefinition.put("id", ColumnDataType.String);
+			tableDefinition.put("text", ColumnDataType.String);
+			tableDefinition.put("complete", ColumnDataType.Boolean);
+
+			localStore.defineTable("ToDoItem", tableDefinition);
+			syncContext.initialize(localStore, handler).get();
+
 			// Get the Mobile Service Table instance to use
-			mToDoTable = mClient.getTable(ToDoItem.class);
+			mToDoTable = mClient.getSyncTable(ToDoItem.class);
 
 			mTextNewToDo = (EditText) findViewById(R.id.textNewToDo);
 
@@ -111,6 +138,12 @@ public class ToDoActivity extends Activity {
 
 		} catch (MalformedURLException e) {
 			createAndShowDialog(new Exception("There was an error creating the Mobile Service. Verify the URL"), "Error");
+		} catch (Exception e) {
+			Throwable t = e;
+			while (t.getCause() != null) {
+				t = t.getCause();
+			}
+			createAndShowDialog(new Exception("Unknown error: " + t.getMessage()), "Error");
 		}
 	}
 
@@ -144,6 +177,21 @@ public class ToDoActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.menu_refresh) {
+			new AsyncTask<Void, Void, Void>() {
+
+				@Override
+				protected Void doInBackground(Void... params) {
+					try {
+						mClient.getSyncContext().push().get();
+						mToDoTable.pull(mPullQuery).get();
+						refreshItemsFromTable();
+					} catch (Exception exception) {
+						createAndShowDialog(exception, "Error");
+					}
+					return null;
+				}
+
+			}.execute();
 			refreshItemsFromTable();
 		}
 		
@@ -166,11 +214,11 @@ public class ToDoActivity extends Activity {
 			@Override
 			protected Void doInBackground(Void... params) {
 				try {
-					final ToDoItem entity = mToDoTable.update(item).get();
+					mToDoTable.update(item).get();
 					runOnUiThread(new Runnable() {
 						public void run() {
-							if (entity.isComplete()) {
-								mAdapter.remove(entity);
+							if (item.isComplete()) {
+								mAdapter.remove(item);
 							}
 							refreshItemsFromTable();
 						}
@@ -236,7 +284,7 @@ public class ToDoActivity extends Activity {
 			@Override
 			protected Void doInBackground(Void... params) {
 				try {
-					final MobileServiceList<ToDoItem> result = mToDoTable.where().field("complete").eq(false).execute().get();
+					final MobileServiceList<ToDoItem> result = mToDoTable.read(mPullQuery).get();
 					runOnUiThread(new Runnable() {
 
 						@Override
