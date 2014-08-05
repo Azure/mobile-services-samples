@@ -24,6 +24,12 @@ public class ToDoItem {
 	private boolean mComplete;
 
 	/**
+	 * The version of the item in the database
+	 */
+	@com.google.gson.annotations.SerializedName("__version")
+	private String mVersion;
+
+	/**
 	 * ToDoItem constructor
 	 */
 	public ToDoItem() {
@@ -99,5 +105,23 @@ public class ToDoItem {
 	@Override
 	public boolean equals(Object o) {
 		return o instanceof ToDoItem && ((ToDoItem) o).mId == mId;
+	}
+
+	/**
+	 * Gets the version of the item in the database
+	 *
+	 * @return the version of the item in the database
+	 */
+	public String getVersion() {
+		return mVersion;
+	}
+
+	/**
+	 * Sets the version of the item in the database
+	 *
+	 * @param mVersion the version of the item in the database
+	 */
+	public void setVersion(String mVersion) {
+		this.mVersion = mVersion;
 	}
 }
