@@ -21,17 +21,24 @@ import android.widget.ProgressBar;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.gson.JsonObject;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceList;
 import com.microsoft.windowsazure.mobileservices.http.NextServiceFilterCallback;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilter;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilterRequest;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.table.MobileServicePreconditionFailedExceptionBase;
 import com.microsoft.windowsazure.mobileservices.table.query.Query;
 import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncContext;
 import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncTable;
 import com.microsoft.windowsazure.mobileservices.table.sync.localstore.ColumnDataType;
 import com.microsoft.windowsazure.mobileservices.table.sync.localstore.SQLiteLocalStore;
+import com.microsoft.windowsazure.mobileservices.table.sync.operations.RemoteTableOperationProcessor;
+import com.microsoft.windowsazure.mobileservices.table.sync.operations.TableOperation;
+import com.microsoft.windowsazure.mobileservices.table.sync.push.MobileServicePushCompletionResult;
+import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.MobileServiceSyncHandler;
+import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.MobileServiceSyncHandlerException;
 import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.SimpleSyncHandler;
 
 public class ToDoActivity extends Activity {
@@ -98,7 +105,7 @@ public class ToDoActivity extends Activity {
 			mPullQuery = mClient.getTable(ToDoItem.class).where().field("complete").eq(false);
 
 			SQLiteLocalStore localStore = new SQLiteLocalStore(mClient.getContext(), "ToDoItem", null, 1);
-			SimpleSyncHandler handler = new SimpleSyncHandler();
+			MobileServiceSyncHandler handler = new ConflictResolvingSyncHandler();
 			MobileServiceSyncContext syncContext = mClient.getSyncContext();
 
 			Map<String, ColumnDataType> tableDefinition = new HashMap<String, ColumnDataType>();
@@ -376,6 +383,57 @@ public class ToDoActivity extends Activity {
 			});
 
 			return result;
+		}
+	}
+
+	private class ConflictResolvingSyncHandler implements MobileServiceSyncHandler {
+
+		@Override
+		public JsonObject executeTableOperation(
+				RemoteTableOperationProcessor processor, TableOperation operation)
+				throws MobileServiceSyncHandlerException {
+
+			MobileServicePreconditionFailedExceptionBase ex = null;
+			JsonObject result = null;
+			do {
+				ex = null;
+				try {
+					result = operation.accept(processor);
+				} catch (MobileServicePreconditionFailedExceptionBase e) {
+					ex = e;
+				} catch (Throwable e) {
+					ex = (MobileServicePreconditionFailedExceptionBase) e.getCause();
+				}
+
+				if (ex != null) {
+					// A conflict was detected; let's force the client to "win"
+					JsonObject serverItem = ex.getValue();
+					JsonObject clientItem = processor.getItem(); 
+
+					if (serverItem == null) {
+						// Item not returned in the exception, retrieving it from the server
+						try {
+							serverItem = mClient.getTable(operation.getTableName()).lookUp(operation.getItemId()).get();
+						} catch (Exception e) {
+							createAndShowDialog(e, "Error");
+						}
+					}
+
+					if (serverItem != null) {
+						String serverVersion = serverItem.get("__version").getAsString();
+						clientItem.remove("__version");
+						clientItem.addProperty("__version", serverVersion);
+						processor.setItem(clientItem);
+					}
+				}
+			} while (ex != null);
+
+			return result;
+		}
+
+		@Override
+		public void onPushComplete(MobileServicePushCompletionResult result)
+				throws MobileServiceSyncHandlerException {
 		}
 	}
 }
