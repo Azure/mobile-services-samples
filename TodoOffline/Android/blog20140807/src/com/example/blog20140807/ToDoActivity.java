@@ -1,11 +1,11 @@
 package com.example.blog20140807;
 
 import java.net.MalformedURLException;
-import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,15 +20,13 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import com.microsoft.windowsazure.mobileservices.MobileServiceList;
 import com.microsoft.windowsazure.mobileservices.http.NextServiceFilterCallback;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilter;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilterRequest;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
 import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
-import com.microsoft.windowsazure.mobileservices.table.TableOperationCallback;
-import com.microsoft.windowsazure.mobileservices.table.TableQueryCallback;
 
-@SuppressWarnings("deprecation")
 public class ToDoActivity extends Activity {
 
 	/**
@@ -158,26 +156,31 @@ public class ToDoActivity extends Activity {
 	 * @param item
 	 *            The item to mark
 	 */
-	private void updateItem(ToDoItem item) {
+	private void updateItem(final ToDoItem item) {
 		if (mClient == null) {
 			return;
 		}
-		
-		mToDoTable.update(item, new TableOperationCallback<ToDoItem>() {
 
-			public void onCompleted(ToDoItem entity, Exception exception, ServiceFilterResponse response) {
-				if (exception == null) {
-					if (entity.isComplete()) {
-						mAdapter.remove(entity);
-					}
+		new AsyncTask<Void, Void, Void>() {
 
-					refreshItemsFromTable();
-				} else {
+			@Override
+			protected Void doInBackground(Void... params) {
+				try {
+					final ToDoItem entity = mToDoTable.update(item).get();
+					runOnUiThread(new Runnable() {
+						public void run() {
+							if (entity.isComplete()) {
+								mAdapter.remove(entity);
+							}
+							refreshItemsFromTable();
+						}
+					});
+				} catch (Exception exception) {
 					createAndShowDialog(exception, "Error");
 				}
+				return null;
 			}
-
-		});
+		}.execute();
 	}
 
 	/**
@@ -192,26 +195,31 @@ public class ToDoActivity extends Activity {
 		}
 
 		// Create a new item
-		ToDoItem item = new ToDoItem();
+		final ToDoItem item = new ToDoItem();
 
 		item.setText(mTextNewToDo.getText().toString());
 		item.setComplete(false);
-		
-		// Insert the new item
-		mToDoTable.insert(item, new TableOperationCallback<ToDoItem>() {
 
-			public void onCompleted(ToDoItem entity, Exception exception, ServiceFilterResponse response) {
-				
-				if (exception == null) {
+		// Insert the new item
+		new AsyncTask<Void, Void, Void>() {
+
+			@Override
+			protected Void doInBackground(Void... params) {
+				try {
+					final ToDoItem entity = mToDoTable.insert(item).get();
 					if (!entity.isComplete()) {
-						mAdapter.add(entity);
+						runOnUiThread(new Runnable() {
+							public void run() {
+								mAdapter.add(entity);
+							}
+						});
 					}
-				} else {
+				} catch (Exception exception) {
 					createAndShowDialog(exception, "Error");
 				}
-
+				return null;
 			}
-		});
+		}.execute();
 
 		mTextNewToDo.setText("");
 	}
@@ -223,21 +231,29 @@ public class ToDoActivity extends Activity {
 
 		// Get the items that weren't marked as completed and add them in the
 		// adapter
-		mToDoTable.where().field("complete").eq(false).execute(new TableQueryCallback<ToDoItem>() {
+		new AsyncTask<Void, Void, Void>() {
 
-			public void onCompleted(List<ToDoItem> result, int count, Exception exception, ServiceFilterResponse response) {
-				if (exception == null) {
-					mAdapter.clear();
+			@Override
+			protected Void doInBackground(Void... params) {
+				try {
+					final MobileServiceList<ToDoItem> result = mToDoTable.where().field("complete").eq(false).execute().get();
+					runOnUiThread(new Runnable() {
 
-					for (ToDoItem item : result) {
-						mAdapter.add(item);
-					}
+						@Override
+						public void run() {
+							mAdapter.clear();
 
-				} else {
+							for (ToDoItem item : result) {
+								mAdapter.add(item);
+							}
+						}
+					});
+				} catch (Exception exception) {
 					createAndShowDialog(exception, "Error");
 				}
+				return null;
 			}
-		});
+		}.execute();
 	}
 
 	/**
