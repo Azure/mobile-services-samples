@@ -1,7 +1,5 @@
 package com.example.blog20140807;
 
-import static com.microsoft.windowsazure.mobileservices.MobileServiceQueryOperations.*;
-
 import java.net.MalformedURLException;
 import java.util.List;
 
@@ -18,16 +16,19 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
-import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
-import com.microsoft.windowsazure.mobileservices.NextServiceFilterCallback;
-import com.microsoft.windowsazure.mobileservices.ServiceFilter;
-import com.microsoft.windowsazure.mobileservices.ServiceFilterRequest;
-import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
-import com.microsoft.windowsazure.mobileservices.ServiceFilterResponseCallback;
-import com.microsoft.windowsazure.mobileservices.TableOperationCallback;
-import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
+import com.microsoft.windowsazure.mobileservices.http.NextServiceFilterCallback;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilter;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterRequest;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
+import com.microsoft.windowsazure.mobileservices.table.TableOperationCallback;
+import com.microsoft.windowsazure.mobileservices.table.TableQueryCallback;
 
+@SuppressWarnings("deprecation")
 public class ToDoActivity extends Activity {
 
 	/**
@@ -222,7 +223,7 @@ public class ToDoActivity extends Activity {
 
 		// Get the items that weren't marked as completed and add them in the
 		// adapter
-		mToDoTable.where().field("complete").eq(val(false)).execute(new TableQueryCallback<ToDoItem>() {
+		mToDoTable.where().field("complete").eq(false).execute(new TableQueryCallback<ToDoItem>() {
 
 			public void onCompleted(List<ToDoItem> result, int count, Exception exception, ServiceFilterResponse response) {
 				if (exception == null) {
@@ -272,10 +273,11 @@ public class ToDoActivity extends Activity {
 	}
 	
 	private class ProgressFilter implements ServiceFilter {
-		
+
 		@Override
-		public void handleRequest(ServiceFilterRequest request, NextServiceFilterCallback nextServiceFilterCallback,
-				final ServiceFilterResponseCallback responseCallback) {
+		public ListenableFuture<ServiceFilterResponse> handleRequest(
+				ServiceFilterRequest request, NextServiceFilterCallback next) {
+
 			runOnUiThread(new Runnable() {
 
 				@Override
@@ -283,11 +285,21 @@ public class ToDoActivity extends Activity {
 					if (mProgressBar != null) mProgressBar.setVisibility(ProgressBar.VISIBLE);
 				}
 			});
-			
-			nextServiceFilterCallback.onNext(request, new ServiceFilterResponseCallback() {
+
+			ListenableFuture<ServiceFilterResponse> result = next.onNext(request);
+
+			Futures.addCallback(result, new FutureCallback<ServiceFilterResponse>() {
+				@Override
+				public void onFailure(Throwable exc) {
+					dismissProgressBar();
+				}
 				
 				@Override
-				public void onResponse(ServiceFilterResponse response, Exception exception) {
+				public void onSuccess(ServiceFilterResponse resp) {
+					dismissProgressBar();
+				}
+
+				private void dismissProgressBar() {
 					runOnUiThread(new Runnable() {
 
 						@Override
@@ -295,10 +307,10 @@ public class ToDoActivity extends Activity {
 							if (mProgressBar != null) mProgressBar.setVisibility(ProgressBar.GONE);
 						}
 					});
-					
-					if (responseCallback != null)  responseCallback.onResponse(response, exception);
 				}
 			});
+
+			return result;
 		}
 	}
 }
