@@ -39,7 +39,6 @@ import com.microsoft.windowsazure.mobileservices.table.sync.operations.TableOper
 import com.microsoft.windowsazure.mobileservices.table.sync.push.MobileServicePushCompletionResult;
 import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.MobileServiceSyncHandler;
 import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.MobileServiceSyncHandlerException;
-import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.SimpleSyncHandler;
 
 public class ToDoActivity extends Activity {
 
@@ -200,7 +199,6 @@ public class ToDoActivity extends Activity {
 				}
 
 			}.execute();
-			refreshItemsFromTable();
 		}
 		
 		return true;
@@ -395,38 +393,32 @@ public class ToDoActivity extends Activity {
 
 			MobileServicePreconditionFailedExceptionBase ex = null;
 			JsonObject result = null;
-			do {
-				ex = null;
-				try {
-					result = operation.accept(processor);
-				} catch (MobileServicePreconditionFailedExceptionBase e) {
-					ex = e;
-				} catch (Throwable e) {
-					ex = (MobileServicePreconditionFailedExceptionBase) e.getCause();
-				}
+			try {
+				result = operation.accept(processor);
+			} catch (MobileServicePreconditionFailedExceptionBase e) {
+				ex = e;
+			} catch (Throwable e) {
+				ex = (MobileServicePreconditionFailedExceptionBase) e.getCause();
+			}
 
-				if (ex != null) {
-					// A conflict was detected; let's force the client to "win"
-					JsonObject serverItem = ex.getValue();
-					JsonObject clientItem = processor.getItem(); 
+			if (ex != null) {
+				// A conflict was detected; let's force the server to "win"
+				// by discarding the client version of the item
+				// Other policies could be used, such as prompt the user for
+				// which version to maintain.
+				JsonObject serverItem = ex.getValue();
 
-					if (serverItem == null) {
-						// Item not returned in the exception, retrieving it from the server
-						try {
-							serverItem = mClient.getTable(operation.getTableName()).lookUp(operation.getItemId()).get();
-						} catch (Exception e) {
-							createAndShowDialog(e, "Error");
-						}
-					}
-
-					if (serverItem != null) {
-						String serverVersion = serverItem.get("__version").getAsString();
-						clientItem.remove("__version");
-						clientItem.addProperty("__version", serverVersion);
-						processor.setItem(clientItem);
+				if (serverItem == null) {
+					// Item not returned in the exception, retrieving it from the server
+					try {
+						serverItem = mClient.getTable(operation.getTableName()).lookUp(operation.getItemId()).get();
+					} catch (Exception e) {
+						throw new MobileServiceSyncHandlerException(e);
 					}
 				}
-			} while (ex != null);
+
+				result = serverItem;
+			}
 
 			return result;
 		}
