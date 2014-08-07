@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">blog20140807</string>
+    <string name="add_textbox_hint">Add a ToDo item</string>
+    <string name="add_button_text">Add</string>
+    <string name="mobile_services">Mobile Services </string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="checkbox_text">Item Text</string>
+    <string name="title_activity_edit_to_do">Edit a ToDo Item</string>
+    <string name="label_item_text">Item</string>
+    <string name="label_complete">Complete</string>
+    <string name="button_item_edit_done">Done</string>
+
+</resources>
