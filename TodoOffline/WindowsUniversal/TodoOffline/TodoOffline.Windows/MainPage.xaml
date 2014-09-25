@@ -53,22 +53,35 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0">
-                    <local:QuickStartTask Number="2" Title="Query, Update, and Synchronize Data" />
-                </StackPanel>
-
-                <Button Grid.Row="1" Margin="72,5,0,0" Name="ButtonSync" Click="ButtonSync_Click" Width="120">
+                    <local:QuickStartTask Number="2" Title="Query, Update, and Synchronize Data" 
+                            Description="Click refresh below to refresh TodoItems from your local offline database. Use the checkbox to complete and update TodoItems. Use the Pull and Push buttons to test synchronizing the local store with the server."/>
+                      
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Sync"/>
-                        <TextBlock Margin="5,7">Sync</TextBlock>
+                        <Button Margin="72,0,0,0" Height="44" Name="ButtonRefresh" Click="ButtonRefresh_Click">
+                            Refresh
+                        </Button>
+                        <Button Margin="10,0,0,0" Name="ButtonPull" Click="ButtonPull_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5">Pull</TextBlock>
+                                <SymbolIcon Symbol="Sync"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="10,0,0,0" Name="ButtonPush" Click="ButtonPush_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5">Push</TextBlock>
+                                <SymbolIcon Symbol="Upload"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
-                </Button>
+
+                </StackPanel>
 
                 <ScrollViewer Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0, 10">
                     <ListView Name="ListItems" Margin="62,10,0,0" SelectionMode="None">
                         <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox Name="CheckBoxComplete" IsChecked="{Binding Complete, Mode=TwoWay}" Checked="CheckBoxComplete_Checked" Content="" Margin="10,5" VerticalAlignment="Center"/>
+                                <CheckBox Name="CheckBoxComplete" IsChecked="{Binding Complete, Mode=TwoWay}" Click="CheckBox_Clicked" Content="" Margin="10,5" VerticalAlignment="Center"/>
                                 <TextBox Name="TodoItemText" Text="{Binding Text, Mode=TwoWay}" Margin="0,5" Width="550" IsReadOnly="False" BorderBrush="{x:Null}" KeyDown="TodoItem_KeyDown" LostFocus="TodoItemText_LostFocus"/>
                             </StackPanel>
                         </DataTemplate>

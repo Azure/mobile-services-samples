@@ -21,6 +21,12 @@ namespace TodoOffline
             this.InitializeComponent();
         }
 
+        private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            await RefreshTodoItems();
+        }
+
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.NavigationMode != NavigationMode.New) // only handle initial launch 
@@ -44,11 +50,78 @@ namespace TodoOffline
             items.Add(todoItem);
         }
 
-        private async Task Sync()
+        private async void ButtonPull_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            await App.MobileService.SyncContext.PushAsync();
-            await todoTable.PullAsync("todoItems", todoTable.CreateQuery());
+            string errorString = null;
+
+            // Prevent extra clicking while Pull is in progress
+            ButtonPull.Focus(FocusState.Programmatic);
+            ButtonPull.IsEnabled = false;
+
+            try
+            {
+                // We only want to pull completed todoitems. If someone made other changes,
+                // we don't care in this example scenario. We only want a sync of items that 
+                // are completed. Text changes before or after completion don't concern us.
+                await todoTable.PullAsync(todoTable.Where(todoItem => todoItem.Complete == true));
+
+                await RefreshTodoItems();
+            }
+            catch (MobileServicePushFailedException ex)
+            {
+                errorString = "Internal Push operation during pull request failed because of sync errors: " +
+                  ex.PushResult.Errors.Count + " errors, message: " + ex.Message;
+            }
+            catch (Exception ex)
+            {
+                errorString = "Pull failed: " + ex.Message +
+                  "\n\nIf you are still in an offline scenario, " +
+                  "you can try your Pull again when connected with your Mobile Serice.";
+            }
+
+            if (errorString != null)
+            {
+                MessageDialog d = new MessageDialog(errorString);
+                await d.ShowAsync();
+            }
+
+            ButtonPull.IsEnabled = true; 
         }
+
+
+        private async void ButtonPush_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            string errorString = null;
+
+            // Prevent extra clicking while Push is in progress
+            ButtonPush.Focus(FocusState.Programmatic);
+            ButtonPush.IsEnabled = false;
+
+            try
+            {
+                await App.MobileService.SyncContext.PushAsync();
+            }
+            catch (MobileServicePushFailedException ex)
+            {
+                errorString = "Push failed because of sync errors: " +
+                  ex.PushResult.Errors.Count + " errors, message: " + ex.Message;
+            }
+            catch (Exception ex)
+            {
+                errorString = "Push failed: " + ex.Message +
+                  "\n\nIf you are still in an offline scenario, " +
+                  "you can try your Push again when connected with your Mobile Serice.";
+            }
+
+            if (errorString != null)
+            {
+                MessageDialog d = new MessageDialog(errorString);
+                await d.ShowAsync();
+            }
+
+            ButtonPush.IsEnabled = true;
+        }
+
 
         private async Task RefreshTodoItems()
         {
@@ -58,7 +131,6 @@ namespace TodoOffline
                 // This code refreshes the entries in the list view by querying the TodoItems table.
                 // The query excludes completed TodoItems
                 items = await todoTable
-                    .Where(todoItem => todoItem.Complete == false)
                     .OrderBy(todoItem => todoItem.Text)
                     .ToCollectionAsync();
             }
@@ -78,21 +150,11 @@ namespace TodoOffline
             }
         }
 
-        private async Task UpdateCheckedTodoItem(TodoItem item)
+        private async Task UpdateTodoItem(TodoItem item)
         {
             // This code takes a freshly completed TodoItem and updates the database. When the MobileService 
             // responds, the item is removed from the list 
             await todoTable.UpdateAsync(item);
-            items.Remove(item);
-        }
-
-        private async void ButtonSync_Click(object sender, RoutedEventArgs e)
-        {
-            ButtonSave.Focus(FocusState.Programmatic);
-            ButtonSync.IsEnabled = false;
-            await Sync();
-            await RefreshTodoItems();
-            ButtonSync.IsEnabled = true;
         }
 
         private async void ButtonSave_Click(object sender, RoutedEventArgs e)
@@ -102,11 +164,11 @@ namespace TodoOffline
             await InsertTodoItem(todoItem);
         }
 
-        private async void CheckBoxComplete_Checked(object sender, RoutedEventArgs e)
+        private async void CheckBox_Clicked(object sender, RoutedEventArgs e)
         {
             CheckBox cb = (CheckBox)sender;
             TodoItem item = cb.DataContext as TodoItem;
-            await UpdateCheckedTodoItem(item);
+            await UpdateTodoItem(item);
         }
 
         #region Event Handlers
