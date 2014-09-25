@@ -63,8 +63,7 @@ namespace TodoOffline
                     var serverItem = serverValue.ToObject<TodoItem>();
 
 
-                    if (serverItem.Complete == localItem.Complete &&
-                        serverItem.Text == localItem.Text)
+                    if (serverItem.Complete == localItem.Complete && serverItem.Text == localItem.Text)
                     {
                         // items are same so we can ignore the conflict
                         return serverValue;
@@ -101,9 +100,13 @@ namespace TodoOffline
                 "How do you want to resolve this conflict?\n\n" + "Local item: \n" + localItem +
                 "\n\nServer item:\n" + serverValue.ToObject<TodoItem>(),
                 title: "Conflict between local and server versions");
+
             dialog.Commands.Add(new UICommand(LOCAL_VERSION));
             dialog.Commands.Add(new UICommand(SERVER_VERSION));
-            dialog.Commands.Add(new UICommand("Cancel"));
+
+            // Windows Phone not supporting 3 command MessageDialog
+            //dialog.Commands.Add(new UICommand("Cancel"));
+
             return await dialog.ShowAsync();
         }
     }

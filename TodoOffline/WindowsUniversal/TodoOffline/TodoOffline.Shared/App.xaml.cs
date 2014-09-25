@@ -28,6 +28,7 @@ namespace TodoOffline
             "xuAdWVDcLuCNfkTvOfaqzCCSBVHqoy96"
         );
 
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -70,6 +71,8 @@ namespace TodoOffline
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
+                rootFrame.PointerReleased += rootFrame_PointerReleased;
+
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: Load state from previously suspended application
@@ -88,6 +91,13 @@ namespace TodoOffline
             }
             // Ensure the current window is active
             Window.Current.Activate();
+        }
+
+        void rootFrame_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            // Right mouse button easy exit for testing
+            if (e.GetCurrentPoint(null).Properties.PointerUpdateKind == Windows.UI.Input.PointerUpdateKind.RightButtonReleased)
+                this.Exit();
         }
 
         /// <summary>
