@@ -23,9 +23,10 @@ namespace TodoOffline
     /// </summary>
     sealed partial class App : Application
     {
+
         public static MobileServiceClient MobileService = new MobileServiceClient(
-            "https://donnam-tutorials.azure-mobile.net/",
-            "xuAdWVDcLuCNfkTvOfaqzCCSBVHqoy96"
+            "https://your-mobile-service.azure-mobile.net/",
+            "Your AppKey"
         );
 
 
