@@ -61,9 +61,9 @@ namespace TodoOffline
             try
             {
                 // In this example scenario we are demonstrating incremental sync. We only want to 
-                // sync the uncomplete todoitems. If another client updated the text or any other 
+                // sync the incomplete todoitems. If another client updated the text or any other 
                 // field after completing the item, it doesn't concern us. So we pass a query to the 
-                // PullAsync() method to pull incomplete todoitems instead of the entire table.
+                // PullAsync() method to pull incomplete todoitems only instead of the entire table.
                 await todoTable.PullAsync(todoTable.Where(todoItem => todoItem.Complete == false));
 
                 await RefreshTodoItems();
