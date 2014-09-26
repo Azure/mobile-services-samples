@@ -8,3 +8,6 @@ TicTacToe is a Windows 8.1 app that uses a mobile services backend to enable mul
 
 ##[TodoOffline](./TodoOffline)
 TodoOffline is a version of the todoitem quickstart updated to make use of our offline SDK features. The sample shows how to set up a local database, sync data from the server, and push changes on demand back to the server. For more information, see the [sample readme file](./TodoOffline/iOS/Readme.md)
+
+##[todolist](./todolist)
+todolist is the latest version of the **todoitem** quickstart app, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform. For more information, see the [sample readme file](./todolist/android/Readme.md)
