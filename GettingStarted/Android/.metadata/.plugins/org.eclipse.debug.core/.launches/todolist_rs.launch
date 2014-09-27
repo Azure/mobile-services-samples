@@ -8,12 +8,10 @@
 <stringAttribute key="com.android.ide.eclipse.adt.target" value="AUTO"/>
 <booleanAttribute key="com.android.ide.eclipse.adt.wipedata" value="false"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/todolist_rs"/>
-<listEntry value="/todolist_rs/AndroidManifest.xml"/>
+<listEntry value="/todolist"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="4"/>
-<listEntry value="1"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="todolist_rs"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="todolist"/>
 </launchConfiguration>
