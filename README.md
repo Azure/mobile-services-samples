@@ -11,3 +11,6 @@ TodoOffline is a version of the todoitem quickstart updated to make use of our o
 
 ##[todolist](./todolist)
 todolist is the latest version of the **todoitem** quickstart app, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./todolist/android/Readme.md)
+
+##[GettingStartedWithData](./GettingStartedWithData)
+todolist is the latest version of the **todoitem** quickstart app, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./todolist/android/Readme.md)
