@@ -72,8 +72,12 @@
     // add the refresh control to the table (iOS6+ only)
     [self addRefreshControl];
     
-    // load the data
-    [self refresh];
+    // load the local data, but don't pull from server
+    [self.todoService refreshDataOnSuccess:^
+     {
+         [self.refreshControl endRefreshing];
+         [self.tableView reloadData];
+     }];
 }
 
 - (void) refresh
@@ -82,13 +86,12 @@
     if (self.useRefreshControl == YES) {
         [self.refreshControl beginRefreshing];
     }
-    [self.todoService refreshDataOnSuccess:^
-    {
-        if (self.useRefreshControl == YES) {
-            [self.refreshControl endRefreshing];
-        }
-        [self.tableView reloadData];
-    }];
+    
+    [self.todoService syncData:^
+     {
+         [self.refreshControl endRefreshing];
+         [self.tableView reloadData];
+     }];
 }
 
 #pragma mark * Storyboard methods

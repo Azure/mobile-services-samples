@@ -36,6 +36,8 @@ typedef void (^QSBusyUpdateBlock) (BOOL busy);
 
 + (QSTodoService *)defaultServiceWithDelegate:(id<MSSyncContextDelegate>)delegate;
 
+- (void)syncData:(QSCompletionBlock)completion;
+
 - (void)refreshDataOnSuccess:(QSCompletionBlock)completion;
 
 - (void)addItem:(NSDictionary *)item

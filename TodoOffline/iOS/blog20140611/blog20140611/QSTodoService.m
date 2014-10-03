@@ -55,8 +55,8 @@
     if (self)
     {
         // Initialize the Mobile Service client with your URL and key
-        MSClient *client = [MSClient clientWithApplicationURLString:@"https://blog20140611.azure-mobile.net/"
-                                                     applicationKey:@"UiMJHSlktoYGRxGtgkLfgGoZFjqcGS10"];
+        MSClient *client = [MSClient clientWithApplicationURLString:@"https://donnam-tutorials.azure-mobile.net/"
+                                                     applicationKey:@"xuAdWVDcLuCNfkTvOfaqzCCSBVHqoy96"];
 
         // Add a Mobile Service filter to enable the busy indicator
         self.client = [client clientWithFilter:self];
@@ -77,23 +77,19 @@
     return self;
 }
 
-- (void)refreshDataOnSuccess:(QSCompletionBlock)completion
+- (void)syncData:(QSCompletionBlock)completion
 {
-    // Create a predicate that finds items where complete is false
-    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"complete == NO"];
+    MSQuery *query = [self.syncTable query];
     
-    MSQuery *query = [self.syncTable queryWithPredicate:predicate];
-
-    // Pulls data from the remote server into the local table. We're only
-    // pulling the items which we want to display (complete == NO).
+    // Pulls data from the remote server into the local table.
+    // We're pulling all items and filtering in refreshDataOnSuccess
     [self.syncTable pullWithQuery:query completion:^(NSError *error) {
         [self logErrorIfNotNil:error];
-        
-        [self loadLocalDataWithCompletion:completion];
+        [self refreshDataOnSuccess:completion];
     }];
 }
 
-- (void) loadLocalDataWithCompletion:(QSCompletionBlock)completion
+- (void) refreshDataOnSuccess:(QSCompletionBlock)completion
 {
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"complete == NO"];
     MSQuery *query = [self.syncTable queryWithPredicate:predicate];
