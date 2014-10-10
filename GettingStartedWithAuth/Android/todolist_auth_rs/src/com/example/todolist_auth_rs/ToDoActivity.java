@@ -89,8 +89,9 @@ public class ToDoActivity extends Activity {
 			// Create the Mobile Service Client instance, using the provided
 			// Mobile Service URL and key
 			mClient = new MobileServiceClient(
-					"https://todolist-auth-rs.azure-mobile.net/",
-					"mxztdlfOaSyGoiknVWaKpvOWYKgruP88", this)	
+					"MobileServiceUrl",
+					"AppKey", 
+					this)	
 						.withFilter(new ProgressFilter())
             			.withFilter(new RefreshTokenCacheFilter());
 

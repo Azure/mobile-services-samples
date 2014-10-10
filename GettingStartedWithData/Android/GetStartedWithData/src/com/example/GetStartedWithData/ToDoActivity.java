@@ -61,8 +61,8 @@ public class ToDoActivity extends Activity {
 //			// Create the Mobile Service Client instance, using the provided
 //			// Mobile Service URL and key
 //			mClient = new MobileServiceClient(
-//					"https://gettingstartedwithdata-115-rs.azure-mobile.net/",
-//					"rcUVGNoktycJTKGPnlvjqPowDPoRSV14", 
+//					"MobileServiceUrl",
+//					"AppKey", 
 //					this).withFilter(new ProgressFilter());
 
 			// Get the Mobile Service Table instance to use
