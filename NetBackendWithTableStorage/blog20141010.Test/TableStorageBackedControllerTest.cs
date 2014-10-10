@@ -17,6 +17,7 @@ namespace blog20141010.Test
         const string AppKey = "bNmUnQlSgxtzFGFnDRUljypFfHbLLa98";
         const int ItemsInTable = 100;
         const int RowNumberOffset = 1000;
+        static int SumOfAges = 0;
         static HttpClient client;
 
         [ClassInitialize]
@@ -37,12 +38,14 @@ namespace blog20141010.Test
                 JObject body = new JObject();
                 body.Add("id", "partition,row" + (RowNumberOffset + i));
                 body.Add("name", GenerateName(rndGen));
-                body.Add("age", rndGen.Next(18, 80));
+                int age = rndGen.Next(18, 80);
+                body.Add("age", age);
                 HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, AppUrl + "tables/person");
                 req.Content = new StringContent(body.ToString(), Encoding.UTF8, "application/json");
                 using (var resp = await client.SendAsync(req))
                 {
                     resp.EnsureSuccessStatusCode();
+                    SumOfAges += age;
                 }
             }
         }
@@ -164,6 +167,31 @@ namespace blog20141010.Test
         }
 
         [TestMethod]
+        public async Task ClientSDK_TypedTables_CanRetrieveAllItems()
+        {
+            var client = new MobileServiceClient(AppUrl, AppKey);
+            var table = client.GetTable<Person>();
+            var items = await table.Take(ItemsInTable / 10).ToEnumerableAsync();
+            var itemCount = 0;
+            while (items != null)
+            {
+                itemCount += items.Count();
+                var queryResult = items as IQueryResultEnumerable<Person>;
+                Assert.IsNotNull(queryResult);
+                if (queryResult.NextLink != null)
+                {
+                    items = await table.ReadAsync<Person>(queryResult.NextLink);
+                }
+                else
+                {
+                    items = null;
+                }
+            }
+
+            Assert.AreEqual(ItemsInTable, itemCount);
+        }
+
+        [TestMethod]
         public async Task ClientSDK_UntypedTables_ReturnLinkHeader()
         {
             var client = new MobileServiceClient(AppUrl, AppKey);
@@ -172,6 +200,76 @@ namespace blog20141010.Test
             Assert.IsInstanceOfType(items, typeof(JObject));
             var link = items["nextLink"];
             Assert.IsNotNull(link);
+        }
+
+        [TestMethod]
+        public async Task ClientSDK_TypedTables_CanRetrieveAllItems_ValidateData()
+        {
+            var age = await CalculateAverageAge();
+            var expected = ((double)SumOfAges) / ItemsInTable;
+            Assert.AreEqual(expected, age, 0.00001);
+        }
+
+        [TestMethod]
+        public async Task ClientSDK_UntypedTables_CanRetrieveAllItems_ValidateData()
+        {
+            var age = await CalculateAverageAgeFromJsonTable();
+            var expected = ((double)SumOfAges) / ItemsInTable;
+            Assert.AreEqual(expected, age, 0.00001);
+        }
+
+        public async Task<double> CalculateAverageAge()
+        {
+            var client = new MobileServiceClient(AppUrl, AppKey);
+            var table = client.GetTable<Person>();
+            var sum = 0.0;
+            var count = 0;
+            var items = await table.Take(10).ToEnumerableAsync();
+            while (items != null && items.Count() != 0)
+            {
+                count += items.Count();
+                sum += Enumerable.Sum(items, i => i.Age);
+
+                var queryResult = items as IQueryResultEnumerable<Person>;
+                if (queryResult != null && queryResult.NextLink != null)
+                {
+                    items = await table.ReadAsync<Person>(queryResult.NextLink);
+                }
+                else
+                {
+                    items = null;
+                }
+            }
+
+            return sum / count;
+        }
+
+        public async Task<double> CalculateAverageAgeFromJsonTable()
+        {
+            var client = new MobileServiceClient(AppUrl, AppKey);
+            var table = client.GetTable("person");
+            var sum = 0.0;
+            var count = 0;
+            var response = await table.ReadAsync("$top=10", null, wrapResult: true);
+            while (response != null)
+            {
+                var items = (JArray)response["results"];
+                var nextLink = (string)response["nextLink"];
+
+                count += items.Count();
+                sum += Enumerable.Sum(items, i => (int)i["age"]);
+
+                if (nextLink != null)
+                {
+                    response = await table.ReadAsync(nextLink, null, true);
+                }
+                else
+                {
+                    response = null;
+                }
+            }
+
+            return sum / count;
         }
     }
 
