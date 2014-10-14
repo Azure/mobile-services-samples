@@ -1,4 +1,4 @@
-﻿package com.example.GetStartedWithData;
+package com.example.GetStartedWithData;
 
 //import com.example.GetStartedWithData.R;
 
@@ -100,6 +100,7 @@ public class ToDoItem {
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof ToDoItem && ((ToDoItem) o).mId == mId;
+		return o instanceof ToDoItem && ((ToDoItem) o).mText == mText;
+
 	}
 }
