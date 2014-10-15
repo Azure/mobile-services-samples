@@ -98,6 +98,6 @@ public class ToDoItem {
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof ToDoItem && ((ToDoItem) o).mId == mId;
+		return o instanceof ToDoItem && ((ToDoItem) o).mText == mText;
 	}
 }
