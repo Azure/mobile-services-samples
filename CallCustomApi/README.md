@@ -1,4 +1,4 @@
-# CallCustomApi (./android)
+# [CallCustomApi](./android)
 
 This is the latest version of the **Call a custom API from the client** app, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE.
 

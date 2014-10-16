@@ -1,4 +1,4 @@
-# GettingStartedWithPush (./android)
+# [GettingStartedWithPush](./android)
 
 This is the latest version of the **Add push notifications to your Mobile Services app**, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE.
 

@@ -1,4 +1,4 @@
-# GettingStarted (./android)
+# [GettingStarted](./android)
 
 This is the latest version of the **Get started with Mobile Services** quickstart app, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE.
 
