@@ -214,8 +214,15 @@ Add three entities, named "TodoItem", "MS_TableOperations" and "MS_TableOperatio
 Save the model, and build the project to make sure that everything is fine. As before, we're just setting up the application to work with Core Data, but we haven't started using it yet.
 
 ## From table to sync table
+And let's start caching some data offline! There are a few things we'll need to change. First, thing that you'll notice in 2.0 release is that we have a breaking change in the read callback. The old callback signature was as follows
 
-And let's start caching some data offline! There are a few things we'll need to change. First, instead of using the regular `MSTable` class to access the mobile service, we'll use a different class now: `MSSyncTable`. A sync table is basically a local table which "knows" how to push changes made locally to the "remote" table, and pull items from that table locally. We'll also need to initialize the *synchronization context* in the `MSClient` (a new property) with the data source that we choose (in our case, the Core Data-based store implementation as I mentioned before). Let's start. In the implementation for the QSTodoService class, remove the private property `table`, and add the following property for the sync table:
+	[query readWithCompletion:^(NSArray *results, NSInteger totalCount, NSError *error) {...}]
+
+Now we return a MSQueryResult object that has items and totalCount property so the callback now looks like
+
+    [query readWithCompletion:^(MSQueryResult *result, NSError *error) {...}]
+	
+Then instead of using the regular `MSTable` class to access the mobile service, we'll use a different class now: `MSSyncTable`. A sync table is basically a local table which "knows" how to push changes made locally to the "remote" table, and pull items from that table locally. We'll also need to initialize the *synchronization context* in the `MSClient` (a new property) with the data source that we choose (in our case, the Core Data-based store implementation as I mentioned before). Let's start. In the implementation for the QSTodoService class, remove the private property `table`, and add the following property for the sync table:
 
     @property (nonatomic, strong) MSSyncTable *syncTable;
 
@@ -256,10 +263,10 @@ We now need to update the operations in the `QSTodoService` class to use the syn
         MSQuery *query = [self.syncTable queryWithPredicate:predicate];
 
         [query orderByAscending:@"text"];
-        [query readWithCompletion:^(NSArray *results, NSInteger totalCount, NSError *error) {
+        [query readWithCompletion:^(MSQueryResult *result, NSError *error) {
             [self logErrorIfNotNil:error];
 
-            items = [results mutableCopy];
+            items = [result.items mutableCopy];
 
             // Let the caller know that we finished
             dispatch_async(dispatch_get_main_queue(), ^{

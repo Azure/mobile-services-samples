@@ -23,3 +23,8 @@ This is the latest version of the **Add push notifications to your Mobile Servic
 
 ##[CallCustomApi](./CallCustomApi/android)
 This is the latest version of the **Call a custom API from the client** app, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./CallCustomApi/readme.md).
+
+
+##[Table Storage With .NET Backend](./NetBackendWithTableStorage)
+Samples showing how to work with a mobile service which uses Azure Table Storage to save the items in the table. It also shows how the client SDKs can be used to retrieve data from it.
+

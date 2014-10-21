@@ -5,6 +5,7 @@
 #ifndef WindowsAzureMobileServices_MSError_h
 #define WindowsAzureMobileServices_MSError_h
 
+#import <Foundation/Foundation.h>
 
 #pragma mark * MSErrorDomain
 
@@ -112,6 +113,10 @@ extern NSString *const MSErrorPushResultKey;
 /// the server) for an unknown reason. The error causing the abort can be found
 /// using the NSUnderlyingErrorKey
 #define MSPushAbortedUnknown                    -1174
+
+/// Indicates that the purge was aborted because items in the requested table to
+/// purge have pending changes that need to be pushed to the server
+#define MSPurgeAbortedPendingChanges            -1180
 
 /// Indicates that the response from the Windows Azure Mobile Service did not
 /// include an item as expected.
