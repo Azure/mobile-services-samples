@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename package &apos;com.example.todolist_rs&apos; to &apos;com.example.todolist&apos;&#x0D;&#x0A;- Original project: &apos;todolist&apos;&#x0D;&#x0A;- Original element: &apos;todolist/src/com.example.todolist_rs&apos;&#x0D;&#x0A;- Renamed element: &apos;todolist/src/com.example.todolist&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update fully qualified names in &apos;*&apos; files&#x0D;&#x0A;- Update textual occurrences in comments and strings&#x0D;&#x0A;- Rename subpackages of the package" description="Rename package &apos;com.example.todolist_rs&apos;" flags="589830" hierarchical="true" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;com.example.todolist_rs" name="com.example.todolist" patterns="*" qualified="true" references="true" stamp="1411770213888" textual="true" version="1.0"/>
-</session>
