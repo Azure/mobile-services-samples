@@ -1,9 +1,0 @@
-INDEX VERSION 1.126+C:\Users\ricksal\mobile-services-samples\GettingStartedWithData\Android\.metadata\.plugins\org.eclipse.jdt.core
-1914790834.index
-3892618121.index
-2523814476.index
-3528383020.index
-2918652615.index
-904689036.index
-2970830543.index
-2850050141.index

@@ -1,1 +1,0 @@
-INDEX VERSION 1.126+C:\Users\ricksal\mobile-services-samples\.metadata\.plugins\org.eclipse.jdt.core
