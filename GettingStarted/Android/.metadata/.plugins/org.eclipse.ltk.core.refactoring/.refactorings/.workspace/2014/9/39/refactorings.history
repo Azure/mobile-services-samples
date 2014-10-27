@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename Java project &apos;todolist_rs&apos; to &apos;todolist&apos;&#x0D;&#x0A;- Original element: &apos;todolist_rs&apos;&#x0D;&#x0A;- Renamed element: &apos;todolist_rs&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename Java project &apos;todolist_rs&apos;" flags="7" id="org.eclipse.jdt.ui.rename.java.project" input="=todolist_rs" name="todolist" references="true" stamp="1411770150668" version="1.0"/>
+</session>

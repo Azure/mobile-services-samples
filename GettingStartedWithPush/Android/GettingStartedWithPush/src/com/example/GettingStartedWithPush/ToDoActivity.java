@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceList;
 import com.microsoft.windowsazure.mobileservices.http.NextServiceFilterCallback;
@@ -286,43 +287,38 @@ public class ToDoActivity extends Activity {
 	
 	private class ProgressFilter implements ServiceFilter {
 
-	    @Override
-	    public ListenableFuture<ServiceFilterResponse> handleRequest(
-	            ServiceFilterRequest request, NextServiceFilterCallback next) {
+        @Override
+        public ListenableFuture<ServiceFilterResponse> handleRequest(
+                ServiceFilterRequest request, NextServiceFilterCallback next) {
 
-	        runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
 
-	            @Override
-	            public void run() {
-	                if (mProgressBar != null) mProgressBar.setVisibility(ProgressBar.VISIBLE);
-	            }
-	        });
+                @Override
+                public void run() {
+                    if (mProgressBar != null) mProgressBar.setVisibility(ProgressBar.VISIBLE);
+                }
+            });
 
-	        ListenableFuture<ServiceFilterResponse> result = next.onNext(request);
+            SettableFuture<ServiceFilterResponse> result = SettableFuture.create();
+            try {
+                ServiceFilterResponse response = next.onNext(request).get();
+                result.set(response);
+            } catch (Exception exc) {
+                result.setException(exc);
+            }
 
-	        Futures.addCallback(result, new FutureCallback<ServiceFilterResponse>() {
-	            @Override
-	            public void onFailure(Throwable exc) {
-	                dismissProgressBar();
-	            }
+          dismissProgressBar();
+          return result;
+        }
 
-	            @Override
-	            public void onSuccess(ServiceFilterResponse resp) {
-	                dismissProgressBar();
-	            }
+      private void dismissProgressBar() {
+          runOnUiThread(new Runnable() {
 
-	            private void dismissProgressBar() {
-	                runOnUiThread(new Runnable() {
-
-	                    @Override
-	                    public void run() {
-	                        if (mProgressBar != null) mProgressBar.setVisibility(ProgressBar.GONE);
-	                    }
-	                });
-	            }
-	        });
-
-	        return result;
-	    }
-	}
+              @Override
+              public void run() {
+                  if (mProgressBar != null) mProgressBar.setVisibility(ProgressBar.GONE);
+              }
+          });
+        }
+    }
 }

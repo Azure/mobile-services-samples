@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;com.example.todolist_rs&apos; to &apos;com.example.CallCustomApi&apos;&#x0D;&#x0A;- Original project: &apos;CallCustomApi&apos;&#x0D;&#x0A;- Original element: &apos;CallCustomApi/src/com.example.todolist_rs&apos;&#x0D;&#x0A;- Renamed element: &apos;CallCustomApi/src/com.example.CallCustomApi&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update fully qualified names in &apos;*&apos; files&#x0D;&#x0A;- Update textual occurrences in comments and strings&#x0D;&#x0A;- Rename subpackages of the package" description="Rename package &apos;com.example.todolist_rs&apos;" flags="589830" hierarchical="true" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;com.example.todolist_rs" name="com.example.CallCustomApi" patterns="*" qualified="true" references="true" stamp="1412188155005" textual="true" version="1.0"/>
+</session>

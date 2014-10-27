@@ -1,0 +1,9 @@
+INDEX VERSION 1.126+C:\Users\ricksal\mobile-services-samples\GettingStarted\Android\.metadata\.plugins\org.eclipse.jdt.core
+2525217848.index
+858889894.index
+2575134197.index
+855459831.index
+3187700086.index
+3528383020.index
+3355170816.index
+921308525.index
