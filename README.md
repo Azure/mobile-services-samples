@@ -9,5 +9,22 @@ TicTacToe is a Windows 8.1 app that uses a mobile services backend to enable mul
 ##[TodoOffline](./TodoOffline)
 TodoOffline is a version of the todoitem quickstart updated to make use of our offline SDK features. The sample shows how to set up a local database, sync data from the server, and push changes on demand back to the server. For more information, see the [sample readme file](./TodoOffline/iOS/Readme.md)
 
+##[GettingStarted](./GettingStarted/android)
+This is the latest version of the **Get started with Mobile Services** quickstart app, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./GettingStarted/readme.md).
+
+##[GettingStartedWithData](./GettingStartedWithData/android)
+This is the latest version of the **Add Mobile Services to an existing app**, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./GettingStartedWithData/readme.md).
+
+##[todolist_auth](./GettingStartedWithAuth/android)
+This is the latest version of the **Add authentication to your Mobile Services app**, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./todolist_auth/readme.md).
+
+##[GettingStartedWithPush](./GettingStartedWithPush/android)
+This is the latest version of the **Add push notifications to your Mobile Services app**, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./GettingStartedWithPush/readme.md).
+
+##[CallCustomApi](./CallCustomApi/android)
+This is the latest version of the **Call a custom API from the client** app, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./CallCustomApi/readme.md).
+
+
 ##[Table Storage With .NET Backend](./NetBackendWithTableStorage)
 Samples showing how to work with a mobile service which uses Azure Table Storage to save the items in the table. It also shows how the client SDKs can be used to retrieve data from it.
+
