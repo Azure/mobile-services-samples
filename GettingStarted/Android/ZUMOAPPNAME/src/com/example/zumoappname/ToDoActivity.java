@@ -127,24 +127,24 @@ public class ToDoActivity extends Activity {
 		
 		new AsyncTask<Void, Void, Void>() {
 
-	            @Override
-	            protected Void doInBackground(Void... params) {
-	                try {
-	                    mToDoTable.update(item).get();
-	                    runOnUiThread(new Runnable() {
-	                        public void run() {
-	                            if (item.isComplete()) {
-	                                mAdapter.remove(item);
-	                            }
-	                            refreshItemsFromTable();
-	                        }
-	                    });
-	                } catch (Exception exception) {
-	                    createAndShowDialog(exception, "Error");
-	                }
-	                return null;
-	            }
-	        }.execute();
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    mToDoTable.update(item).get();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (item.isComplete()) {
+                                mAdapter.remove(item);
+                            }
+                            refreshItemsFromTable();
+                        }
+                    });
+                } catch (Exception exception) {
+                    createAndShowDialog(exception, "Error");
+                }
+                return null;
+            }
+        }.execute();
 	}
 
 	/**
@@ -165,25 +165,25 @@ public class ToDoActivity extends Activity {
 		item.setComplete(false);
 		
 		// Insert the new item
-    	        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, Void>() {
 
-	            @Override
-	            protected Void doInBackground(Void... params) {
-	                try {
-	                    mToDoTable.insert(item).get();
-	                    if (!item.isComplete()) {
-	                        runOnUiThread(new Runnable() {
-	                            public void run() {
-	                                mAdapter.add(item);
-	                            }
-	                        });
-	                    }
-	                } catch (Exception exception) {
-	                    createAndShowDialog(exception, "Error");
-	                }
-	                return null;
-	            }
-	        }.execute();
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    mToDoTable.insert(item).get();
+                    if (!item.isComplete()) {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                mAdapter.add(item);
+                            }
+                        });
+                    }
+                } catch (Exception exception) {
+                    createAndShowDialog(exception, "Error");
+                }
+                return null;
+            }
+        }.execute();
 
 		mTextNewToDo.setText("");
 	}
@@ -195,29 +195,29 @@ public class ToDoActivity extends Activity {
 
 		// Get the items that weren't marked as completed and add them in the
 		// adapter
-	        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, Void>() {
 
-	            @Override
-	            protected Void doInBackground(Void... params) {
-	                try {
-	                    final MobileServiceList<ToDoItem> result = mToDoTable.where().field("complete").eq(false).execute().get();
-	                    runOnUiThread(new Runnable() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    final MobileServiceList<ToDoItem> result = mToDoTable.where().field("complete").eq(false).execute().get();
+                    runOnUiThread(new Runnable() {
 
-	                        @Override
-	                        public void run() {
-	                            mAdapter.clear();
+                        @Override
+                        public void run() {
+                            mAdapter.clear();
 
-	                            for (ToDoItem item : result) {
-	                                mAdapter.add(item);
-	                            }
-	                        }
-	                    });
-	                } catch (Exception exception) {
-	                    createAndShowDialog(exception, "Error");
-	                }
-	                return null;
-	            }
-	        }.execute();
+                            for (ToDoItem item : result) {
+                                mAdapter.add(item);
+                            }
+                        }
+                    });
+                } catch (Exception exception) {
+                    createAndShowDialog(exception, "Error");
+                }
+                return null;
+            }
+        }.execute();
 	}
 
 	/**
