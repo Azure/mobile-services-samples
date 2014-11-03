@@ -11,10 +11,10 @@
 //import com.microsoft.windowsazure.mobileservices.http.ServiceFilterRequest;
 //import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
 //import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
+//import android.os.AsyncTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +22,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-//
 
+//TODO comment out these lines
 import java.util.ArrayList;
 import java.util.List;
 
