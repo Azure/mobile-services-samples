@@ -45,7 +45,7 @@
                 <Button Name="ButtonPull" Click="ButtonPull_Click" Margin="10,0,0,0">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5">Pull</TextBlock>
-                        <SymbolIcon Symbol="Sync"/>
+                        <SymbolIcon Symbol="Download"/>
                     </StackPanel>
                 </Button>
                 <Button Name="ButtonPush" Click="ButtonPush_Click" Margin="10,0,0,0">
