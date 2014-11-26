@@ -4,7 +4,7 @@ This sample shows how to use Microsoft Azure with the Apache Cordova Tools for V
 
 >**Note:** Push notifications to Cordova apps running on Windows Phone and Windows platforms are not supported by the Mobile Services client library at this time. If you need to also support your Cordova app on Windows Phone using MPNS, see [this blog post](http://aka.ms/r197ab).
 
-This sample is based on the [BackboneJS sample for Apache Cordova](http://aka.ms/sffl1f). However, regardless of the JavaScript framework you use for your app (if any), the same basic concepts apply. These steps differ somewhat from the steps in the MSDN Magazine article (which only covers Android). The steps in the article use Visual Studio to configure Mobile Services, whereas the steps in this readme use the Azure Management portal.
+This sample is based on the [BackboneJS sample for Apache Cordova](http://aka.ms/sffl1f). However, regardless of the JavaScript framework you use for your app (if any), the same basic concepts apply. These steps differ somewhat from the steps in the MSDN Magazine article (which also only covers Android). The steps in the article use Visual Studio to configure Mobile Services, whereas the steps in this readme use the Azure Management portal when configuring the Azure services.
 
 ## Prerequisites 
 To run this Apache Cordova for Visual Studio sample app on one or more of the supported client platforms, you must have the following:
@@ -56,9 +56,11 @@ To run this Apache Cordova for Visual Studio sample app on one or more of the su
 
 	+ **GCM**
 			
-		Set the API key value obtained in step 1.  
+		Set the API key value obtained in step 1. 
+
+	![PNS registration in the Azure portal](./register_pns_credentials_azure_portal.png) 
  
-	Now, Notification Hubs can send push notifications on behalf of your app.
+	At this point, Notification Hubs can send push notifications on behalf of your app.
 
 6. Click the **Data** tab, click the **TodoItem** table, click **Script** and replace the existing insert script with the following code:
 
@@ -107,51 +109,15 @@ Now that you have push notifications configured, you need to update the sample a
 
 ##Build and test the app
 
-1. Verify that all of the target platform tools are accessible in the system path. 
+1. Make sure that Visual Studio debugging is configured for the desired platforms.
 
-2. Open a command prompt in the root project directory, and run one of the following platform-specific commands: 
-
-	+ **iOS**
+2. Follow the instructions to run your app on one of the supported platforms:
  
-		Open terminal and run the following command:
+	+ [iOS project](http://msdn.microsoft.com/en-us/library/dn757056.aspx#iOSDevice)<br/>Remember that iOS requires a physical device.
 
-    		phonegap local build ios
-
-	+ **Android**
-
-		Open a command prompt or terminal window and run the following command. 
-
-		    phonegap local build android
-
-	+ **Windows Phone**
-
-		Run the following command from the Visual Studio Developer command prompt:
-
-    		phonegap local build wp8
-
-3.	Open and run the project on the device according to the instructions below for each platform:
-
-	+ **Windows Phone 8**
-
-		1. Windows Phone 8: Open the .sln file in the **\phonegap\platforms\wp8** folder in Visual Studio 2012 Express for Windows Phone.
-		
-		2. Press the **F5** key to rebuild the project and start the app.
-
-	+ **iOS**
-
-		1. Open the project in the **\phonegap\platforms\ios** folder in Xcode.
-		
-		2. Press the **Run** button to build the project and start the app in the iPhone emulator, which is the default for this project.
-
-	+ **Android**
-
-		1. In Eclipse, click **File** then **Import**, expand **Android**, click **Existing Android Code into Workspace**, and then click **Next.** 
-				
-		2. Click **Browse**, browse to the **\phonegap\platforms\android** folder, click **OK**, make sure that the todoitem project is checked, then click **Finish**. 
-		 
-			This imports the project files into the current workspace.
-		
-		3. From the **Run** menu, click **Run** to start the project in the Android emulator.
+	+ [Android project](http://msdn.microsoft.com/en-us/library/dn757059.aspx)
+	
+    The Apache Ripple emulator does not support push notifications.
 			
 	After launching the app in one of the mobile emulators above, you will see a registration success alert. 
 
