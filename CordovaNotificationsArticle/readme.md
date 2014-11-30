@@ -4,7 +4,7 @@ This sample shows how to use Microsoft Azure with the Apache Cordova Tools for V
 
 >**Note:** Push notifications to Cordova apps running on Windows Phone and Windows platforms are not supported by the Mobile Services client library at this time. If you need to also support your Cordova app on Windows Phone using MPNS, see [this blog post](http://aka.ms/r197ab).
 
-This sample is based on the [BackboneJS sample for Apache Cordova](http://aka.ms/sffl1f). However, regardless of the JavaScript framework you use for your app (if any), the same basic concepts apply. These steps differ somewhat from the steps in the MSDN Magazine article (which also only covers Android). The steps in the article use Visual Studio to configure Mobile Services, whereas the steps in this readme use the Azure Management portal when configuring the Azure services.
+This sample is based on the [BackboneJS sample for Apache Cordova](http://aka.ms/sffl1f). However, regardless of the JavaScript framework you use for your app (if any), the same basic concepts apply. These steps differ somewhat from the steps in the MSDN Magazine article (which does only cover Android). The steps in the article use Visual Studio to configure Mobile Services, whereas the steps in this readme use the Azure Management portal to configure your Azure services.
 
 ## Prerequisites 
 To run this Apache Cordova for Visual Studio sample app on one or more of the supported client platforms, you must have the following:

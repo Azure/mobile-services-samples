@@ -7,12 +7,18 @@
   </author>
   <content src="index.html" />
   <access origin="*" />
+  <!--// origin="*" is a wide open whitelist, to lock down specify your mobile service URL. -->
+  <!--<access origin="https://YOUR_MOBILE_SERVICE_URL.azure-mobile.net" />-->
+  <access origin="https://*.google.com" />
+
   <preference name="SplashScreen" value="screen" />
   <preference name="BackgroundColor" value="#EDECEC" />
-  <vs:plugin name="org.apache.cordova.device" version="0.2.12" />
-  <vs:plugin name="org.apache.cordova.console" version="0.2.11" />
   <vs:plugin name="com.phonegap.plugins.PushPlugin" version="2.4.0" />
+  <vs:plugin name="org.apache.cordova.console" version="0.2.11" />
+  <vs:plugin name="org.apache.cordova.device" version="0.2.12" />
   <vs:plugin name="com.microsoft.azure-mobile-services" version="1.2.6" />
+  <vs:plugin name="org.apache.cordova.geolocation" version="0.3.10" />
+  <vs:plugin name="org.apache.cordova.inappbrowser" version="0.5.2" />
   <vs:platformSpecificValues>
     <vs:platformSpecificWidget platformName="windows8" />
   </vs:platformSpecificValues>
