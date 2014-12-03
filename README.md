@@ -13,4 +13,6 @@ PhoneGap is a free and open source framework, which makes it easier to create ap
 ##[TodoOffline](./TodoOffline)
 TodoOffline is a version of the todoitem quickstart updated to make use of our offline SDK features. The sample shows how to set up a local database, sync data from the server, and push changes on demand back to the server. For more information, see the [sample readme file](./TodoOffline/iOS/Readme.md)
 
+##[Use Microsoft Azure to push notifications Cordova apps](./CordovaNotificationsArticle)
+Shows how to use Microsoft Azure with the Apache Cordova Tools for Visual Studio 2013 to enable push notifications to your Cordova apps running on iOS or Android devices. The sample supports the MSDN Magazine Article [Use Microsoft Azure to Push Notifications to Cordova Apps](http://aka.ms/yh3uh5). The Mobile Services client is used to register for template-based push notifications with Azure Notification Hubs, which is then used to send push notifications from a platform notification service (PNS) to your Cordova app running on iOS or Android.
 

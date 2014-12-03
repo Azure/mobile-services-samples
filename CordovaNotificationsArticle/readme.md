@@ -1,6 +1,6 @@
-# Use Azure to send push notifications to a Apache Cordova apps
+# Use Microsoft Azure to push notifications Cordova apps
 
-This sample shows how to use Microsoft Azure with the Apache Cordova Tools for Visual Studio 2013 to enable push notifications to your Cordova apps running on iOS or Android devices. The sample supports the MSDN Magazine Article [Use Microsoft Azure to Send Push Notifications to Your Cross-Platform Cordova Apps](http://aka.ms/yh3uh5). The  Azure Mobile Services client is used to register for template-based push notifications with Azure Notification Hubs, which is then used to send push notifications from a platform notification service (PNS) to your Cordova app running on iOS or Android. 
+This sample shows how to use Microsoft Azure with the Apache Cordova Tools for Visual Studio 2013 to enable push notifications to your Cordova apps running on iOS or Android devices. The sample supports the MSDN Magazine Article [Use Microsoft Azure to Push Notifications to Cordova Apps](http://aka.ms/yh3uh5). The  Mobile Services client is used to register for template-based push notifications with Azure Notification Hubs, which is then used to send push notifications from a platform notification service (PNS) to your Cordova app running on iOS or Android. 
 
 >**Note:** Push notifications to Cordova apps running on Windows Phone and Windows platforms are not supported by the Mobile Services client library at this time. If you need to also support your Cordova app on Windows Phone using MPNS, see [this blog post](http://aka.ms/r197ab).
 
