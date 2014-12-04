@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" id="com.microsoft.mdha.samples.backbonetodo" version="1.0.0.0" xmlns="http://www.w3.org/ns/widgets">
+  <name>BackboneToDo</name>
+  <description>This sample shows how to use Microsoft Azure with the Apache Cordova Tools for Visual Studio 2013 to enable push notifications to your Cordova apps running on iOS or Android devices.  For more information, see http://aka.ms/yh3uh5 .</description>
+  <author href="http://go.microsoft.com/fwlink/?LinkID=398477" email="vscordovatools@microsoft.com">
+    Visual Studio Tools for Apache Cordova Team
+  </author>
+  <content src="index.html" />
+  <access origin="*.azure-mobile.net" />
+  <preference name="SplashScreen" value="screen" />
+  <preference name="BackgroundColor" value="#EDECEC" />
+  <vs:plugin name="org.apache.cordova.console" version="0.2.11" />
+  <vs:plugin name="org.apache.cordova.device" version="0.2.12" />
+  <vs:plugin name="org.apache.cordova.geolocation" version="0.3.10" />
+  <vs:plugin name="org.apache.cordova.inappbrowser" version="0.5.2" />
+  <vs:plugin name="com.clone.phonegap.plugins.pushplugin" version="2.4.0" />
+  <vs:plugin name="com.microsoft.azure-mobile-services" version="1.2.7" />
+  <vs:platformSpecificValues>
+    <vs:platformSpecificWidget platformName="windows8" />
+  </vs:platformSpecificValues>
+</widget>
