@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Todo list: todolistglenn</title>
+
+    <!-- TodoList references -->
+    <link href="css/index.css" rel="stylesheet" />
+</head>
+<body>
+    <!--<p>Hello, your application is ready!</p>-->
+    <div id='wrapper'>
+        <article>
+            <header>
+                <h2>Windows Azure</h2>
+                <h1>Mobile Services</h1>
+
+                <form id='add-item'>
+                    <button type='submit' id='refresh'>Refresh</button>
+                    <button type='submit'>Add</button>
+                    <div><input type='text' id='new-item-text' placeholder='Enter new task' /></div>
+                </form>
+            </header>
+
+            <ul id='todo-items'></ul>
+            <p id='summary'></p>
+        </article>
+
+        <footer>
+            <ul id='errorlog'></ul>
+        </footer>
+    </div>
+    <!-- Cordova reference, this is added to your app when it's built. -->
+    <script src="cordova.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>
