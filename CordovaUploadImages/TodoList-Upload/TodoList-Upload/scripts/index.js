@@ -1,8 +1,4 @@
-﻿// For an introduction to the Blank template, see the following documentation:
-// http://go.microsoft.com/fwlink/?LinkID=397704
-// To debug code on page load in Ripple or on Android devices/emulators: launch your app, set breakpoints, 
-// and then run "window.location.reload()" in the JavaScript Console.
-(function () {
+﻿(function () {
     "use strict";
 
     document.addEventListener('deviceready', onDeviceReady.bind(this), false);
@@ -13,7 +9,7 @@
         document.addEventListener('resume', onResume.bind(this), false);
 
         // Initialize the Mobile Services client here.
-        var client = new WindowsAzure.MobileServiceClient('https://todolist-cordova.azure-mobile.net/', 'ZPBJZlWeNQAMBTzibQiPHAHIVpeSut47'),
+        var client = new WindowsAzure.MobileServiceClient('https://MY_MOBILE_SERVICE.azure-mobile.net/', 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'),
             todoItemTable = client.getTable('TodoItem');
 
         // Read current data and rebuild UI.
