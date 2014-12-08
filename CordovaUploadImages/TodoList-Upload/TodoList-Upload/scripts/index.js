@@ -33,8 +33,7 @@
 
                     // Only add the image if the URL exists.
                     if (item.imageUri)
-                    {
-                        alert(item.imageUri);
+                    {                      
                         listItem.append($('<img>').attr('src', item.imageUri));
                     }
                     return listItem;
@@ -64,9 +63,8 @@
 
         /******************************************************
         // Begin upload images to Azure Mobile Services additions.
-        *********************************************************/       
-        
-        //var capturedFile;
+        *********************************************************/
+        // This is the new item being inserted.
         var insertedItem;
 
         // This function is called to get the newly captured image
@@ -80,6 +78,7 @@
                     reader.onerror = fail;
 
                     // Read the captured file into a byte array.
+                    // This function is not currently supported on Windows Phone.
                     reader.readAsArrayBuffer(file);
                 }, fail);
             });
@@ -109,8 +108,11 @@
         var uploadCompleted = function (r) {
             // Response code is 201 (Created) if success.
             if (r.currentTarget.status === 201) {
-                alert("Upload complete");
-                // Refresh the UI with the latest image?
+
+                console.debug("Upload complete.");
+
+                // Refresh the UI with the latest image.
+                refreshTodoItems();
             }
             else {
                 alert("An error occurred during upload.");
@@ -122,14 +124,27 @@
             alert("An error has occurred: " + JSON.stringify(err));
         }
 
-        // Handle insert
+        // Insert a new item, then also upload a captured image if we have one.
+        var insertNewItemWithUpload = function (newItem, capturedFile) {
+            // Do the insert so that we can get the SAS query string from Blob storage.
+            todoItemTable.insert(newItem).then(function (item) {
+                // If we have obtained an SAS, then upload the image to Blob storage.
+                if (item.sasQueryString !== undefined) {
+
+                    insertedItem = item;
+                    readImage(capturedFile);
+                }
+            }, handleError).then(refreshTodoItems, handleError);
+        }
+
+        // Handle insert--this replaces the existing handler.
         $('#add-item').submit(function (evt) {
             var textbox = $('#new-item-text'),
                 itemText = textbox.val();
             if (itemText !== '') {
 
                 var newItem = { text: itemText, complete: false };
-                // Do the capture before we do the insert.
+                // Do the capture before we do the insert. If user cancels, just continue.
                 // Launch device camera application, allowing user to capture a single image.                
                 navigator.device.capture.captureImage(function (mediaFiles) {
                     if (mediaFiles) {
@@ -140,23 +155,19 @@
                         // Set the properties we need on the inserted item.
                         newItem.containerName = "todoitemimages";
                         newItem.resourceName = capturedFile.name;
-                        console.debug(JSON.stringify(newItem));
 
+                        // Insert the item and upload the blob.
+                        insertNewItemWithUpload(newItem, capturedFile);
                     }
-                    // Do the insert so that we can get the SAS query string from Blob storage.
-                    todoItemTable.insert(newItem).then(function (item) {
-                        if (item.sasQueryString !== undefined) {
-                            
-                            insertedItem = item;
-                            readImage(capturedFile);                            
-                        }
-                    }, handleError).then(refreshTodoItems, handleError);
-                }, handleError, { limit: 1 });
+
+                }, function () {
+                    // Insert the item but not the blob.
+                    insertNewItemWithUpload(newItem, null);
+                }, { limit: 1 });
             }
             textbox.val('').focus();
             evt.preventDefault();
         });
-
         /******************************************************
         // End upload images to Azure Mobile Services additions.
         *********************************************************/
