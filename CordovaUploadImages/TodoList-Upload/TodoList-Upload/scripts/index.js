@@ -9,8 +9,12 @@
         document.addEventListener('resume', onResume.bind(this), false);
 
         // Initialize the Mobile Services client here.
-        var client = new WindowsAzure.MobileServiceClient('https://MY_MOBILE_SERVICE.azure-mobile.net/', 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'),
-            todoItemTable = client.getTable('TodoItem');
+        var client = new WindowsAzure.MobileServiceClient(
+            'https://MY_MOBILE_SERVICE.azure-mobile.net/',
+            'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+
+        // Get the existing TodoItem table for storage.
+        var todoItemTable = client.getTable('TodoItem');
 
         // Read current data and rebuild UI.
         // If you plan to generate complex UIs like this, consider using a JavaScript templating library.

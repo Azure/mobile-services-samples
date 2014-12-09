@@ -58,11 +58,11 @@ To run this Apache Cordova for Visual Studio sample app on one or more of the su
 			
 		Set the API key value obtained in step 1. 
 
-	![PNS registration in the Azure portal](./register_pns_credentials_azure_portal.png) 
+	![PNS registration in the Azure portal](./readme/register_pns_credentials_azure_portal.png) 
  
 	At this point, Notification Hubs can send push notifications on behalf of your app.
 
-6. Click the **Data** tab, click the **TodoItem** table, click **Script** and replace the existing insert script with the following code:
+6. Click the **Data** tab, click the **TodoItem** table, click **Script** and replace the existing insert script with the following code, which you can also find in the \service\table\todoitem.insert.js file:
 
 		function insert(item, user, request) {
 		    // Execute the request and send notifications.
