@@ -1,8 +1,10 @@
-# Use Microsoft Azure to push notifications to Cordova apps
+# Upload images from Cordova apps to Microsoft Azure services
 
 This sample demonstrates how to use Azure Mobile Services to enable your Apache Cordova app to upload and store user-generated images in Azure Storage. Mobile Services uses a SQL Database to store data. However, binary large object (BLOB) data is more efficiently stored in Azure Blob storage service. This sample is an Apache Cordova Tools for Visual Studio 2013 project. The REST APIs are used to access the Blob service.
 
 To be able to upload an image to the Blob service, this sample generates a Shared Access Signature (SAS) that is returned to the client. The app then uses this temporary credential to upload the image. This SAS can be used for only 5 minutes before it expires. Note that the Azure Storage credentials are securely stored in your mobile service's app settings.  In this example, downloads from the Blob service are public.
+
+>**Note:** You need to create and/or configure the Azure services before you can successfully run this sample.
 
 ## Prerequisites 
 To run this Apache Cordova for Visual Studio sample app on one or more of the supported client platforms, you must have the following:
@@ -115,22 +117,16 @@ Now that you have the storage code configured in Azure, you need to update the s
 
 Now, your app is able to access your mobile service to 
 
-##Build and test the app
+##<a name="test"></a>Test uploading the images in your app
 
-1. Make sure that Visual Studio debugging is configured for the desired platforms.
+1. Make sure that you Android or iOS device is connected and read for Visual Studio 2013 debugging using the Apache Cordova tools, then choose the platform (Android or iOS), make sure that **Device** is the selected debug location, then press the F5 key to run the app.
 
-2. Follow the instructions to run your app on one of the supported platforms:
+2. Enter text in the textbox under **Insert a TodoItem**, then click **Add**.
+
+3. In the camera capture UI, take a picture and accept it. 
+
+	![New image upload displayed in the list](./readme/device1.png)
  
-	+ [iOS project](http://msdn.microsoft.com/en-us/library/dn757056.aspx#iOSDevice)<br/>Remember that iOS requires a physical device.
+	A new item is inserted, and after that the image is uploaded to Azure Storage. When the items are refreshed, the new image is downloaded and displayed in the items list on the device.
 
-	+ [Android project](http://msdn.microsoft.com/en-us/library/dn757059.aspx)
-	
-    The Apache Ripple emulator does not support push notifications.
-			
-	After launching the app in one of the mobile emulators above, you will see a registration success alert. 
-
-6. Type some text into the textbox and then click **Add**.
-
-	This sends a POST request to the new mobile service hosted in Azure. Data from the request is inserted into the **TodoItem** table and a push notification is generated and sent to all registered devices. 
-
-[Create a new mobile service]: http://azure.microsoft.com/en-us/documentation/articles/mobile-services-how-to-create-new-service/
+	>**Note:** When you cancel the camera capture, the new item is inserted without uploading an image. Tying the camera capture to the insert operation was done to simplify the UI. You might want to provide a UI that gives your own users more options.
