@@ -1,6 +1,15 @@
 # Mobile Services Samples 
 This GitHub repository contains the following samples that demonstrate Microsoft Azure services, including Mobile Services and Notification Hubs. 
 
+##[GettingStarted](./GettingStarted/android)
+This is the latest version of the **Get started with Mobile Services** quickstart app, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./GettingStarted/readme.md).
+
+##[GettingStartedWithData](./GettingStartedWithData/android)
+This is the latest version of the **Add Mobile Services to an existing app**, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./GettingStartedWithData/readme.md).
+
+##[GettingStartedWithPush](./GettingStartedWithPush/android)
+This is the latest version of the **Add push notifications to your Mobile Services app**, using the Mobile Services SDK 2.0. Currently the sample available is for the Android platform and uses the Eclipse IDE. For more information, see the [sample readme file](./GettingStartedWithPush/readme.md).
+
 ##[Table Storage With .NET Backend](./NetBackendWithTableStorage)
 Samples showing how to work with a mobile service which uses Azure Table Storage to save the items in the table. It also shows how the client SDKs can be used to retrieve data from it.
 
