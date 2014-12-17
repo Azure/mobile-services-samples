@@ -70,7 +70,7 @@
         // This function is called to get the newly captured image
         // file and read it into an array buffer. 
         function readImage(capturedFile) {
-            window.resolveLocalFileSystemURL(capturedFile.fullPath, function (fileEntry) {
+            window.resolveLocalFileSystemURL("file://" + capturedFile.fullPath, function (fileEntry) {
                 fileEntry.file(function (file) {
                     // We need a FileReader to read the captured file.
                     var reader = new FileReader();
