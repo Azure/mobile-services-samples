@@ -70,7 +70,15 @@
         // This function is called to get the newly captured image
         // file and read it into an array buffer. 
         function readImage(capturedFile) {
-            window.resolveLocalFileSystemURL("file://" + capturedFile.fullPath, function (fileEntry) {
+
+            // Get the URL of the image on the local device.
+            var localFileSytemUrl = capturedFile.fullPath;
+            if (device.platform == 'iOS') {
+                // We need the file:/ prefix on an iOS device.
+                localFileSytemUrl = "file://" + localFileSytemUrl;
+            } 
+
+            window.resolveLocalFileSystemURL(localFileSytemUrl, function (fileEntry) {
                 fileEntry.file(function (file) {
                     // We need a FileReader to read the captured file.
                     var reader = new FileReader();
@@ -152,9 +160,10 @@
                         var capturedFile = mediaFiles[0];
                         console.debug("capturedFile object: " + JSON.stringify(capturedFile));
 
-                        // Set the properties we need on the inserted item.
+                        // Set the properties we need on the inserted item, using the device UUID
+                        // to avoid collisions on the server with images from other devices.
                         newItem.containerName = "todoitemimages";
-                        newItem.resourceName = capturedFile.name;
+                        newItem.resourceName = device.uuid.concat("-", capturedFile.name);
 
                         // Insert the item and upload the blob.
                         insertNewItemWithUpload(newItem, capturedFile);

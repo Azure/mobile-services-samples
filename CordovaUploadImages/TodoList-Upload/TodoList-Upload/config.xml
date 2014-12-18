@@ -13,5 +13,6 @@
   <vs:plugin name="org.apache.cordova.file" version="1.3.1" />
   <vs:plugin name="org.apache.cordova.media-capture" version="0.3.3" />
   <vs:plugin name="com.microsoft.azure-mobile-services" version="1.2.7" />
+  <vs:plugin name="org.apache.cordova.device" version="0.2.12" />
   <vs:platformSpecificValues />
 </widget>
