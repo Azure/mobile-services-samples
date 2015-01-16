@@ -20,6 +20,7 @@
 #import "QSTodoListViewController.h"
 #import "QSTodoService.h"
 #import "QSAppDelegate.h"
+#import "QSUIAlertViewWithBlock.h"
 
 
 #pragma mark * Private Interface
@@ -30,6 +31,8 @@
 // Private properties
 @property (strong, nonatomic) QSTodoService *todoService;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+
+@property (strong, nonatomic)   NSDictionary *editingItem;
 
 @end
 
@@ -47,7 +50,7 @@
     [super viewDidLoad];
     
     // Create the todoService - this creates the Mobile Service client inside the wrapped service
-    self.todoService = [QSTodoService defaultService];
+    self.todoService = [QSTodoService defaultServiceWithDelegate:self];
     
     // have refresh control reload all data from server
     [self.refreshControl addTarget:self
@@ -59,9 +62,6 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         exit(-1);  // Fail
     }
-    
-    // load the data
-    [self refresh];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
@@ -82,8 +82,8 @@
     // sort by item text
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"ms_createdAt" ascending:YES]];
 
-    // note: if storing a lot of data, you should specify a cache for the last parameter
-    // for more information, see XXX
+    // Note: if storing a lot of data, you should specify a cache for the last parameter
+    // for more information, see Apple's documentation: http://go.microsoft.com/fwlink/?LinkId=524591&clcid=0x409
     NSFetchedResultsController *theFetchedResultsController =
         [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                             managedObjectContext:context sectionNameKeyPath:nil
@@ -112,44 +112,6 @@
 
 
 #pragma mark * UITableView methods
-
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Find item that was commited for editing (completed)
-    NSManagedObject *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    
-    // map from managed object to a dictionary
-    NSDictionary *dictItem = [MSCoreDataStore tableItemFromManagedObject:item];
-    
-    // Change the appearance to look greyed out until we remove the item
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.textColor = [UIColor grayColor];
-    
-    // Ask the todoService to set the item's complete value to YES
-    [self.todoService completeItem:dictItem completion:nil];
-}
-
--(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Find the item that is about to be edited
-    NSManagedObject *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
- 
-    // If the item is complete, then this is just pending upload. Editing is not allowed
-    if ([[item valueForKey:@"complete"] boolValue])
-    {
-        return UITableViewCellEditingStyleNone;
-    }
-    
-    // Otherwise, allow the delete button to appear
-    return UITableViewCellEditingStyleDelete;
-}
-
--(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Customize the Delete button to say "complete"
-    return @"complete";
-}
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
@@ -240,7 +202,12 @@
                 break;
                 
             case NSFetchedResultsChangeUpdate:
-                [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+                [tableView reloadRowsAtIndexPaths:@[indexPath]
+                                 withRowAnimation:UITableViewRowAnimationAutomatic];
+                
+                // note: Apple samples show a call to configureCell here; this is incorrect--it can result in retrieving the
+                // wrong index when rows are reordered. For more information, see http://go.microsoft.com/fwlink/?LinkID=524590&clcid=0x409
+                // [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath]; // wrong! call reloadRows instead
                 break;
                 
             case NSFetchedResultsChangeMove:
@@ -287,5 +254,69 @@
     });
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSManagedObject *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    self.editingItem = [MSCoreDataStore tableItemFromManagedObject:item]; // map from managed object to dictionary
+    
+    [self performSegueWithIdentifier:@"detailSegue" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"detailSegue"]) {
+        QSItemViewController *ivc = (QSItemViewController *) [segue destinationViewController];
+        ivc.item = [self.editingItem mutableCopy];
+        
+        ivc.editCompleteBlock = ^(NSDictionary *editedValue) {
+            [self.todoService updateItem:editedValue completion:^(NSUInteger index) {
+                self.editingItem = nil;
+            }];
+        };
+    }
+}
+
+# pragma mark Conflict handling
+
+- (void)tableOperation:(MSTableOperation *)operation onComplete:(MSSyncItemBlock)completion
+{
+    [self doOperation:operation complete:completion];
+}
+
+-(void)doOperation:(MSTableOperation *)operation complete:(MSSyncItemBlock)completion
+{
+    [operation executeWithCompletion:^(NSDictionary *item, NSError *error) {
+        
+        NSDictionary *serverItem = [error.userInfo objectForKey:MSErrorServerItemKey];
+        
+        if (error.code == MSErrorPreconditionFailed) {
+            QSUIAlertViewWithBlock *alert = [[QSUIAlertViewWithBlock alloc] initWithCallback:^(NSInteger buttonIndex) {
+                if (buttonIndex == 1) { // Client
+                    NSMutableDictionary *adjustedItem = [operation.item mutableCopy];
+                    
+                    [adjustedItem setValue:[serverItem objectForKey:MSSystemColumnVersion] forKey:MSSystemColumnVersion];
+                    operation.item = adjustedItem;
+                    
+                    [self doOperation:operation complete:completion];
+                    return;
+                    
+                } else if (buttonIndex == 2) { // Server
+                    NSDictionary *serverItem = [error.userInfo objectForKey:MSErrorServerItemKey];
+                    completion(serverItem, nil);
+                } else { // Cancel
+                    [operation cancelPush];
+                    completion(nil, error);
+                }
+            }];
+            
+            NSString *message = [NSString stringWithFormat:@"Client value: %@\nServer value: %@", operation.item[@"text"], serverItem[@"text"]];
+            
+            [alert showAlertWithTitle:@"Server Conflict"
+                              message:message
+                    cancelButtonTitle:@"Cancel"
+                    otherButtonTitles:[NSArray arrayWithObjects:@"Use Client", @"Use Server", nil]];
+        } else {
+            completion(item, error);
+        }
+    }];
+}
 
 @end

@@ -34,19 +34,19 @@
 @implementation QSTodoService
 
 
-+ (QSTodoService *)defaultService
++ (QSTodoService *)defaultServiceWithDelegate:(id)delegate;
 {
     // Create a singleton instance of QSTodoService
     static QSTodoService* service;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        service = [[QSTodoService alloc] init];
+        service = [[QSTodoService alloc] initWithDelegate:delegate];
     });
     
     return service;
 }
 
--(QSTodoService *)init
+-(QSTodoService *)initWithDelegate:(id)syncDelegate
 {
     self = [super init];
     
@@ -60,8 +60,8 @@
         NSManagedObjectContext *context = delegate.managedObjectContext;
         MSCoreDataStore *store = [[MSCoreDataStore alloc] initWithManagedObjectContext:context];
         
-        self.client.syncContext = [[MSSyncContext alloc] initWithDelegate:nil dataSource:store callback:nil];
-        
+        self.client.syncContext = [[MSSyncContext alloc] initWithDelegate:syncDelegate dataSource:store callback:nil];
+    
         // Create an MSSyncTable instance to allow us to work with the TodoItem table
         self.syncTable = [_client syncTableWithName:@"TodoItem"];
     }
@@ -76,32 +76,25 @@
     {
         [self logErrorIfNotNil:error];
     
-        [self syncData: ^{
-            // Let the caller know that we finished
-            if (completion != nil) {
-                dispatch_async(dispatch_get_main_queue(), completion);
-            }
-        }];
+        // Let the caller know that we finished
+        if (completion != nil) {
+            dispatch_async(dispatch_get_main_queue(), completion);
+        }
     }];
 }
 
--(void)completeItem:(NSDictionary *)item completion:(QSCompletionBlock)completion
+- (void)updateItem:(NSDictionary *)item completion:(QSCompletionBlock)completion
 {
     // Set the item to be complete (we need a mutable copy)
     NSMutableDictionary *mutable = [item mutableCopy];
-    [mutable setObject:@YES forKey:@"complete"];
     
-    // Update the item in the TodoItem table and remove from the items array on completion
-    [self.syncTable update:mutable completion:^(NSError *error)
-    {
+    // Update the item in the TodoItem table and remove from the items array when we mark an item as complete
+    [self.syncTable update:mutable completion:^(NSError *error) {
         [self logErrorIfNotNil:error];
         
-        [self syncData: ^{
-            // Let the caller know that we finished
-            if (completion != nil) {
-                dispatch_async(dispatch_get_main_queue(), completion);
-            }
-        }];
+        if (completion != nil) {
+            dispatch_async(dispatch_get_main_queue(), completion);
+        }
     }];
 }
 

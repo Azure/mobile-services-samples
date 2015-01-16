@@ -14,12 +14,13 @@
 // limitations under the License.
 //
 
-#import <UIKit/UIKit.h>
-#import "QSItemViewController.h"
+#import <Foundation/Foundation.h>
 
-@interface QSTodoListViewController : UITableViewController<MSSyncContextDelegate, NSFetchedResultsControllerDelegate>
+typedef void (^QSUIAlertViewBlock) (NSInteger index);
 
-@property (weak, nonatomic) IBOutlet UITextField *itemText;
-- (IBAction)onAdd:(id)sender;
+@interface QSUIAlertViewWithBlock : NSObject <UIAlertViewDelegate>
+
+- (id) initWithCallback:(QSUIAlertViewBlock)callback;
+- (void) showAlertWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)otherButtonTitles;
 
 @end

@@ -15,11 +15,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "QSItemViewController.h"
 
-@interface QSTodoListViewController : UITableViewController<MSSyncContextDelegate, NSFetchedResultsControllerDelegate>
+typedef void (^ItemEditCompletionBlock) (NSDictionary *editedItem);
 
-@property (weak, nonatomic) IBOutlet UITextField *itemText;
-- (IBAction)onAdd:(id)sender;
+@interface QSItemViewController : UIViewController
+
+@property (nonatomic, strong) NSMutableDictionary *item;
+@property (nonatomic, strong) ItemEditCompletionBlock editCompleteBlock;
 
 @end

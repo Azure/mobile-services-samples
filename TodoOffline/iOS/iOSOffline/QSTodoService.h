@@ -29,13 +29,12 @@ typedef void (^QSCompletionBlock) ();
 
 @property (nonatomic, strong)   MSClient *client;
 
-+ (QSTodoService *)defaultService;
++ (QSTodoService *)defaultServiceWithDelegate:(id)delegate;
 
 - (void)addItem:(NSDictionary *)item
      completion:(QSCompletionBlock)completion;
 
-- (void)completeItem:(NSDictionary *)item
-          completion:(QSCompletionBlock)completion;
+- (void)updateItem:(NSDictionary *)item completion:(QSCompletionBlock)completion;
 
 - (void)syncData:(QSCompletionBlock)completion;
 
