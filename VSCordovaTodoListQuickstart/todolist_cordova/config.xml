@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" id="io.cordova.todolistcordova" version="1.0.0.0" xmlns="http://www.w3.org/ns/widgets">
+  <name>todolist_cordova</name>
+  <description>
+    todolist_cordova
+  </description>
+  <author href="http://www.windowsazure.com/en-us/develop/mobile/" email="mobileservices@microsoft.com">
+    Windows Azure Mobile Services
+  </author>
+  <content src="index.html" />
+  <access origin="*" />
+  <preference name="permissions" value="none" />
+  <preference name="orientation" value="default" />
+  <preference name="target-device" value="universal" />
+  <preference name="fullscreen" value="true" />
+  <preference name="webviewbounce" value="true" />
+  <preference name="prerendered-icon" value="true" />
+  <preference name="stay-in-webview" value="false" />
+  <preference name="ios-statusbarstyle" value="black-opaque" />
+  <preference name="detect-data-types" value="true" />
+  <preference name="exit-on-suspend" value="false" />
+  <preference name="show-splash-screen-spinner" value="true" />
+  <preference name="auto-hide-splash-screen" value="true" />
+  <preference name="disable-cursor" value="false" />
+  <preference name="android-minSdkVersion" value="7" />
+  <preference name="android-installLocation" value="auto" />
+  <preference name="KeepRunning" value="False" />
+  <preference name="Fullscreen" value="false" />
+  <vs:plugin name="com.msopentech.azure-mobile-services" version="0.1.4" />
+  <vs:plugin name="org.apache.cordova.inappbrowser" version="0.5.2" />
+  <vs:plugin name="org.apache.cordova.device" version="0.2.12" />
+  <vs:platformSpecificValues />
+</widget>
