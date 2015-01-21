@@ -4,8 +4,8 @@
   <description>
     todolist_cordova
   </description>
-  <author href="http://www.windowsazure.com/en-us/develop/mobile/" email="mobileservices@microsoft.com">
-    Windows Azure Mobile Services
+  <author href="http://azure.microsoft.com/en-us/documentation/services/mobile-services/" email="mobileservices@microsoft.com">
+    Azure Mobile Services
   </author>
   <content src="index.html" />
   <access origin="*" />
