@@ -110,6 +110,11 @@
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="plugins\com.microsoft.azure-mobile-services\.fetch.json" />
+    <Content Include="plugins\com.microsoft.azure-mobile-services\LICENSE.txt" />
+    <Content Include="plugins\com.microsoft.azure-mobile-services\plugin.xml" />
+    <Content Include="plugins\com.microsoft.azure-mobile-services\README.md" />
+    <Content Include="plugins\com.microsoft.azure-mobile-services\www\MobileServices.Web.min.js" />
     <Content Include="plugins\org.apache.cordova.device\.fetch.json" />
     <Content Include="plugins\org.apache.cordova.device\CONTRIBUTING.md" />
     <Content Include="plugins\org.apache.cordova.device\doc\de\index.md" />
