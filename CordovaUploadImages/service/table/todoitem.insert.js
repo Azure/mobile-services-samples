@@ -1,4 +1,4 @@
-var azure = require('azure');
+﻿var azure = require('azure');
 var qs = require('querystring');
 var appSettings = require('mobileservice-config').appSettings;
 
@@ -13,7 +13,7 @@ function insert(item, user, request) {
   item.containerName !== null)) {
       // Set the BLOB store container name on the item, which must be lowercase.
       item.containerName = item.containerName.toLowerCase();
-console.log(item.containerName); //debugging
+   
       // If it does not already exist, create the container 
       // with public read access for blobs.        
       var blobService = azure.createBlobService(accountName, accountKey, host);
@@ -32,20 +32,15 @@ console.log(item.containerName); //debugging
 
               // Generate the upload URL with SAS for the new image.
               var sasQueryUrl = 
-              blobService.generateSharedAccessSignature(item.containerName,
-				item.resourceName, sharedAccessPolicy);
-              
-			// Use this version of sasQueryUrl when uploading mutiple blobs.			  
-			/* var sasQueryUrl = 
               blobService.generateSharedAccessSignature(item.containerName, 
-              '', sharedAccessPolicy); */
-
+              item.resourceName, sharedAccessPolicy);
+             
               // Set the query string.
               item.sasQueryString = qs.stringify(sasQueryUrl.queryString);
 
               // Set the full path on the new new item, 
               // which is used for data binding on the client. 
-              item.imageUri = sasQueryUrl.baseUrl + sasQueryUrl.path + '/' + item.resourceName;          
+              item.imageUri = sasQueryUrl.baseUrl + sasQueryUrl.path; 
 
           } else {
               console.error(error);
