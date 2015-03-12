@@ -87,10 +87,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="guava-18.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3" level="project" />
+    <orderEntry type="library" exported="" name="azure-mobile-services-android-sdk-2.0.2-beta2" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
-    <orderEntry type="library" exported="" name="azure-mobile-services-android-sdk-2.0-beta" level="project" />
-    <orderEntry type="library" exported="" name="azure-notifications-handler-1.0.1" level="project" />
   </component>
 </module>
 
