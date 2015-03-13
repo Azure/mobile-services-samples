@@ -1,0 +1,26 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 'Google Inc.:Google APIs:21'
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.example.GetStartedWithData"
+        minSdkVersion 8
+        targetSdkVersion 21
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.google.code.gson:gson:2.2.2'
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.microsoft.azure:azure-mobile-services-android-sdk:2.0.2+'
+}
