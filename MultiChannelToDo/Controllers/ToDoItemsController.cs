@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using MultiChannelToDo.Models;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
-using MultiChannelToDo.Models;
 
 namespace MultiChannelToDo.Controllers
 {
+    [EnableCors("*", "*", "*", SupportsCredentials = false)]
     public class ToDoItemsController : ApiController
     {
         private MultiChannelToDoContext db = new MultiChannelToDoContext();

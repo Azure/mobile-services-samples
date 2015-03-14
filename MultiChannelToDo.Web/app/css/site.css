@@ -1,0 +1,27 @@
+﻿.check-list {
+}
+
+.check-list-container {
+    width: 300px;
+    text-align: right;
+    border: 1px dashed red;
+}
+
+.check-list-item {
+    height: 40px;
+    width: 225px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    list-style-type: none;
+    text-align: left;
+}
+
+.check-list-item .glyphicon {
+    padding: 10px;
+    color: red;
+}
+
+.check-list-item-container {
+    margin: 20px;
+}
