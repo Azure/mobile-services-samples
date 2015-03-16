@@ -10,20 +10,22 @@
 
 <body ng-app="multiChannelToDo">
 
-    <div class="container">
-        <div class="check-list-container" ng-controller="ToDoController">
+    <div class="container" ng-controller="ToDoController">
+        <h1><span class="glyphicon glyphicon-list-alt"></span> To Do List</h1>
+        <div class="check-list-container">
             <div class="check-list-item-container">
                 <ul class="check-list">
                     <li id="check-list-item-{{item.Id}}" ng-repeat="item in items" ng-hide="{{item.Complete}}" ng-click="complete(item)" class="check-list-item"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> {{item.Text}}</li>
                 </ul>
             </div>
-            <div class="controls-container">
-                <form ng-submit="add()" class="form-inline">
-                    <div class="form-group">
-                        <input id="Text" ng-model="itemText" type="text" class="form-control" placeholder="Task" /><button class="btn btn-primary">Add Item</button>
-                    </div>
-                </form>
-            </div>
+        </div>
+        <hr class=""/>
+        <div class="controls-container">
+            <form ng-submit="add()" class="form-inline">
+                <div class="form-group">
+                    <input id="Text" ng-model="itemText" type="text" class="form-control" placeholder="Task" /><button class="btn btn-primary">Add Item</button>
+                </div>
+            </form>
         </div>
     </div>
 

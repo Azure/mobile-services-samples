@@ -1,27 +1,41 @@
-﻿.check-list {
-}
-
-.check-list-container {
+﻿.container {
     width: 300px;
-    text-align: right;
-    border: 1px dashed red;
+    margin: auto;
+    margin-top: 60px;
+    padding: 10px;
 }
 
-.check-list-item {
+    .container h1 {
+        color: #000000;
+    }
+
+ul.check-list {
+    -webkit-padding-start: 0px;
+}
+
+div.check-list-container {
+    width: 300px;
+    min-height: 200px;
+    text-align: right;
+}
+
+li.check-list-item {
     height: 40px;
     width: 225px;
-    border: 1px solid #000;
-    border-radius: 5px;
-    margin-bottom: 2px;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 2px;
     list-style-type: none;
     text-align: left;
 }
 
-.check-list-item .glyphicon {
-    padding: 10px;
-    color: red;
+    li.check-list-item span.glyphicon {
+        padding: 10px;
+        color: #000000;
+    }
+
+div.check-list-item-container {
 }
 
-.check-list-item-container {
-    margin: 20px;
+div.controls-container {
+    text-align: right;
 }
