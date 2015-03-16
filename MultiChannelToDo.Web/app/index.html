@@ -18,12 +18,11 @@
                 </ul>
             </div>
             <div class="controls-container">
-                <form class="form-inline">
+                <form ng-submit="add()" class="form-inline">
                     <div class="form-group">
-                        <input id="task" ng-model="ToDoItem" type="text" class="form-control" placeholder="Task" /><button class="btn btn-primary" ng-click="add(task)">Add Item</button>
+                        <input id="Text" ng-model="itemText" type="text" class="form-control" placeholder="Task" /><button class="btn btn-primary">Add Item</button>
                     </div>
                 </form>
-                [<button class="btn btn-link">Hide Finished</button>]
             </div>
         </div>
     </div>
