@@ -26,6 +26,9 @@ namespace MultiChannelToDo.Models
             modelBuilder.HasDefaultSchema("mobile_service_name"); // change schema to the name of your mobile service,
                                                                   // replacing dashes with underscore
                                                                   // mobile-service-name ==> mobile_service_name
+
+            Database.SetInitializer<MultiChannelToDoContext>(null);
+
             base.OnModelCreating(modelBuilder);
         }
     }
