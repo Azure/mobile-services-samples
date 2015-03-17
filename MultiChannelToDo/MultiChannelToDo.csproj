@@ -131,15 +131,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201502202049572_Initial State.cs" />
-    <Compile Include="Migrations\201502202049572_Initial State.Designer.cs">
-      <DependentUpon>201502202049572_Initial State.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201502202145139_Remove Version.cs" />
-    <Compile Include="Migrations\201502202145139_Remove Version.Designer.cs">
-      <DependentUpon>201502202145139_Remove Version.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ToDoItem.cs" />
     <Compile Include="Models\MultiChannelToDoContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -149,14 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201502202049572_Initial State.resx">
-      <DependentUpon>201502202049572_Initial State.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201502202145139_Remove Version.resx">
-      <DependentUpon>201502202145139_Remove Version.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

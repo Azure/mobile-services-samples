@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
+using System.Web.Http.OData;
 
 namespace MultiChannelToDo.Controllers
 {
@@ -16,12 +17,14 @@ namespace MultiChannelToDo.Controllers
         private MultiChannelToDoContext db = new MultiChannelToDoContext();
 
         // GET: api/ToDoItems
+        [EnableQuery]
         public IQueryable<ToDoItem> GetToDoItems()
         {
             return db.ToDoItems;
         }
 
         // GET: api/ToDoItems/5
+        [EnableQuery]
         [ResponseType(typeof(ToDoItem))]
         public async Task<IHttpActionResult> GetToDoItem(string id)
         {
