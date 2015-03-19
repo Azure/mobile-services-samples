@@ -19,7 +19,7 @@ namespace MultiChannelToDo.Models
         {
         }
 
-        public System.Data.Entity.DbSet<MultiChannelToDo.Models.ToDoItem> ToDoItems { get; set; }
+        public System.Data.Entity.DbSet<MultiChannelToDo.Models.TodoItem> ToDoItems { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

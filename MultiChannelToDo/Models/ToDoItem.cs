@@ -4,11 +4,11 @@ using System;
 namespace MultiChannelToDo.Models
 {
     [JsonObject]
-    public class ToDoItem
+    public class TodoItem
     {
-        public ToDoItem()
+        public TodoItem()
         {
-            Complete = false;
+            Id = Guid.NewGuid().ToString();
             CreatedAt = DateTimeOffset.UtcNow;
             UpdatedAt = DateTimeOffset.UtcNow;
         }
@@ -18,5 +18,6 @@ namespace MultiChannelToDo.Models
         public bool Complete { get; set; }
         public DateTimeOffset? CreatedAt { get; set; }
         public DateTimeOffset? UpdatedAt { get; set; }
+        public bool Deleted { get; set; }
     }
 }
