@@ -57,24 +57,25 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\css\site.css" />
-    <Content Include="app\index.html" />
-    <Content Include="app\js\app.js" />
-    <Content Include="app\js\controllers\ToDoController.js" />
-    <None Include="app\js\models\todoitem.json" />
-    <Content Include="app\js\services\ToDoService.js" />
-    <Content Include="app\lib\angular\angular.min.js" />
-    <Content Include="app\lib\bootstrap\css\bootstrap-theme.min.css" />
-    <Content Include="app\lib\bootstrap\css\bootstrap.min.css" />
-    <Content Include="app\lib\bootstrap\js\bootstrap.min.js" />
-    <Content Include="app\lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="app\lib\jquery\jquery.min.js" />
+    <Content Include="css\site.css" />
+    <Content Include="index.html" />
+    <Content Include="js\app.js" />
+    <Content Include="js\controllers\ToDoController.js" />
+    <None Include="js\models\todoitem.json" />
+    <Content Include="js\services\ToDoService.js" />
+    <Content Include="lib\angular\angular.min.js" />
+    <Content Include="lib\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="lib\bootstrap\css\bootstrap.min.css" />
+    <Content Include="lib\bootstrap\js\bootstrap.min.js" />
+    <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="lib\jquery\jquery.min.js" />
     <Content Include="package.json" />
     <Content Include="bower.json" />
-    <Content Include="app\lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="app\lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="app\lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="app\lib\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\donnam-multichannel-webapp.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -83,7 +84,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="gruntfile.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

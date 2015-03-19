@@ -1,5 +1,5 @@
 ﻿'use strict';
-var apiPath = "https://multichannel-saas.azurewebsites.net";
+var apiPath = "https://donnam-multichannel.azurewebsites.net";
 multiChannelToDoApp
     .factory('toDoService', ['$http', function ($http) {
         return {
