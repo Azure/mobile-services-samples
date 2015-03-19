@@ -1,0 +1,15 @@
+﻿{
+    "name": "package-name",
+    "version": "0.3.0",
+    "author": "Author Name <author@domain.com>",
+    "description": "Web front-end for MultiChannelToDo",
+    "devDependencies": {
+        "bower": "*",
+        "grunt": "*",
+        "grunt-bower-task":  "*"
+    },
+    "license": "MIT",
+    "engines": {
+        "node": ">=0.6"
+    }
+}

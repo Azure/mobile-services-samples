@@ -19,13 +19,16 @@ namespace MultiChannelToDo.Models
         {
         }
 
-        public System.Data.Entity.DbSet<MultiChannelToDo.Models.ToDoItem> ToDoItems { get; set; }
+        public System.Data.Entity.DbSet<MultiChannelToDo.Models.TodoItem> ToDoItems { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("mobile_service_name"); // change schema to the name of your mobile service,
                                                                   // replacing dashes with underscore
                                                                   // mobile-service-name ==> mobile_service_name
+
+            Database.SetInitializer<MultiChannelToDoContext>(null);
+
             base.OnModelCreating(modelBuilder);
         }
     }
