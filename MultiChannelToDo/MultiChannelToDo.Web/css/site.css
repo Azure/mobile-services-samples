@@ -1,0 +1,32 @@
+﻿.container {
+    width: 300px;
+    margin: auto;
+    margin-top: 60px;
+    padding: 10px;
+}
+
+ul.check-list {
+    -webkit-padding-start: 0px;
+}
+
+div.check-list-container {
+    width: 300px;
+    min-height: 200px;
+    text-align: right;
+}
+
+li.check-list-item {
+    height: 40px;
+    width: 225px;
+    padding-bottom: 2px;
+    list-style-type: none;
+    text-align: left;
+}
+
+    li.check-list-item span.glyphicon {
+        padding: 10px;
+    }
+
+div.controls-container {
+    text-align: right;
+}

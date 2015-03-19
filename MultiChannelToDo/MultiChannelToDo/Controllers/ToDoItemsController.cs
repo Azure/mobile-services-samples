@@ -1,36 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using MultiChannelToDo.Models;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using System.Web.Http.OData;
-using MultiChannelToDo.Models;
 
 namespace MultiChannelToDo.Controllers
 {
+    [EnableCors("*", "*", "*", SupportsCredentials = false)]
     public class ToDoItemsController : ApiController
     {
         private MultiChannelToDoContext db = new MultiChannelToDoContext();
 
         // GET: api/ToDoItems
         [EnableQuery]
-        public IQueryable<ToDoItem> GetToDoItems()
+        public IQueryable<TodoItem> GetToDoItems()
         {
             return db.ToDoItems;
         }
 
         // GET: api/ToDoItems/5
         [EnableQuery]
-        [ResponseType(typeof(ToDoItem))]
+        [ResponseType(typeof(TodoItem))]
         public async Task<IHttpActionResult> GetToDoItem(string id)
         {
-            ToDoItem toDoItem = await db.ToDoItems.FindAsync(id);
+            TodoItem toDoItem = await db.ToDoItems.FindAsync(id);
             if (toDoItem == null)
             {
                 return NotFound();
@@ -41,7 +39,7 @@ namespace MultiChannelToDo.Controllers
 
         // PUT: api/ToDoItems/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutToDoItem(string id, ToDoItem toDoItem)
+        public async Task<IHttpActionResult> PutToDoItem(string id, TodoItem toDoItem)
         {
             if (!ModelState.IsValid)
             {
@@ -75,8 +73,8 @@ namespace MultiChannelToDo.Controllers
         }
 
         // POST: api/ToDoItems
-        [ResponseType(typeof(ToDoItem))]
-        public async Task<IHttpActionResult> PostToDoItem(ToDoItem toDoItem)
+        [ResponseType(typeof(TodoItem))]
+        public async Task<IHttpActionResult> PostToDoItem(TodoItem toDoItem)
         {
             if (!ModelState.IsValid)
             {
@@ -105,10 +103,10 @@ namespace MultiChannelToDo.Controllers
         }
 
         // DELETE: api/ToDoItems/5
-        [ResponseType(typeof(ToDoItem))]
+        [ResponseType(typeof(TodoItem))]
         public async Task<IHttpActionResult> DeleteToDoItem(string id)
         {
-            ToDoItem toDoItem = await db.ToDoItems.FindAsync(id);
+            TodoItem toDoItem = await db.ToDoItems.FindAsync(id);
             if (toDoItem == null)
             {
                 return NotFound();
