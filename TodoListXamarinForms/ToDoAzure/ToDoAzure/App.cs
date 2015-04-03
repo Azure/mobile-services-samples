@@ -13,11 +13,7 @@ namespace ToDoAzure
         {
             // The root page of your application
             var tdlx = new ToDoListXaml();
-            MainPage = new NavigationPage(tdlx)
-            {
-                BarBackgroundColor = Color.Black,
-                BarTextColor = Color.White
-            };
+            MainPage = new NavigationPage(tdlx) {};
             
         }
 

@@ -9,7 +9,7 @@ namespace ToDoAzure
     public static class Constants
     {
         // Replace strings with your mobile services url and key.
-        public static string ApplicationURL = @"MOBILE_SERVICE_URL";
-        public static string ApplicationKey = @"MOBILE_SERVICE_APP_KEY";
+        public static string ApplicationURL = @"https://normstodolist.azure-mobile.net/";
+        public static string ApplicationKey = @"dQPNpchVSpSozaVGHqlUWSsdviYqWB38";
     }
 }

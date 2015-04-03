@@ -35,11 +35,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="Views\TextBox.cs" />
+    <Compile Include="Views\CheckBox.xaml.cs">
+      <DependentUpon>CheckBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ToDoListXaml.xaml.cs">
       <DependentUpon>ToDoListXaml.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CheckBox.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Models\DeviceDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,6 +88,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\ToDoItemXaml.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\CheckBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

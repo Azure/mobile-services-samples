@@ -5,17 +5,17 @@
              x:Class="ToDoAzure.ToDoItemXaml"
              Title="  Xamarin.Forms and Azure Mobile Services">
   <ContentPage.Content>
-    <StackLayout Orientation="Vertical" BackgroundColor="Black" >
+    <StackLayout Orientation="Vertical">
       <StackLayout x:Name="detailsStack" Padding="20,0,0,0">
-        <Label Text="Name" TextColor="White"/>
-        <Entry Text="{Binding Path=Name}" x:Name="nameEntry" Placeholder="task name" TextColor="White" BackgroundColor="Black"/>
-        <Label Text="Notes" TextColor="White"/>
-        <view:TextBox x:Name="notesEntry" Text="{Binding Path=Notes}" VerticalOptions="FillAndExpand" />
+        <Label Text="Name" />
+        <Entry Text="{Binding Path=Name}" x:Name="nameEntry" Placeholder="task name"/>
+        <Label Text="Notes"/>
+        <Entry x:Name="notesEntry" Text="{Binding Path=Notes}" VerticalOptions="FillAndExpand" />
       </StackLayout>
       <StackLayout Orientation="Horizontal" x:Name="buttonStack" VerticalOptions="EndAndExpand">
-        <Button x:Name="saveButton" Text="Save" Clicked="OnSaveActivated" BackgroundColor="Black" BorderColor="White" TextColor="White"/>
-        <Button x:Name="deleteButton" Text="Delete" Clicked="OnDeleteActivated" BackgroundColor="Black" BorderColor="White" TextColor="White"/>
-        <Button x:Name="cancelButton" Text="Cancel" Clicked="OnCancelActivated" BackgroundColor="Black" BorderColor="White" TextColor="White"/>
+        <Button x:Name="saveButton" Text="Save" Clicked="OnSaveActivated" />
+        <Button x:Name="deleteButton" Text="Delete" Clicked="OnDeleteActivated"/>
+        <Button x:Name="cancelButton" Text="Cancel" Clicked="OnCancelActivated" />
       </StackLayout>
     </StackLayout>
   </ContentPage.Content>

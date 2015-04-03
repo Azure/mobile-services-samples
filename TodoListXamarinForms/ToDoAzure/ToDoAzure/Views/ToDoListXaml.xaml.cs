@@ -65,6 +65,18 @@ namespace ToDoAzure
                 }
             } 
         }
+        async void OnCheckBoxChanged(object sender, bool isChecked)
+        {
+            CheckBox checkBox = ((CheckBox)sender);
+
+            ToDoItem item = (ToDoItem)checkBox.BindingContext;
+
+            if (item.Done != isChecked)
+            {
+                item.Done = isChecked;
+                await App.TodoManager.SaveTaskAsync(item);
+            }
+        }
 
         #region Get size of device
 

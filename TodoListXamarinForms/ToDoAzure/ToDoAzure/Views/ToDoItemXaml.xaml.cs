@@ -15,10 +15,6 @@ namespace ToDoAzure
             deleteButton.WidthRequest = App.TodoManager.Device.DeviceWidth / 3;
             cancelButton.WidthRequest = App.TodoManager.Device.DeviceWidth / 3;
 
-            if (Device.OS == TargetPlatform.WinPhone)
-            {
-                nameEntry.TextColor = Color.Black;
-            }
         }
         async void OnSaveActivated(object sender, EventArgs e)
         {
