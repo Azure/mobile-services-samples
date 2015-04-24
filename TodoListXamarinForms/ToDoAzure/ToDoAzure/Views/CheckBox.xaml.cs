@@ -31,7 +31,7 @@ namespace ToDoAzure
                 {
                     // Set the graphic.
                     CheckBox checkbox = (CheckBox)bindable;
-                    checkbox.checkBoxLabel.Text = newValue ? "\u2611" : "\u25FB";
+                    checkbox.checkBoxLabel.Text = newValue ? "\u2714" : "\u25FB";
                     // Fire the event.
                     EventHandler<bool> eventHandler = checkbox.CheckedChanged;
                     if (eventHandler != null)
