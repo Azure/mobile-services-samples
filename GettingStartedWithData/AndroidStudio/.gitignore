@@ -20,6 +20,7 @@ gen/
 /build
 /*.xml
 /*.iml
+/*.bin
 
 # Local configuration file (sdk path, etc)
 local.properties
