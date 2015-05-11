@@ -17,6 +17,8 @@ gen/
 # Gradle files
 .gradle/
 build/
+*.xml
+*.iml
 
 # Local configuration file (sdk path, etc)
 local.properties
