@@ -14,9 +14,12 @@ gen/
 .metadata/
 /.idea
 .idea/
+.idea
 
 # Gradle files
 .gradle/
+/.gradle
+gradle/
 build/
 /*/build/
 /*.xml
