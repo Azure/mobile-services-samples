@@ -112,6 +112,7 @@ public class ToDoActivity extends Activity {
 			tableDefinition.put("text", ColumnDataType.String);
 			tableDefinition.put("complete", ColumnDataType.Boolean);
 			tableDefinition.put("__version", ColumnDataType.String);
+//			tableDefinition.put("__deleted", ColumnDataType.Boolean);
 
 			localStore.defineTable("ToDoItem", tableDefinition);
 			syncContext.initialize(localStore, handler).get();
