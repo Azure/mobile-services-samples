@@ -335,13 +335,20 @@ public class ToDoActivity extends Activity {
 	 *            The dialog title
 	 */
 	private void createAndShowDialog(String message, String title) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 		builder.setMessage(message);
 		builder.setTitle(title);
-		builder.create().show();
+
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				builder.create().show();
+			}
+		});
 	}
-	
+
 	private class ProgressFilter implements ServiceFilter {
 
 		@Override
