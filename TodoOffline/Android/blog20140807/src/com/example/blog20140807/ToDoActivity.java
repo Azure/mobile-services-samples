@@ -96,8 +96,8 @@ public class ToDoActivity extends Activity {
 			// Create the Mobile Service Client instance, using the provided
 			// Mobile Service URL and key
 			mClient = new MobileServiceClient(
-					"https://blog20140807.azure-mobile.net/",
-					"VQdzkFyLODXjByoRgXuMJdIxoZupwA43",
+					"https://enhancedpush-rs.azure-mobile.net/",
+					"taeExGajjVyDlkOEVaakQPCtURErfZ33",
 					this).withFilter(new ProgressFilter());
 
 			// Saves the query which will be used for pulling data
@@ -112,7 +112,7 @@ public class ToDoActivity extends Activity {
 			tableDefinition.put("text", ColumnDataType.String);
 			tableDefinition.put("complete", ColumnDataType.Boolean);
 			tableDefinition.put("__version", ColumnDataType.String);
-//			tableDefinition.put("__deleted", ColumnDataType.Boolean);
+			tableDefinition.put("__deleted", ColumnDataType.Boolean);
 
 			localStore.defineTable("ToDoItem", tableDefinition);
 			syncContext.initialize(localStore, handler).get();
@@ -190,7 +190,7 @@ public class ToDoActivity extends Activity {
 				@Override
 				protected Void doInBackground(Void... params) {
 					try {
-						mClient.getSyncContext().push().get();
+//						mClient.getSyncContext().push().get();
 						mToDoTable.pull(mPullQuery).get();
 						refreshItemsFromTable();
 					} catch (Exception exception) {
