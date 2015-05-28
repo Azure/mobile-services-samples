@@ -4,9 +4,11 @@ angular.module('todoApp')
 //    debugger;
     $scope.login = function () {
         Azureservice.login('aad');
+        $scope.isAuthenticated = true;
     };
     $scope.logout = function () {
-        Azureservice.logOut();
+        Azureservice.logout();
+        $scope.isAuthenticated = false;
     };
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();

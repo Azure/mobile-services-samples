@@ -25,11 +25,11 @@
                 <ul class="nav navbar-nav">
                     <li ng-class="{ active: isActive('/Home') }"><a href="#/Home">Home</a></li>
                     <li ng-class="{ active: isActive('/TodoList') }"><a href="#/TodoList">Todo List</a></li>
-                    <li ng-class="{ active: isActive('/UserData') }"><a href="#/UserData" ng-show="userInfo.isAuthenticated">User</a></li>
+                    <li ng-class="{ active: isActive('/UserData') }"><a href="#/UserData" ng-show="isAuthenticated">User</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a class="btn btn-link" ng-show="userInfo.isAuthenticated" ng-click="logout()">Logout</a></li>
-                    <li><a class="btn btn-link" ng-hide=" userInfo.isAuthenticated" ng-click="login()">Login</a></li>
+                    <li><a class="btn btn-link" ng-show="isAuthenticated" ng-click="logout()">Logout</a></li>
+                    <li><a class="btn btn-link" ng-hide="isAuthenticated" ng-click="login()">Login</a></li>
                 </ul>
             </div>
         </div>
