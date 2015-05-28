@@ -8,18 +8,21 @@ This sample demonstrates the use of Azure Mobile Service JavaScript SDK, togethe
 Works:
 - Get Items
 - Delete Item
-- Insert Item (?)
-- Edit Item (partially, buggy)
+- Insert Item
+- Edit Item
 - Authentication with Azure AD (hardcoded 'aad' provider name for now)
 
-Not working:
+Not working yet:
 - User profile information
 
 
-Dependencies:
-[AngularJS](http://www.angularjs.org)
-[Mobile Service JS SDK](https://github.com/Azure/azure-mobile-services/blob/master/CHANGELOG.javascript.md)
-[angular-azure-mobile-service module](https://github.com/TerryMooreII/angular-azure-mobile-service)
+Dependencies:  
+- [AngularJS](http://www.angularjs.org)
+- [Mobile Service JS SDK](https://github.com/Azure/azure-mobile-services/blob/master/CHANGELOG.javascript.md)
+- [angular-azure-mobile-service module](https://github.com/TerryMooreII/angular-azure-mobile-service)
+  
+
+
 
 
 More details about this sample will come soon!

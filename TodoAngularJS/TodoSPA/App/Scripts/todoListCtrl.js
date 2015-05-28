@@ -1,6 +1,6 @@
 ﻿'use strict';
 angular.module('todoApp')
-.controller('todoListCtrl', ['$scope', '$location', 'todoListSvc', 'Azureservice', function ($scope, $location, todoListSvc, Azureservice){
+.controller('todoListCtrl', ['$scope', '$location', 'Azureservice', function ($scope, $location, Azureservice){
     var tableName = "todoItem";
     
     $scope.error = "";
@@ -19,7 +19,7 @@ angular.module('todoApp')
         todo.edit = !todo.edit;
         if (todo.edit) {
             $scope.editInProgressTodo.Description = todo.Description;
-            $scope.editInProgressTodo.ID = todo.ID;
+            $scope.editInProgressTodo.ID = todo.id;
             $scope.editingInProgress = true;
         } else {
             $scope.editingInProgress = false;
@@ -38,21 +38,21 @@ angular.module('todoApp')
         });
     };
     $scope.update = function (todo) {
-         Azureservice.update(tableName, todo).then(function (results) {
+         Azureservice.update(tableName, { 
+                    id: $scope.editInProgressTodo.ID,
+                    description: $scope.editInProgressTodo.Description 
+                }).then(function (results) {
             $scope.populate();
             $scope.editSwitch(todo);
         });
     };
     $scope.add = function () {
-        todoListSvc.putItem({
-            'Description': $scope.newTodoCaption,
+        Azureservice.insert(tableName, {
+            'description': $scope.newTodoCaption,
         }).then(function (results) {
             $scope.loadingMsg = "";
             $scope.newTodoCaption = "";
             $scope.populate();
-        }).error(function (err) {
-            $scope.error = err;
-            $scope.loadingMsg = "";
-        })
+        });
     };
 }]);

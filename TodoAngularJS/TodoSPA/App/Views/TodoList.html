@@ -14,7 +14,7 @@
                     <td>
                         <p data-ng-hide="item.edit">{{item.Description}}</p>
                         <input data-ng-show="item.edit" type="text" data-ng-model="editInProgressTodo.Description" class="form-control" />                        
-                        <input type="hidden" data-ng-model="editInProgressTodo.ID" />
+                        <input type="hidden" data-ng-model="editInProgressTodo" data-ng-value="ID" />
                     </td>
                     <td>
                         <p data-ng-hide="item.edit || editingInProgress">
