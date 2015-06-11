@@ -82,9 +82,14 @@ namespace ToDoAzure.WinPhone
                 new EventHandler<NotificationChannelUriEventArgs>(async (o, args) =>
                 {
                     MobileServiceClient client = todoItemManager.GetClient;
+
                     // Register for notifications using the new channel
+                    const string template =
+                    "<?xml version=\"1.0\" encoding=\"utf-8\"?><wp:Notification " +
+                    "xmlns:wp=\"WPNotification\"><wp:Toast><wp:Text1>$(message)</wp:Text1></wp:Toast></wp:Notification>";
+
                     await client.GetPush()
-                        .RegisterNativeAsync(CurrentChannel.ChannelUri.ToString());
+                        .RegisterTemplateAsync(CurrentChannel.ChannelUri.ToString(), template, "mytemplate");
                 });
         }
         

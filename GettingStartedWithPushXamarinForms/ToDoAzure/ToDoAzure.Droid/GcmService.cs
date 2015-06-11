@@ -72,7 +72,9 @@ namespace ToDoAzure.Droid
         {
             try
             {
-                await push.RegisterNativeAsync(RegistrationID, tags);
+                const string template = "{\"data\":{\"message\":\"$(message)\"}}";
+
+                await push.RegisterTemplateAsync(RegistrationID, template, "mytemplate", tags);
             }
             catch (Exception ex)
             {

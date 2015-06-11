@@ -55,8 +55,15 @@ namespace ToDoAzure.iOS
 
             // Register for push with Mobile Services
             IEnumerable<string> tag = new List<string>() { "uniqueTag" };
+
+            const string template = "{\"aps\":{\"alert\":\"$(message)\"}}";
+
+            var expiryDate = DateTime.Now.AddDays(90).ToString
+                (System.Globalization.CultureInfo.CreateSpecificCulture("en-US"));
+
             var push = client.GetPush();
-            push.RegisterNativeAsync(_deviceToken, tag);
+
+            push.RegisterTemplateAsync(_deviceToken, template, expiryDate, "myTemplate", tag)
         }
         public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
         {
