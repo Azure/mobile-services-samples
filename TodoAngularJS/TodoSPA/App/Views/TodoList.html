@@ -12,7 +12,7 @@
             <tbody>
                 <tr data-ng-repeat="item in todoList">
                     <td>
-                        <p data-ng-hide="item.edit">{{item.Description}}</p>
+                        <p data-ng-hide="item.edit">{{item.description}}</p>
                         <input data-ng-show="item.edit" type="text" data-ng-model="editInProgressTodo.Description" class="form-control" />                        
                         <input type="hidden" data-ng-model="editInProgressTodo" data-ng-value="ID" />
                     </td>
@@ -23,7 +23,6 @@
                             <p data-ng-show="item.edit"><a data-ng-click="update(item)" href="javascript:;">Save</a> | 
                             <a data-ng-click="editSwitch(item)" href="javascript:;">Cancel</a></p>                       
                     </td>
-
                 </tr>
             </tbody>
         </table>

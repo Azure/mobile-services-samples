@@ -30,21 +30,27 @@ angular.module('todoApp')
         Azureservice.getAll(tableName).then(function (results) {
             $scope.todoList = results;
             $scope.loadingMessage = "";
+        }).catch(function (err){
+            $scope.loadingMessage = err.toString();
         });
     };
     $scope.delete = function (item) {
          Azureservice.del(tableName, item).then(function (results) {
             $scope.populate();
+        }).catch(function (err){
+            $scope.loadingMessage = err.toString();
         });
     };
     $scope.update = function (todo) {
-         Azureservice.update(tableName, { 
-                    id: $scope.editInProgressTodo.ID,
-                    description: $scope.editInProgressTodo.Description 
-                }).then(function (results) {
+        Azureservice.update(tableName, { 
+            id: $scope.editInProgressTodo.ID,
+            description: $scope.editInProgressTodo.Description 
+        }).then(function (results) {
             $scope.populate();
             $scope.editSwitch(todo);
-        });
+        }).catch(function (err){
+            $scope.loadingMessage = err.toString();
+        });;
     };
     $scope.add = function () {
         Azureservice.insert(tableName, {
@@ -53,6 +59,8 @@ angular.module('todoApp')
             $scope.loadingMsg = "";
             $scope.newTodoCaption = "";
             $scope.populate();
-        });
+        }).catch(function (err){
+            $scope.loadingMessage = err.toString();
+        });;
     };
 }]);
