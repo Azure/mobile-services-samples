@@ -10,9 +10,11 @@ using MobileServiceTableStorage.Models;
 
 using System.Web.Http.OData.Query;
 using System.Collections.Generic;
+using Microsoft.WindowsAzure.Mobile.Service.Security;
 
 namespace MobileServiceTableStorage.Controllers
 {
+    [AuthorizeLevel(AuthorizationLevel.User)]
     public class TodoItemController : TableController<TodoItem>
     {
         protected override void Initialize(HttpControllerContext controllerContext)

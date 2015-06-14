@@ -13,5 +13,8 @@ namespace MobileServiceTableStorage.DataObjects
         public string Username { get; set; }
         public byte[] Salt { get; set; }
         public byte[] SaltedAndHashedPassword { get; set; }
+        public bool IsConfirmed { get; set; }
+        public String email { get; set; }
+        public String friendlyName { get; set; }
     }
 }

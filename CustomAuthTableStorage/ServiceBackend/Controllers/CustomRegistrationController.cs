@@ -15,6 +15,8 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.WindowsAzure.Storage;
 using System.Configuration;
 
+//using SendGrid;
+
 namespace MobileServiceTableStorage.Controllers
 {
     [AuthorizeLevel(AuthorizationLevel.Anonymous)]
@@ -26,7 +28,6 @@ namespace MobileServiceTableStorage.Controllers
         protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-
             // Parse the Storage account connection string.
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
                 ConfigurationManager.ConnectionStrings["StorageConnectionString"].ToString());
@@ -50,6 +51,11 @@ namespace MobileServiceTableStorage.Controllers
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, 
                     "Invalid password (at least 8 chars required)");
             }
+            else if (!registrationRequest.email.Contains("@"))
+            {
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest,
+                    "Please supply a valid email address");
+            }
 
             // Create a query for a specific username.
             TableQuery<Account> query = new TableQuery<Account>().Where(
@@ -60,7 +66,7 @@ namespace MobileServiceTableStorage.Controllers
             Account account = accountTable.ExecuteQuery(query).FirstOrDefault();
 
            
-            // If there's already an account, return an error response.
+            // If there's already a confirmed account, return an error response.
             if (account != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, 
@@ -76,11 +82,18 @@ namespace MobileServiceTableStorage.Controllers
                     Username = registrationRequest.username,
                     Salt = salt,
                     SaltedAndHashedPassword =
-                    CustomLoginProviderUtils.hash(registrationRequest.password, salt)
+                    CustomLoginProviderUtils.hash(registrationRequest.password, salt),
+                    IsConfirmed = true, // this should be false until confirmed.
+                    email = registrationRequest.email,
+                    friendlyName = registrationRequest.friendlyName
                 };
 
                 // Insert the new account into the table.                
                 accountTable.Execute(TableOperation.Insert(newAccount));
+
+                // This is where you would kick-off the independent verification process, 
+                // such as sending an email using SendGrid integration (http://aka.ms/busjrt).
+                // https://github.com/sendgrid/sendgrid-csharp
 
                 // Return the success response.
                 return this.Request.CreateResponse(HttpStatusCode.Created);

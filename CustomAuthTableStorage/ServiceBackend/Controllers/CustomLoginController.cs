@@ -11,6 +11,10 @@ using System.Security.Claims;
 using MobileServiceTableStorage.DataObjects;
 using MobileServiceTableStorage.Models;
 
+using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.WindowsAzure.Storage;
+using System.Configuration;
+
 namespace MobileServiceTableStorage.Controllers
 {
     [AuthorizeLevel(AuthorizationLevel.Anonymous)]
@@ -19,12 +23,39 @@ namespace MobileServiceTableStorage.Controllers
         public ApiServices Services { get; set; }
         public IServiceTokenHandler handler { get; set; }
 
+        private CloudTableClient tableClient;
+        private CloudTable accountTable;
+        protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            // Parse the Storage account connection string.
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                ConfigurationManager.ConnectionStrings["StorageConnectionString"].ToString());
+
+            // Create a new table client and create the Account table if it doesn't exist.
+            tableClient = storageAccount.CreateCloudTableClient();
+            accountTable = tableClient.GetTableReference("account");
+            accountTable.CreateIfNotExists();
+        }
+
         // POST api/CustomLogin
         public HttpResponseMessage Post(LoginRequest loginRequest)
         {
-            todoContext context = new todoContext();
-            Account account = context.Accounts
-                .Where(a => a.Username == loginRequest.username).SingleOrDefault();
+            // Create a query for a specific username.
+            TableQuery<Account> query = new TableQuery<Account>().Where(
+                TableQuery.GenerateFilterCondition("Username", QueryComparisons.Equal,
+                loginRequest.username));
+
+            // Execute the query to retrieve the account.
+            Account account = accountTable.ExecuteQuery(query).SingleOrDefault();
+
+            if (!account.IsConfirmed)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest,
+                    "You must first confim your account registration.");
+            }
+
             if (account != null)
             {
                 byte[] incoming = CustomLoginProviderUtils
