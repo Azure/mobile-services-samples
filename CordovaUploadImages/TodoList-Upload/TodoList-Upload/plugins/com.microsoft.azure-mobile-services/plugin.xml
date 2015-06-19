@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved.
+ Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+-->
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+           id="com.microsoft.azure-mobile-services"
+      version="1.2.7">
+    <name>Windows Azure Mobile Services</name>
+    <description>Exposes JavaScript api to access an Azure Mobile Services instance</description>
+    <license>Apache 2.0</license>
+    <keywords>azure, services, zumo, cloud</keywords>
+    <repo>https://github.com/azure/azure-mobile-services-cordova/</repo>
+    <issue>https://github.com/azure/azure-mobile-services/issues</issue>
+
+    <dependency id="org.apache.cordova.inappbrowser"/>
+
+    <platform name="windows8">
+        <js-module src="www/MobileServices.Web.min.js" name="AzureMobileServices">
+            <runs />
+        </js-module>
+    </platform>
+
+    <platform name="windows">
+        <js-module src="www/MobileServices.Web.min.js" name="AzureMobileServices">
+            <runs />
+        </js-module> 
+    </platform>
+
+    <platform name="wp8">
+        <js-module src="www/MobileServices.Web.min.js" name="AzureMobileServices">
+            <runs />
+        </js-module> 
+    </platform>
+
+    <platform name="ios">
+        <js-module src="www/MobileServices.Web.min.js" name="AzureMobileServices">
+            <runs />
+        </js-module> 
+    </platform>
+
+    <platform name="android">
+        <js-module src="www/MobileServices.Web.min.js" name="AzureMobileServices">
+            <runs />
+        </js-module> 
+    </platform>
+</plugin>
+
