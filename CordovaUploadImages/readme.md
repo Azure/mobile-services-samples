@@ -22,12 +22,12 @@ To run this Apache Cordova for Visual Studio sample app on one or more of the su
 
 June, 2015
 
-1. Updated to a Dev14 RC project (VS 2015 RC required!).
-2. Added support for grabbing images from local file (using FilePicker), and for dynamic switching between Camera and FilePicker.
-3. Switched to Camera plugin from Media Capture plugin (the former allows use of FilePicker).
-4. Updates to the app to support Win/WinPhone.
-5. Updates to Camera plugin 0.3.6 to enable FilePicker support on Windows Phone (comments included).
-6. Updates to Camera plugin 0.3.6 to enable ReadAsArrayBuffer support on Windows Phone (comments included).
++ Updated to a Dev14 RC project (VS 2015 RC required!).
++ Added support for grabbing images from local file (using FilePicker), and for dynamic switching between Camera and FilePicker.
++ Switched to Camera plugin from Media Capture plugin (the former allows use of FilePicker).
++ Updates to the app to support Win/WinPhone.
++ Updates to Camera plugin 0.3.6 to enable FilePicker support on Windows Phone (comments included).
++ Updates to Camera plugin 0.3.6 to enable ReadAsArrayBuffer support on Windows Phone (comments included).
 
 
 ##Configure the Azure backend services 
