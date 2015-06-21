@@ -80,6 +80,12 @@ public class ToDoActivity extends Activity {
 	private static final int EDIT_ACTIVITY_REQUEST_CODE = 1234;
 
 	/**
+	 * Replace the service URL and Key with the URL and Key to your project's web service
+	 */
+	private String MOBILE_SERVICE_URL = "https://enhancedpush-rs.azure-mobile.net/";
+	private String MOBILE_SERVICE_KEY = "taeExGajjVyDlkOEVaakQPCtURErfZ33";
+
+	/**
 	 * Initializes the activity
 	 */
 	@Override
@@ -93,11 +99,11 @@ public class ToDoActivity extends Activity {
 		mProgressBar.setVisibility(ProgressBar.GONE);
 		
 		try {
-			// Create the Mobile Service Client instance, using the provided
+			// Create the Mobile Service Client instance, using the appropriate
 			// Mobile Service URL and key
 			mClient = new MobileServiceClient(
-					"https://enhancedpush-rs.azure-mobile.net/",
-					"taeExGajjVyDlkOEVaakQPCtURErfZ33",
+					MOBILE_SERVICE_URL,
+					MOBILE_SERVICE_KEY,
 					this).withFilter(new ProgressFilter());
 
 			// Saves the query which will be used for pulling data
