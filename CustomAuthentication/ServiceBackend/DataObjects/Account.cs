@@ -8,7 +8,9 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace CustomAuthMobileService.DataObjects
 {
-    public class Account : TableEntity
+    //// TODO: Use the below definition for Azure Table storage.    
+    //public class Account : StorageData
+    public class Account : EntityData
     {
         public string Username { get; set; }
         public byte[] Salt { get; set; }

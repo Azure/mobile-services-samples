@@ -57,14 +57,14 @@ namespace CustomAuthMobileService.Controllers
             //// Execute the query to retrieve the account.
             //Account account = accountTable.ExecuteQuery(query).SingleOrDefault();
 
-            if (!account.IsConfirmed)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest,
-                    "You must first confim your account registration.");
-            }
-
             if (account != null)
             {
+                if (!account.IsConfirmed)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest,
+                        "You must first confim your account registration.");
+                }
+
                 byte[] incoming = CustomLoginProviderUtils
                     .hash(loginRequest.password, account.Salt);
 

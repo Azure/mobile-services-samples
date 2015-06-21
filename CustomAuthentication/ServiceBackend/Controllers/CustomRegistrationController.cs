@@ -85,8 +85,9 @@ namespace CustomAuthMobileService.Controllers
                 byte[] salt = CustomLoginProviderUtils.generateSalt();
                 Account newAccount = new Account
                 {
-                    PartitionKey = "partition",
-                    RowKey = Guid.NewGuid().ToString(),
+                    //// TODO: Uncomment the below for Azure Table storage.
+                    //PartitionKey = "partition",
+                    //RowKey = Guid.NewGuid().ToString(),
                     Username = registrationRequest.username,
                     Salt = salt,
                     SaltedAndHashedPassword =

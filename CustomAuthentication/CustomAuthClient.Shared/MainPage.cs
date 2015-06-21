@@ -41,6 +41,10 @@ namespace CustomAuthClient
         public MainPage()
         {
             this.InitializeComponent();
+
+            // Set the dummy credentials--remove this for a real app.
+            txtUsername.Text = testUsername;
+            txtPassword.Password = testPassword; // Never hard-code passwords!
         }
 
         private async Task InsertTodoItem(TodoItem todoItem)
@@ -124,6 +128,7 @@ namespace CustomAuthClient
             }
 
             this.LoginProgress.IsActive = true;
+            this.ButtonCancelLogin.Visibility = Visibility.Collapsed;
 
             try
             {
@@ -140,16 +145,16 @@ namespace CustomAuthClient
             }
             finally
             {
-                txtUsername.Text = string.Empty;
-                txtPassword.Password = string.Empty;
+                this.LoginProgress.IsActive = false;
+                this.ButtonCancelLogin.Visibility = Visibility.Visible;
             }
         }
 
-        private void ButtonCancelLogin_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void ButtonCancelLogin_Click(object sender, RoutedEventArgs e)
         {
-            // Show the sign-in grid and hide the login button.
+            // Hide the sign-in grid and reshow the login button.
             this.GridLoginDialog.Visibility = Visibility.Collapsed;
-            this.ButtonCustomLogin.Visibility = Visibility.Visible;
+            this.ButtonLogin.Visibility = Visibility.Visible;
         }
 
         private async Task<MobileServiceUser> AuthenticateAsync(string username,
@@ -173,8 +178,7 @@ namespace CustomAuthClient
         {         
             // Show the sign-in grid and hide the login button.
             this.GridLoginDialog.Visibility = Visibility.Visible;
-            this.ButtonCustomLogin.Visibility = Visibility.Collapsed;
-
+            this.ButtonLogin.Visibility = Visibility.Collapsed;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -192,7 +196,8 @@ namespace CustomAuthClient
         {
             try
             {
-                // Make sure that the user is registered.
+                // Make sure that the user is registered, using the hard-coded
+                // dummy registration credentials. In a real app, you must get these at runtime.
                 var response = await App.MobileService
                     .InvokeApiAsync<RegistrationRequest, string>(
                         "CustomRegistration", new RegistrationRequest()
