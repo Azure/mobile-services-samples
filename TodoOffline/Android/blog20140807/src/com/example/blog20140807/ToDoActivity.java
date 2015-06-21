@@ -196,7 +196,7 @@ public class ToDoActivity extends Activity {
 				@Override
 				protected Void doInBackground(Void... params) {
 					try {
-//						mClient.getSyncContext().push().get();
+						mClient.getSyncContext().push().get();
 						mToDoTable.pull(mPullQuery).get();
 						refreshItemsFromTable();
 					} catch (Exception exception) {
