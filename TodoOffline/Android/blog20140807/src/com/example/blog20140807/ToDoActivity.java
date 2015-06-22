@@ -80,6 +80,12 @@ public class ToDoActivity extends Activity {
 	private static final int EDIT_ACTIVITY_REQUEST_CODE = 1234;
 
 	/**
+	 * Replace the service URL and Key with the URL and Key to your project's web service
+	 */
+	private String MOBILE_SERVICE_URL = "https://enhancedpush-rs.azure-mobile.net/";
+	private String MOBILE_SERVICE_KEY = "taeExGajjVyDlkOEVaakQPCtURErfZ33";
+
+	/**
 	 * Initializes the activity
 	 */
 	@Override
@@ -93,11 +99,11 @@ public class ToDoActivity extends Activity {
 		mProgressBar.setVisibility(ProgressBar.GONE);
 		
 		try {
-			// Create the Mobile Service Client instance, using the provided
+			// Create the Mobile Service Client instance, using the appropriate
 			// Mobile Service URL and key
 			mClient = new MobileServiceClient(
-					"https://blog20140807.azure-mobile.net/",
-					"VQdzkFyLODXjByoRgXuMJdIxoZupwA43",
+					MOBILE_SERVICE_URL,
+					MOBILE_SERVICE_KEY,
 					this).withFilter(new ProgressFilter());
 
 			// Saves the query which will be used for pulling data
@@ -112,6 +118,7 @@ public class ToDoActivity extends Activity {
 			tableDefinition.put("text", ColumnDataType.String);
 			tableDefinition.put("complete", ColumnDataType.Boolean);
 			tableDefinition.put("__version", ColumnDataType.String);
+			tableDefinition.put("__deleted", ColumnDataType.Boolean);
 
 			localStore.defineTable("ToDoItem", tableDefinition);
 			syncContext.initialize(localStore, handler).get();
@@ -335,13 +342,20 @@ public class ToDoActivity extends Activity {
 	 *            The dialog title
 	 */
 	private void createAndShowDialog(String message, String title) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 		builder.setMessage(message);
 		builder.setTitle(title);
-		builder.create().show();
+
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				builder.create().show();
+			}
+		});
 	}
-	
+
 	private class ProgressFilter implements ServiceFilter {
 
 		@Override
