@@ -2,19 +2,25 @@
     "org.apache.cordova.console": {
         "source": {
             "type": "registry",
-            "id": "org.apache.cordova.console"
+            "id": "org.apache.cordova.console@0.2.13"
         }
     },
     "com.microsoft.azure-mobile-services": {
         "source": {
             "type": "registry",
-            "id": "com.microsoft.azure-mobile-services"
+            "id": "com.microsoft.azure-mobile-services@1.2.7"
         }
     },
     "org.apache.cordova.inappbrowser": {
         "source": {
             "type": "registry",
-            "id": "org.apache.cordova.inappbrowser"
+            "id": "org.apache.cordova.inappbrowser@0.6.0"
+        }
+    },
+    "org.apache.cordova.device": {
+        "source": {
+            "type": "registry",
+            "id": "org.apache.cordova.device@0.3.0"
         }
     },
     "org.apache.cordova.file": {
@@ -23,22 +29,10 @@
             "id": "org.apache.cordova.file@1.3.1"
         }
     },
-    "com.msopentech.azure-mobile-services": {
-        "source": {
-            "type": "registry",
-            "id": "com.msopentech.azure-mobile-services@0.1.4"
-        }
-    },
-    "org.apache.cordova.device": {
-        "source": {
-            "type": "registry",
-            "id": "org.apache.cordova.device"
-        }
-    },
     "org.apache.cordova.camera": {
         "source": {
             "type": "registry",
-            "id": "org.apache.cordova.camera"
+            "id": "org.apache.cordova.camera@0.3.6"
         }
     }
 }
