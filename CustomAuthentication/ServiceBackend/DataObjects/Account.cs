@@ -16,7 +16,7 @@ namespace CustomAuthMobileService.DataObjects
         public byte[] Salt { get; set; }
         public byte[] SaltedAndHashedPassword { get; set; }
         public bool IsConfirmed { get; set; }
-        public String email { get; set; }
-        public String friendlyName { get; set; }
+        public string Email { get; set; }
+        public string FriendlyName { get; set; }
     }
 }

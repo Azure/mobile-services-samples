@@ -10,7 +10,7 @@
 
 
     <Grid Background="White">
-        <Grid Name="GridLoginDialog" Background="Black" Visibility="Visible" Opacity="0.5" >
+        <Grid Name="GridLoginDialog" Background="Black" Visibility="Collapsed" Opacity="0.5" >
             <Grid Width="350" Height="200" Background="White" Opacity="100">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="117"/>
@@ -80,7 +80,7 @@
                 </Grid.RowDefinitions>
                 <StackPanel>
                     <local:QuickStartTask Number="2" Title="Query and Update Data" Description="Click refresh below to load the unfinished TodoItems from your database. Use the checkbox to complete and update your TodoItems" />
-                    <Button Margin="72,0,0,0" Name="ButtonRefresh" Click="ButtonRefresh_Click">Refresh</Button>
+                    <Button Margin="72,0,0,0" Name="ButtonRefresh" Click="ButtonRefresh_Click" IsEnabled="False">Refresh</Button>
                 </StackPanel>
 
                 <ListView Name="ListItems" Margin="62,10,0,0" Grid.Row="1">

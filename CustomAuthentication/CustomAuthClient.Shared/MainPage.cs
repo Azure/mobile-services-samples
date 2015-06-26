@@ -128,7 +128,8 @@ namespace CustomAuthClient
             }
 
             this.LoginProgress.IsActive = true;
-            this.ButtonCancelLogin.Visibility = Visibility.Collapsed;
+            this.ButtonCancelLogin.IsEnabled = false;
+            this.ButtonCustomLogin.IsEnabled = false;
 
             try
             {
@@ -138,6 +139,7 @@ namespace CustomAuthClient
                     await AuthenticateAsync(this.txtUsername.Text, txtPassword.Password);
                 await RefreshTodoItems();
                 this.GridLoginDialog.Visibility = Visibility.Collapsed;
+                this.ButtonRefresh.IsEnabled = true;
             }
             catch (MobileServiceInvalidOperationException ex)
             {
@@ -146,7 +148,8 @@ namespace CustomAuthClient
             finally
             {
                 this.LoginProgress.IsActive = false;
-                this.ButtonCancelLogin.Visibility = Visibility.Visible;
+                this.ButtonCancelLogin.IsEnabled = true;
+                this.ButtonCustomLogin.IsEnabled = true;
             }
         }
 
@@ -188,7 +191,7 @@ namespace CustomAuthClient
 
             //// Registration is only required once; you will need to use local 
             //// to rember when a give user has already been authenticated.
-            //await RegisterUser();
+            await RegisterUser();
 
         }
 
@@ -200,7 +203,7 @@ namespace CustomAuthClient
                 // dummy registration credentials. In a real app, you must get these at runtime.
                 var response = await App.MobileService
                     .InvokeApiAsync<RegistrationRequest, string>(
-                        "CustomRegistration", new RegistrationRequest()
+                        "customregistration", new RegistrationRequest()
                         {
                             Username = testUsername,
                             Password = testPassword,

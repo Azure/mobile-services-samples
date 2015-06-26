@@ -26,19 +26,21 @@ namespace CustomAuthMobileService.Controllers
         //// TODO: Uncomment to use Azure Table storage.
         //private CloudTableClient tableClient;
         //private CloudTable accountTable;
-        //protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
-        //{
-        //    base.Initialize(controllerContext);
 
-        //    // Parse the Storage account connection string.
-        //    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-        //        ConfigurationManager.ConnectionStrings["StorageConnectionString"].ToString());
+        protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
 
-        //    // Create a new table client and create the Account table if it doesn't exist.
-        //    tableClient = storageAccount.CreateCloudTableClient();
-        //    accountTable = tableClient.GetTableReference("account");
-        //    accountTable.CreateIfNotExists();
-        //}
+            //// TODO: Uncomment to use Azure Table storage.
+            //// Parse the Storage account connection string.
+            //CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+            //    ConfigurationManager.ConnectionStrings["StorageConnectionString"].ToString());
+
+            //// Create a new table client and create the Account table if it doesn't exist.
+            //tableClient = storageAccount.CreateCloudTableClient();
+            //accountTable = tableClient.GetTableReference("account");
+            //accountTable.CreateIfNotExists();
+        }
 
         // POST api/CustomLogin
         public HttpResponseMessage Post(LoginRequest loginRequest)

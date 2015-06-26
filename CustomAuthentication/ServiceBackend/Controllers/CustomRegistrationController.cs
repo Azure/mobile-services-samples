@@ -15,6 +15,8 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.WindowsAzure.Storage;
 using System.Configuration;
 
+using System.Data.Entity.Validation;
+
 //using SendGrid;
 
 namespace CustomAuthMobileService.Controllers
@@ -27,18 +29,21 @@ namespace CustomAuthMobileService.Controllers
         //// TODO: Uncomment to use Azure Table storage.
         //private CloudTableClient tableClient;
         //private CloudTable accountTable;
-        //protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
-        //{
-        //    base.Initialize(controllerContext);
-        //    // Parse the Storage account connection string.
-        //    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-        //        ConfigurationManager.ConnectionStrings["StorageConnectionString"].ToString());
 
-        //    // Create a new table client and create the Account table if it doesn't exist.
-        //    tableClient = storageAccount.CreateCloudTableClient();
-        //    accountTable = tableClient.GetTableReference("account");
-        //    accountTable.CreateIfNotExists();
-        //}
+        protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+
+            //// TODO: Uncomment to use Azure Table storage.
+            //// Parse the Storage account connection string.
+            //CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+            //    ConfigurationManager.ConnectionStrings["StorageConnectionString"].ToString());
+
+            //// Create a new table client and create the Account table if it doesn't exist.
+            //tableClient = storageAccount.CreateCloudTableClient();
+            //accountTable = tableClient.GetTableReference("account");
+            //accountTable.CreateIfNotExists();
+        }
 
         // POST api/CustomRegistration
         public HttpResponseMessage Post(RegistrationRequest registrationRequest)
@@ -88,20 +93,22 @@ namespace CustomAuthMobileService.Controllers
                     //// TODO: Uncomment the below for Azure Table storage.
                     //PartitionKey = "partition",
                     //RowKey = Guid.NewGuid().ToString(),
+
+                    //// TODO: Comment-out for Azure Table storage.
+                    Id = Guid.NewGuid().ToString(),
                     Username = registrationRequest.username,
                     Salt = salt,
                     SaltedAndHashedPassword =
                     CustomLoginProviderUtils.hash(registrationRequest.password, salt),
                     IsConfirmed = true, // this should be false until confirmed.
-                    email = registrationRequest.email,
-                    friendlyName = registrationRequest.friendlyName
+                    Email = registrationRequest.email,
+                    FriendlyName = registrationRequest.friendlyName
                 };
 
                 // TODO: Comment out for Azure Table storage.
-                // SQL Database version.
                 context.Accounts.Add(newAccount);
                 context.SaveChanges();
-
+                
                 //// TODO: Azure Table storage version.
                 //// Insert the new account into the table.                
                 //accountTable.Execute(TableOperation.Insert(newAccount));

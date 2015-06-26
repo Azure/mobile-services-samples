@@ -31,7 +31,7 @@ namespace CustomAuthMobileService
         }
     }
 
-    public class MobileServiceInitializer : DropCreateDatabaseIfModelChanges<MobileServiceContext>
+    public class MobileServiceInitializer : ClearDatabaseSchemaIfModelChanges<MobileServiceContext>
     {
         protected override void Seed(MobileServiceContext context)
         {
@@ -45,7 +45,7 @@ namespace CustomAuthMobileService
             {
                 context.Set<TodoItem>().Add(todoItem);
             }
-
+            
             base.Seed(context);
         }
     }
