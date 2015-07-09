@@ -28,7 +28,7 @@ import com.microsoft.windowsazure.mobileservices.http.NextServiceFilterCallback;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilter;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilterRequest;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
-import com.microsoft.windowsazure.mobileservices.table.MobileServicePreconditionFailedExceptionBase;
+import com.microsoft.windowsazure.mobileservices.table.MobileServicePreconditionFailedExceptionJson;
 import com.microsoft.windowsazure.mobileservices.table.query.Query;
 import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncContext;
 import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncTable;
@@ -82,8 +82,8 @@ public class ToDoActivity extends Activity {
 	/**
 	 * Replace the service URL and Key with the URL and Key to your project's web service
 	 */
-	private String MOBILE_SERVICE_URL = "https://enhancedpush-rs.azure-mobile.net/";
-	private String MOBILE_SERVICE_KEY = "taeExGajjVyDlkOEVaakQPCtURErfZ33";
+	private String MOBILE_SERVICE_URL = "https://xamtest.azure-mobile.net/";
+	private String MOBILE_SERVICE_KEY = "vLNiKXfIDYZzxXStKglqEtXjayvCvk65";
 
 	/**
 	 * Initializes the activity
@@ -118,7 +118,6 @@ public class ToDoActivity extends Activity {
 			tableDefinition.put("text", ColumnDataType.String);
 			tableDefinition.put("complete", ColumnDataType.Boolean);
 			tableDefinition.put("__version", ColumnDataType.String);
-			tableDefinition.put("__deleted", ColumnDataType.Boolean);
 
 			localStore.defineTable("ToDoItem", tableDefinition);
 			syncContext.initialize(localStore, handler).get();
@@ -405,14 +404,14 @@ public class ToDoActivity extends Activity {
 				RemoteTableOperationProcessor processor, TableOperation operation)
 				throws MobileServiceSyncHandlerException {
 
-			MobileServicePreconditionFailedExceptionBase ex = null;
+			MobileServicePreconditionFailedExceptionJson ex = null;
 			JsonObject result = null;
 			try {
 				result = operation.accept(processor);
-			} catch (MobileServicePreconditionFailedExceptionBase e) {
+			} catch (MobileServicePreconditionFailedExceptionJson e) {
 				ex = e;
 			} catch (Throwable e) {
-				ex = (MobileServicePreconditionFailedExceptionBase) e.getCause();
+				ex = (MobileServicePreconditionFailedExceptionJson) e.getCause();
 			}
 
 			if (ex != null) {
