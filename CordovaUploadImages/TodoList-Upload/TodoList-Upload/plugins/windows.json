@@ -50,25 +50,9 @@
         }
     },
     "installed_plugins": {
-        "com.microsoft.azure-mobile-services": {
-            "PACKAGE_NAME": "Azure_Storage"
-        },
         "org.apache.cordova.camera": {
-            "PACKAGE_NAME": "Azure_Storage"
-        },
-        "org.apache.cordova.console": {
-            "PACKAGE_NAME": "Azure_Storage"
-        },
-        "org.apache.cordova.device": {
-            "PACKAGE_NAME": "Azure_Storage"
-        },
-        "org.apache.cordova.file": {
-            "PACKAGE_NAME": "Azure_Storage"
+            "PACKAGE_NAME": "TodoList_Upload"
         }
     },
-    "dependent_plugins": {
-        "org.apache.cordova.inappbrowser": {
-            "PACKAGE_NAME": "Azure_Storage"
-        }
-    }
+    "dependent_plugins": {}
 }

@@ -32,7 +32,7 @@
     "org.apache.cordova.camera": {
         "source": {
             "type": "registry",
-            "id": "org.apache.cordova.camera@0.3.6"
+            "id": "org.apache.cordova.camera"
         }
     }
 }
