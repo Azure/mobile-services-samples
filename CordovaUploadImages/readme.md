@@ -1,8 +1,8 @@
 # Upload images from Cordova apps to Microsoft Azure services
 
-This sample demonstrates how to use Azure Mobile Services to enable your Apache Cordova app to upload and store user-generated images in Azure Storage. Mobile Services uses a SQL Database to store data. However, binary large object (BLOB) data is more efficiently stored in Azure Blob storage service. This sample is an Apache Cordova Tools for Visual Studio 2015 RC project. The REST APIs are used to access the Blob service.
+This sample demonstrates how to use Azure Mobile Services to enable your Apache Cordova app to upload and store user-generated images in Azure Storage. Mobile Services uses a SQL Database to store data. However, binary large object (BLOB) data is more efficiently stored in Azure Blob storage service. This sample is an Apache Cordova Tools for Visual Studio 2015 RTM project. The REST APIs are used to access the Blob service.
 
->**Note:** 2015 RC is required (the project structure is different in VS 2013 vs. VS 2015 RC).
+>**Note:** 2015 RTM is required (the project structure is different in VS 2013 vs. VS 2015 RC/RTM).
 
 To be able to upload an image to the Blob service, this sample generates a Shared Access Signature (SAS) that is returned to the client. The app then uses this temporary credential to upload the image. This SAS can be used for only 5 minutes before it expires. Note that the Azure Storage credentials are securely stored in your mobile service's app settings.  In this example, downloads from the Blob service are public.
 
@@ -20,9 +20,9 @@ To run this Apache Cordova for Visual Studio sample app on one or more of the su
 
 ##Updates
 
-June, 2015
+July, 2015
 
-+ Updated to a Dev14 RC project (VS 2015 RC required!).
++ Updated to a Dev14 RTM project (VS 2015 RTM required!).
 + Added support for grabbing images from local file (using FilePicker), and for dynamic switching between Camera and FilePicker.
 + Switched to Camera plugin from Media Capture plugin (the former allows use of FilePicker).
 + Updates to the app to support Win/WinPhone.
