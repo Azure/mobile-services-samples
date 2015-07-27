@@ -10,8 +10,8 @@
 
         // Initialize the Mobile Services client here.
         var client = new WindowsAzure.MobileServiceClient(
-            'https://zumo-mdha-service.azure-mobile.net/',
-            'zlkepWTztMiZAvlyoVXSuJfmkSmhli30');
+            'https://MY_MOBILE_SERVICE.azure-mobile.net/',
+            'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
 
         // Get the existing TodoItem table for storage.
         var todoItemTable = client.getTable('zumoTable');
