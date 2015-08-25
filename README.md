@@ -31,3 +31,6 @@ Shows how to use Azure Mobile Services to enable your Apache Cordova app to uplo
 ##[Use Microsoft Azure to push notifications to Cordova apps](./CordovaNotificationsArticle)
 Shows how to use Microsoft Azure with the Apache Cordova Tools for Visual Studio 2013 to enable push notifications to your Cordova apps running on iOS or Android devices. The sample supports the MSDN Magazine Article [Use Microsoft Azure to Push Notifications to Cordova Apps](http://aka.ms/yh3uh5). The Mobile Services client is used to register for template-based push notifications with Azure Notification Hubs, which is then used to send push notifications from a platform notification service (PNS) to your Cordova app running on iOS or Android. For more information, see the [sample readme file](./CordovaNotificationsArticle/readme.md).
 
+##[Upload images to Azure Blob Storage](./UploadImages)
+Shows how to use Microsoft Azure to upload images to Azure Blob Storage.  The app takes pictures with the device camera, which are then uploaded. The tutorial this code is based on is [Upload images to Azure Blob Storage from an Android device](https://acom-sandbox.azurewebsites.net/en-us/documentation/articles/mobile-services-android-upload-data-blob-storage/). For more information, see the [sample readme file](./UploadImages/readme.md).
+
