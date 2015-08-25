@@ -34,6 +34,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
+import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
@@ -243,22 +244,14 @@ public class ToDoActivity extends Activity {
 
                         // Get the URI generated that contains the SAS
                         // and extract the storage credentials.
-                        StorageCredentialsSharedAccessSignature cred = new StorageCredentialsSharedAccessSignature(entity.getSasQueryString());
+                        StorageCredentials cred = new StorageCredentialsSharedAccessSignature(entity.getSasQueryString());
                         URI imageUri = new URI(entity.getImageUri());
 
-                        // Instantiate a Blob store container based on the info in the returned item.
-                        URI containerUri = new URI("https://" +
-                                imageUri.getHost() + "/" + entity.getContainerName());
-
-                        CloudBlobContainer container = new CloudBlobContainer(containerUri, cred);
-
-                        // Upload the new image as a BLOB from a stream.
+                        // Upload the new image as a BLOB from a file.
                         CloudBlockBlob blobFromSASCredential =
-                                container.getBlockBlobReference(entity.getResourceName());
+                                new CloudBlockBlob(imageUri, cred);
 
-                        blobFromSASCredential.upload(new FileInputStream(mPhotoFileUri.getPath()), -1);
-
-                        //                        await ResetCaptureAsync();
+                        blobFromSASCredential.uploadFromFile(mPhotoFileUri.getPath());
                     }
 
                     runOnUiThread(new Runnable() {
