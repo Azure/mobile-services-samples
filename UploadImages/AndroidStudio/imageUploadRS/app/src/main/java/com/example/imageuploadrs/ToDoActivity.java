@@ -106,8 +106,8 @@ public class ToDoActivity extends Activity {
 
             // Mobile Service URL and key
             mClient = new MobileServiceClient(
-                    "https://imageuploadrs.azure-mobile.net/",
-                    "jxicsCieqGURaKlhISlZmnIBBMaHYf34",
+                    "APPURL",
+                    "APPKEY",
                     this).withFilter(new ProgressFilter());
 
             // Get the Mobile Service Table instance to use
