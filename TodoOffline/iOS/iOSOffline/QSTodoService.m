@@ -59,7 +59,11 @@
         QSAppDelegate *delegate = (QSAppDelegate *)[[UIApplication sharedApplication] delegate];
         NSManagedObjectContext *context = delegate.managedObjectContext;
         MSCoreDataStore *store = [[MSCoreDataStore alloc] initWithManagedObjectContext:context];
-        
+    
+        // to remove conflict handling, uncomment the following line
+//        self.client.syncContext = [[MSSyncContext alloc] initWithDelegate:nil dataSource:store callback:nil];
+    
+        // initialize with the conflict handling delegate 'syncDelegate'
         self.client.syncContext = [[MSSyncContext alloc] initWithDelegate:syncDelegate dataSource:store callback:nil];
     
         // Create an MSSyncTable instance to allow us to work with the TodoItem table
