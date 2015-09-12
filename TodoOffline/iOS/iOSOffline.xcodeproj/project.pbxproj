@@ -24,6 +24,8 @@
 		03D1006716ED41D20005A1A9 /* connected114.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D1006316ED41D20005A1A9 /* connected114.png */; };
 		03D1006816ED41D20005A1A9 /* connected144.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D1006416ED41D20005A1A9 /* connected144.png */; };
 		680B11BA1A684E670099238F /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 680B11B91A684E670099238F /* WindowsAzureMobileServices.framework */; };
+		6865CFAF1A68A922003CB977 /* QSItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6865CFAE1A68A922003CB977 /* QSItemViewController.m */; };
+		6865CFB21A69E1CF003CB977 /* QSUIAlertViewWithBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6865CFB11A69E1CF003CB977 /* QSUIAlertViewWithBlock.m */; };
 		689C609F1A5F3F4D00E96D29 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689C609E1A5F3F4D00E96D29 /* CoreData.framework */; };
 		689C60A41A5F4D1B00E96D29 /* QSTodoDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 689C60A21A5F4D1B00E96D29 /* QSTodoDataModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
@@ -52,6 +54,10 @@
 		03D1006316ED41D20005A1A9 /* connected114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connected114.png; sourceTree = "<group>"; };
 		03D1006416ED41D20005A1A9 /* connected144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connected144.png; sourceTree = "<group>"; };
 		680B11B91A684E670099238F /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
+		6865CFAD1A68A922003CB977 /* QSItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSItemViewController.h; sourceTree = "<group>"; };
+		6865CFAE1A68A922003CB977 /* QSItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSItemViewController.m; sourceTree = "<group>"; };
+		6865CFB01A69E1CF003CB977 /* QSUIAlertViewWithBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSUIAlertViewWithBlock.h; sourceTree = "<group>"; };
+		6865CFB11A69E1CF003CB977 /* QSUIAlertViewWithBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSUIAlertViewWithBlock.m; sourceTree = "<group>"; };
 		689C609E1A5F3F4D00E96D29 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		689C60A31A5F4D1B00E96D29 /* QSTodoDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QSTodoDataModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -107,8 +113,12 @@
 				689C60A21A5F4D1B00E96D29 /* QSTodoDataModel.xcdatamodeld */,
 				03D1004816EC58490005A1A9 /* QSTodoService.h */,
 				03D1004916EC58490005A1A9 /* QSTodoService.m */,
+				6865CFB01A69E1CF003CB977 /* QSUIAlertViewWithBlock.h */,
+				6865CFB11A69E1CF003CB977 /* QSUIAlertViewWithBlock.m */,
 				03D1004516EC58300005A1A9 /* QSTodoListViewController.h */,
 				03D1004616EC58300005A1A9 /* QSTodoListViewController.m */,
+				6865CFAD1A68A922003CB977 /* QSItemViewController.h */,
+				6865CFAE1A68A922003CB977 /* QSItemViewController.m */,
 				03D1004B16EC5A680005A1A9 /* MainStoryboard_iPhone.storyboard */,
 				03D1002C16EC579A0005A1A9 /* QSAppDelegate.h */,
 				03D1002D16EC579A0005A1A9 /* QSAppDelegate.m */,
@@ -209,8 +219,10 @@
 				03D1002A16EC579A0005A1A9 /* main.m in Sources */,
 				03D1002E16EC579A0005A1A9 /* QSAppDelegate.m in Sources */,
 				03D1004716EC58300005A1A9 /* QSTodoListViewController.m in Sources */,
+				6865CFAF1A68A922003CB977 /* QSItemViewController.m in Sources */,
 				03D1004A16EC58490005A1A9 /* QSTodoService.m in Sources */,
 				689C60A41A5F4D1B00E96D29 /* QSTodoDataModel.xcdatamodeld in Sources */,
+				6865CFB21A69E1CF003CB977 /* QSUIAlertViewWithBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
