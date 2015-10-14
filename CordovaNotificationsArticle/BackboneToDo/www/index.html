@@ -1,17 +1,12 @@
-﻿<!--
-Copyright © Microsoft Corporation. All rights reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions and limitations under the License
+﻿<!DOCTYPE html>
+<!--
+Copyright (c) Microsoft. All rights reserved.  Licensed under the MIT license. See LICENSE file in the project root for full license information.
 -->
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https:; frame-src 'self' https:; script-src 'self' 'unsafe-eval'">
     <title>Backbone Todo Sample</title>
 </head>
 <body>
@@ -38,27 +33,28 @@ See the Apache Version 2.0 License for specific language governing permissions a
         </div>
     </script>
 
-    <!-- Cordova reference, this is added to your app when it's built. -->
+    <!-- Cordova references, this is added to your app when it's built. -->
     <script src="cordova.js"></script>
+
+    <!-- todolist-cordova references -->
+    <script src="services/mobileServices/settings/services.js"></script>
     <script src="scripts/platformOverrides.js"></script>
+
 
     <!-- Backbone and prerequisite references -->
     <script type="text/javascript" src="scripts/frameworks/jquery-2.1.0.min.js"></script>
-    <script src="scripts/frameworks/underscore.min.js"></script>
-    <script src="scripts/frameworks/backbone.min.js"></script>
-
-    <!--Reference to the Mobile Services client code, which is where push notifications are done-->
-    <script src="services\mobileServices\settings\services.js"></script>
+    <script type="text/javascript" src="scripts/frameworks/underscore.min.js"></script>
+    <script type="text/javascript" src="scripts/frameworks/backbone.min.js"></script>
 
     <!-- Backbone Todo Sample references -->
     <link href="css/index.css" rel="stylesheet" />
-    <script src="scripts/todoModel.js"></script>
-    <script src="scripts/todoCollection.js"></script>
-    <script src="scripts/todoView.js"></script>
-    <script src="scripts/baseView.js"></script>
-    <script src="scripts/geolocation.js"></script>
-    <script src="scripts/storage.js"></script>
-    <script src="scripts/index.js"></script>
+    <script type="text/javascript" src="scripts/todoModel.js"></script>
+    <script type="text/javascript" src="scripts/todoCollection.js"></script>
+    <script type="text/javascript" src="scripts/todoView.js"></script>
+    <script type="text/javascript" src="scripts/baseView.js"></script>
+    <script type="text/javascript" src="scripts/geolocation.js"></script>
+    <script type="text/javascript" src="scripts/storage.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
 
 </body>
 </html>

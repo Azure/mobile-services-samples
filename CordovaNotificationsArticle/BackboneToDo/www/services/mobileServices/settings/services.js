@@ -46,7 +46,7 @@ function onGcmNotification(e) {
                         'myTemplate', template, null)
                         .done(function () {
                             alert('Registered template with Azure!');
-                        }).fail(function (error) {
+                        }, function (error) {
                             alert('Failed registering with Azure: ' + error);
                         });
                 }
@@ -58,7 +58,7 @@ function onGcmNotification(e) {
                 // and display the alert message.
                 alert(e.payload.message);
                 // Reload the items list.
-                refreshTodoItems();
+                app.Storage.getData();                
             }
             break;
         case 'error':
@@ -90,7 +90,7 @@ function onApnsNotification(event) {
         // Display the alert message in an alert.
         alert(event.alert);
         // Reload the items list.
-        refreshTodoItems();
+        app.Storage.getData();
     }
 }
 // GCM registration success handler.

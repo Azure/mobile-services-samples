@@ -1,4 +1,6 @@
-﻿var app = app || {};
+﻿// Copyright (c) Microsoft. All rights reserved.  Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+var app = app || {};
 
 $(function () {
     "use strict";
@@ -9,6 +11,7 @@ $(function () {
         // Handle the Cordova pause and resume events
         document.addEventListener('pause', onPause.bind(this), false);
         document.addEventListener('resume', onResume.bind(this), false);
+
         // Initialize storage and the app's base view.
         app.initializeStorage();
         new app.BaseView();
