@@ -88,16 +88,19 @@
   <platform name="wp8">
     <splash src="res/screens/wp8/SplashScreenImage.jpg" width="480" height="800" />
   </platform>
-  <vs:plugin name="org.apache.cordova.geolocation" version="0.3.12" />
-  <vs:plugin name="cordova-plugin-inappbrowser" version="1.0.1" />
-  <vs:plugin name="cordova-plugin-device" version="1.0.1" />
-  <vs:plugin name="cordova-plugin-console" version="1.0.1" />
-  <vs:plugin name="com.phonegap.plugins.PushPlugin" version="2.5.0" src="https://github.com/phonegap-build/PushPlugin.git" />
   <preference name="KeepRunning" value="True" />
   <preference name="ShowTitle" value="True" />
   <preference name="InAppBrowserStorageEnabled" value="True" />
   <preference name="SuppressesIncrementalRendering" value="True" />
   <access origin="*.azure-mobile.net" />
+  <vs:plugin name="org.apache.cordova.geolocation" version="0.3.12" />
+  <vs:plugin name="cordova-plugin-inappbrowser" version="1.0.1" />
+  <vs:plugin name="cordova-plugin-device" version="1.0.1" />
+  <vs:plugin name="cordova-plugin-console" version="1.0.1" />
   <vs:plugin name="com.microsoft.azure-mobile-services" version="1.2.9" />
   <vs:plugin name="cordova-plugin-whitelist" version="1.0.0" />
+  <vs:plugin name="phonegap-plugin-push" version="1.3.0" src="https://github.com/phonegap/phonegap-plugin-push.git" />
+  <preference name="android-minSdkVersion" value="13" />
+  <preference name="android-maxSdkVersion" value="22" />
+  <preference name="android-targetSdkVersion" value="22" />
 </widget>

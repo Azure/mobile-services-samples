@@ -21,7 +21,7 @@ To run this Apache Cordova for Visual Studio sample app on one or more of the su
 	**Android**
 	+ (Optional) A physical Android device. If you don't have an Android device, the next best thing is the [Visual Studio emulator for Android](https://www.visualstudio.com/explore/msft-android-emulator-vs).
 	+ [Android Developer Tools](). Android 4.4.2 (API 19) only has been tested (installed by the Visual Studio Tools for Apache Cordova).
-	+ Google Play Services and Google APIs must also be installed (installed by the Visual Studio Tools for Apache Cordova).
+	+ Google Play Services version 27 or greater, Google Repository version 22 or greater, and Google APIs must also be installed, if these are not already included in your Android SDK. 
 	+ Google account that has a verified email address. To create a new Google account, go to <a href="http://go.microsoft.com/fwlink/p/?linkid=268302&clcid=0x409" target="_blank">accounts.google.com</a>.
 
 
@@ -113,7 +113,8 @@ Now that you have push notifications configured, you need to update the sample a
 
 2. Follow the instructions to run your app on one of the supported platforms:
  
-	+ [iOS project](http://taco.visualstudio.com/en-us/docs/run-app-ios/#iOSDevice)<br/>Remember that iOS requires a physical device.
+	+ [iOS project](http://taco.visualstudio.com/en-us/docs/run-app-ios/#iOSDevice)  
+	 Remember that iOS requires a physical device.
 
 	+ [Android project](http://taco.visualstudio.com/en-us/docs/run-app-apache/)
 	
@@ -124,7 +125,5 @@ Now that you have push notifications configured, you need to update the sample a
 6. Type some text into the textbox and then click **Add**.
 
 	This sends a POST request to the new mobile service hosted in Azure. Data from the request is inserted into the **TodoItem** table and a push notification is generated and sent to all registered devices. 
-
-[Create a new mobile service]: http://azure.microsoft.com/en-us/documentation/articles/mobile-services-how-to-create-new-service/
 
 [Use Microsoft Azure to Push Notifications to Cordova Apps]: http://aka.ms/yh3uh5
