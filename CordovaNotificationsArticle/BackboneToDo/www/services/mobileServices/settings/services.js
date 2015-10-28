@@ -19,29 +19,23 @@ document.addEventListener('deviceready', function () {
     pushNotification.on('registration', function (data) {
         // Get the native platform of the device.
         var platform = device.platform;
-
+        // Get the handle returned during registration.
+        var handle = data.registrationId;
         // Set the device-specific message template.
         if (platform == 'android' || platform == 'Android') {
             // Template registration.
             var template = '{ "data" : {"message":"$(message)"}}';
             // Register for notifications.
-            mobileServiceClient.push.gcm.registerTemplate(data.registrationId,
+            mobileServiceClient.push.gcm.registerTemplate(handle,
                 'myTemplate', template, null)
-                .done(function () {
-                    alert('Registered template with Azure!');
-                }, function (error) {
-                    alert('Failed registering with Azure: ' + error);
-                });
+                .done(registrationSuccess, registrationFailure);
         } else if (device.platform === 'iOS') {
             // Template registration.
             var template = '{"aps": {"alert": "$(message)"}}';
             // Register for notifications.            
-            mobileServiceClient.push.apns.registerTemplate(data.registrationId,
-                'myTemplate', template, null).done(function () {
-                alert('Registered Azure!');
-            }).fail(function (error) {
-                alert('Failed registering with Azure: ' + error);
-            });
+            mobileServiceClient.push.apns.registerTemplate(handle,
+                'myTemplate', template, null)
+                .done(registrationSuccess, registrationFailure);
         }
     });
 
@@ -59,3 +53,11 @@ document.addEventListener('deviceready', function () {
         alert(e.message);
     });
 });
+
+var registrationSuccess = function () {
+    alert('Registered with Azure!');
+}
+
+var registrationFailure = function (error) {
+    alert('Failed registering with Azure: ' + error);
+}
