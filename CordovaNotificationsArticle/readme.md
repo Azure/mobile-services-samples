@@ -1,8 +1,8 @@
 # Use Microsoft Azure to push notifications to Cordova apps
 
-This sample shows how to use Microsoft Azure with the Apache Cordova Tools for Visual Studio 2013 to enable push notifications to your Cordova apps running on iOS or Android devices. The sample supports the MSDN Magazine Article [Use Microsoft Azure to Push Notifications to Cordova Apps](http://aka.ms/yh3uh5). The  Mobile Services client is used to register for template-based push notifications with Azure Notification Hubs, which is then used to send push notifications from a platform notification service (PNS) to your Cordova app running on iOS or Android. 
+This sample shows how to use Microsoft Azure with the Visual Studio Tools for Apache Cordova to enable push notifications to your Cordova apps running on iOS or Android devices. The sample supports the MSDN Magazine Article [Use Microsoft Azure to Push Notifications to Cordova Apps]. The  Mobile Services client is used to register for template-based push notifications with Azure Notification Hubs, which is then used to send push notifications from a platform notification service (PNS) to your Cordova app running on iOS or Android. 
 
->**Note:** Push notifications to Cordova apps running on Windows Phone and Windows platforms are not supported by the Mobile Services client library at this time. If you need to also support your Cordova app on Windows Phone using MPNS, see [this blog post](http://aka.ms/r197ab).
+>**Note:** The [article][Use Microsoft Azure to Push Notifications to Cordova Apps] was originally written based on the Apache Cordova Tools for Visual Studio 2013. However, this sample project has been revised to use Cordova tools in Visual Studio 2015, which are not compatible with the previous version.
 
 This sample is based on the [BackboneJS sample for Apache Cordova](http://aka.ms/sffl1f). However, regardless of the JavaScript framework you use for your app (if any), the same basic concepts apply. These steps differ somewhat from the steps in the MSDN Magazine article (which does only cover Android). The steps in the article use Visual Studio to configure Mobile Services, whereas the steps in this readme use the Azure Management portal to configure your Azure services.
 
@@ -10,7 +10,7 @@ This sample is based on the [BackboneJS sample for Apache Cordova](http://aka.ms
 To run this Apache Cordova for Visual Studio sample app on one or more of the supported client platforms, you must have the following:
 
 + An Active Microsoft Azure subscription. You can sign-up for a trial account [here](http://www.windowsazure.com/en-us/pricing/free-trial/).
-+ The [Visual Studio Tools for Apache Cordova](http://go.microsoft.com/fwlink/p/?LinkId=397606). See the topic  [Install Visual Studio Tools for Apache Cordova](http://msdn.microsoft.com/en-us/library/dn757054.aspx) for the complete list of prerequisites for these tools. 
++ Visual Studio 2015 Community, which includes the [Visual Studio Tools for Apache Cordova](https://www.visualstudio.com/cordova-vs). 
 + For a given client platform, you must also meet these platform-specific requirements:
 
 	**iOS:**
@@ -19,7 +19,7 @@ To run this Apache Cordova for Visual Studio sample app on one or more of the su
 	+ [iOS Developer Program](https://developer.apple.com/programs/ios/develop.html) registration (required to configure push notifications).
 
 	**Android**
-	+ (Optional) A physical Android device. The emulator is supported, but your experience is better using the device.
+	+ (Optional) A physical Android device. If you don't have an Android device, the next best thing is the [Visual Studio emulator for Android](https://www.visualstudio.com/explore/msft-android-emulator-vs).
 	+ [Android Developer Tools](). Android 4.4.2 (API 19) only has been tested (installed by the Visual Studio Tools for Apache Cordova).
 	+ Google Play Services and Google APIs must also be installed (installed by the Visual Studio Tools for Apache Cordova).
 	+ Google account that has a verified email address. To create a new Google account, go to <a href="http://go.microsoft.com/fwlink/p/?linkid=268302&clcid=0x409" target="_blank">accounts.google.com</a>.
@@ -31,7 +31,7 @@ To run this Apache Cordova for Visual Studio sample app on one or more of the su
 
 	+ **iOS:** Apple Push Notification Services (APNS)
 	
-		Complete the topic [How to enable Apple push notifications](http://azure.microsoft.com/en-us/documentation/articles/mobile-services-how-to-enable-apple-push-notifications/).
+		Complete the bulleted steps at the beginning of the topic [Add Push Notifications to iOS App](https://azure.microsoft.com/en-us/documentation/articles/mobile-services-javascript-backend-ios-get-started-push/). Also, complete the first step in [Configure Azure to Send Push Notifications](https://azure.microsoft.com/en-us/documentation/articles/mobile-services-javascript-backend-ios-get-started-push/#configure).
 
 	+ **Android:** Google Cloud Messaging (GCM)
 
@@ -43,7 +43,7 @@ To run this Apache Cordova for Visual Studio sample app on one or more of the su
 
 	If you already created your mobile service and TodoItem table, skip down to step 5.
 
-3. (Optional) If you haven't already created a Mobile Service, you can follow the steps at [How to create a new mobile service](http://azure.microsoft.com/en-us/documentation/articles/mobile-services-how-to-create-new-service/). 
+3. (Optional) If you haven't already created a Mobile Service, you can follow the steps at [How to create a new mobile service](https://azure.microsoft.com/en-us/documentation/articles/mobile-services-javascript-backend-phonegap-get-started/#create-a-new-mobile-service). 
 
 4. (Optional) If you don't already have a TodoItem table, click the **Data** tab, click the **Create** button, supply a **Table Name** of `TodoItem`, then click the check button.
  
@@ -113,9 +113,9 @@ Now that you have push notifications configured, you need to update the sample a
 
 2. Follow the instructions to run your app on one of the supported platforms:
  
-	+ [iOS project](http://msdn.microsoft.com/en-us/library/dn757056.aspx#iOSDevice)<br/>Remember that iOS requires a physical device.
+	+ [iOS project](http://taco.visualstudio.com/en-us/docs/run-app-ios/#iOSDevice)<br/>Remember that iOS requires a physical device.
 
-	+ [Android project](http://msdn.microsoft.com/en-us/library/dn757059.aspx)
+	+ [Android project](http://taco.visualstudio.com/en-us/docs/run-app-apache/)
 	
     The Apache Ripple emulator does not support push notifications.
 			
@@ -126,3 +126,5 @@ Now that you have push notifications configured, you need to update the sample a
 	This sends a POST request to the new mobile service hosted in Azure. Data from the request is inserted into the **TodoItem** table and a push notification is generated and sent to all registered devices. 
 
 [Create a new mobile service]: http://azure.microsoft.com/en-us/documentation/articles/mobile-services-how-to-create-new-service/
+
+[Use Microsoft Azure to Push Notifications to Cordova Apps]: http://aka.ms/yh3uh5
