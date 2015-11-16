@@ -31,7 +31,7 @@ You can use the Add Connected Service wizard in Visual Studio to connect your pr
 
 7. Locate the **MobileServiceClient** constructor and replace the values of the `AppUrl` and `AppKey` variables with the values you just obtained for your mobile service.
 
-8. Because the sample implements authentication, you must also complete the Azure configuration steps in [Add authentication to you Mobile Services app](https://azure.microsoft.com/en-us/documentation/articles/mobile-services-html-get-started-users/).
+8. (Optional) Because the sample implements authentication, you must also complete the Azure configuration steps in [Add authentication to you Mobile Services app](https://azure.microsoft.com/en-us/documentation/articles/mobile-services-html-get-started-users/). If you do not want to set up authentication, then remove the [if isLoggedIn conditional check](./todolist_cordova/www/scripts/index.js#L108). 
 
 Now, your app is connected to your mobile service and you can sign-in users and store data in Azure.
 
