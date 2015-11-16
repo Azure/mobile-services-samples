@@ -9,11 +9,11 @@ Mobile Services gets you started faster by providing a quickstart TodoList sampl
 You need the following to be able to run this quickstart project:
 
 + An Active Microsoft Azure subscription. You can sign-up for a trial account [here](http://www.windowsazure.com/en-us/pricing/free-trial/).
-+ The [Visual Studio Tools for Apache Cordova](http://go.microsoft.com/fwlink/p/?LinkId=397606). See the topic  [Install Visual Studio Tools for Apache Cordova](http://msdn.microsoft.com/en-us/library/dn757054.aspx) for the complete list of prerequisites for these tools. 
++ Visual Studio 2015 including Tools for Apache Cordova. 
 
 ## Configure the project
 
-You can use the Add Connected Service wizard in Visual Studio to connect your project to a mobile service, and even create a new mobile service. For this sample project, the easiest thing is to follow these steps:
+You can use the Add Connected Service wizard in Visual Studio to connect your project to a mobile service, and even create a new mobile service. For this sample project, use the following steps:
 
 1. Log on to the [Azure Management Portal](https://manage.windowsazure.com/), click **Mobile Services**. 
 
@@ -31,7 +31,9 @@ You can use the Add Connected Service wizard in Visual Studio to connect your pr
 
 7. Locate the **MobileServiceClient** constructor and replace the values of the `AppUrl` and `AppKey` variables with the values you just obtained for your mobile service.
 
-Now, your app is connected to your mobile service and you can store data in Azure.
+8. (Optional) Because the sample implements authentication, you must also complete the Azure configuration steps in [Add authentication to you Mobile Services app](https://azure.microsoft.com/en-us/documentation/articles/mobile-services-html-get-started-users/). If you do not want to set up authentication, then remove the [if isLoggedIn conditional check](./todolist_cordova/www/scripts/index.js#L108). 
+
+Now, your app is connected to your mobile service and you can sign-in users and store data in Azure.
 
 ##Build and test the app
 
