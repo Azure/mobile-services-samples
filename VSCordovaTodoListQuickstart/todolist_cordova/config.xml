@@ -1,15 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps" id="io.cordova.myappfdc22b" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" defaultlocale="en-US">
   <name>todolist_cordova</name>
-  <description>A blank project that uses Apache Cordova to help you build an app that targets multiple mobile platforms: Android, iOS, Windows, and Windows Phone.</description>
-  <author href="http://cordova.io" email="dev@cordova.apache.org">Apache Cordova Team </author>
+  <description>A simple Todolist app that connects to Azure Mobile Services for cloud data storage and authentication built using Apache Cordova that targets multiple mobile platforms: Android, iOS, Windows, and Windows Phone.</description>
+  <author href="http://cordova.io" email="glenn.gailey@microsoft.com">Glenn Gailey</author>
   <content src="index.html" />
-  <access origin="*" />
+  <access origin="*.azure-mobile.net" />
   <vs:features />
   <preference name="SplashScreen" value="screen" />
   <preference name="windows-target-version" value="8.1" />
-  <!-- Support for Cordova 5.0.0 plugin system -->
-  <plugin name="cordova-plugin-whitelist" version="1" />
   <allow-intent href="http://*/*" />
   <allow-intent href="https://*/*" />
   <allow-intent href="tel:*" />
@@ -104,6 +102,7 @@
   <platform name="wp8">
     <splash src="res/screens/wp8/SplashScreenImage.jpg" width="480" height="800" />
   </platform>
-  <vs:plugin name="com.microsoft.azure-mobile-services" version="1.2.9" />
   <vs:plugin name="cordova-plugin-device" version="1.0.1" />
+  <vs:plugin name="com.microsoft.azure-mobile-services" version="1.2.9" />
+  <vs:plugin name="cordova-plugin-whitelist" version="1.0.0" />
 </widget>
