@@ -29,63 +29,56 @@ namespace TodoOffline
             MobileServiceInvalidOperationException error;
             Func<Task<JObject>> tryOperation = operation.ExecuteAsync;
 
-            do
-            {
+            do {
                 error = null;
 
-                try
-                {
-                    JObject result = await operation.ExecuteAsync();
+                try {
+                    JObject result = await tryOperation();
                     return result;
                 }
-                catch (MobileServiceConflictException ex)
-                {
+                catch (MobileServiceConflictException ex) {
                     error = ex;
                 }
-                catch (MobileServicePreconditionFailedException ex)
-                {
+                catch (MobileServicePreconditionFailedException ex) {
                     error = ex;
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     Debug.WriteLine(e.ToString());
                     throw e;
                 }
 
-                if (error != null)
-                {
+                if (error != null) {
                     var localItem = operation.Item.ToObject<TodoItem>();
                     var serverValue = error.Value;
-                    if (serverValue == null) // 409 doesn't return the server item
-                    {
+
+                    if (serverValue == null) { 
+                        // 409 doesn't return the server item
                         serverValue = await operation.Table.LookupAsync(localItem.Id) as JObject;
                     }
+
                     var serverItem = serverValue.ToObject<TodoItem>();
 
 
-                    if (serverItem.Complete == localItem.Complete && serverItem.Text == localItem.Text)
-                    {
+                    if (serverItem.Complete == localItem.Complete && serverItem.Text == localItem.Text) {
                         // items are same so we can ignore the conflict
                         return serverValue;
                     }
 
                     IUICommand command = await ShowConflictDialog(localItem, serverValue);
-                    if (command.Label == LOCAL_VERSION)
-                    {
+                    if (command.Label == LOCAL_VERSION) {
                         // Overwrite the server version and try the operation again by continuing the loop
                         operation.Item[MobileServiceSystemColumns.Version] = serverValue[MobileServiceSystemColumns.Version];
-                        if (error is MobileServiceConflictException) // change operation from Insert to Update
-                        {
+
+                        if (error is MobileServiceConflictException) { 
+                            // change operation from Insert to Update
                             tryOperation = async () => await operation.Table.UpdateAsync(operation.Item) as JObject;
                         }
                         continue;
                     }
-                    else if (command.Label == SERVER_VERSION)
-                    {
+                    else if (command.Label == SERVER_VERSION) {
                         return (JObject)serverValue;
                     }
-                    else
-                    {
+                    else {
                         operation.AbortPush();
                     }
                 }
