@@ -40,7 +40,7 @@ input[type=text], input:not([type]) { padding: 0 10px; text-overflow: ellipsis; 
 /* Main page structure and masthead style */
 #wrapper { max-width: 800px; margin: auto; padding: 30px 10px 10px 10px; }
 article { background-color: white; box-shadow: 0 0 12px rgba(0, 0, 0, 0.75); border-radius: 10px; }
-header { background-color: #71BCFA; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; }
+header { background-color: #c0d737; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; }
 header h1 { text-transform: uppercase; font-weight: normal; color: #545353; font-size: 20px; margin: 4px }
 header h2 { text-transform: uppercase; font-weight: normal; color: white; font-size: 14px; margin: 4px }
 #summary { text-align: center; padding: 8px 0; }
@@ -50,6 +50,7 @@ header h2 { text-transform: uppercase; font-weight: normal; color: white; font-s
 #add-item div { overflow: hidden; }
 #add-item button { float: right; margin-left: 10px; padding: 0 10px; height: 100%; border-radius: 4px; }
 #new-item-text { width: 100%; height: 26px; border: 1px solid #999; font-size: 1em; border-radius: 4px; }
+#output-text { text-align: left; margin-top: 8px; margin-bottom: 4px; color: #545353; }
 
 /* List of items */
 #todo-items { padding: 8px; margin: 0px;}

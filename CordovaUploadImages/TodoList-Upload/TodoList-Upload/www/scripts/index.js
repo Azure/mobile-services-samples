@@ -14,13 +14,14 @@
             'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
 
         // Get the existing TodoItem table for storage.
-        var todoItemTable = client.getTable('TodoItem');
+        var todoItemTable = client.getTable('zumoTable');
+        var isSrcCamera = true;
 
         // Read current data and rebuild UI.
         // If you plan to generate complex UIs like this, consider using a JavaScript templating library.
         function refreshTodoItems() {
             $('#summary').html("Loading...");
-            var query = todoItemTable;//.where({ complete: false });
+            var query = todoItemTable; //.where({ complete: false });
 
             // Execute the query and then generate the array list.
             query.read().then(function (todoItems) {
@@ -32,8 +33,7 @@
                         .append($('<div>').append($('<input class="item-text">').val(item.text)));
 
                     // Only add the image if the URL exists.
-                    if (item.imageUri)
-                    {                      
+                    if (item.imageUri) {
                         listItem.append($('<img>').attr('src', item.imageUri));
                     }
                     return listItem;
@@ -52,7 +52,7 @@
         }
 
         function handleError(error) {
-            alert("error: " + JSON.string(error));
+            $('#output-text').html("error: " + JSON.string(error));
             var text = error + (error.request ? ' - ' + error.request.status : '');
             $('#errorlog').append($('<li>').text(text));
         }
@@ -76,7 +76,12 @@
             if (device.platform == 'iOS') {
                 // We need the file:/ prefix on an iOS device.
                 localFileSytemUrl = "file://" + localFileSytemUrl;
-            } 
+            }
+
+            if (device.platform == 'Android' && capturedFile.nativeURL) {
+                // On Android, File Picker needed the nativeURL.
+                localFileSytemUrl = capturedFile.nativeURL;
+            }
 
             window.resolveLocalFileSystemURL(localFileSytemUrl, function (fileEntry) {
                 fileEntry.file(function (file) {
@@ -89,6 +94,8 @@
                     // This function is not currently supported on Windows Phone.
                     reader.readAsArrayBuffer(file);
                 }, fail);
+            }, function fileError(error) {
+                console.debug("Unable to resolve file URL: " + error, "app");
             });
         }
 
@@ -117,19 +124,25 @@
             // Response code is 201 (Created) if success.
             if (r.currentTarget.status === 201) {
 
-                console.debug("Upload complete.");
+                $('#output-text').html("Upload complete.");
 
                 // Refresh the UI with the latest image.
                 refreshTodoItems();
             }
             else {
-                alert("An error occurred during upload.");
+                if (r.currentTarget.status === 403) {
+                    // alert("You may need to use a unique filename.");
+                    $('#output-text').html("403. On WinPhone, you might need a unique filename...");
+                }
+                else {
+                    $('#output-text').html("An error occurred during upload.");
+                }
             }
         }
 
         // Function that handles general errors.
         function fail(err) {
-            alert("An error has occurred: " + JSON.stringify(err));
+            $('#output-text').html("An error has occurred: " + JSON.stringify(err));
         }
 
         // Insert a new item, then also upload a captured image if we have one.
@@ -142,7 +155,9 @@
                     insertedItem = item;
                     readImage(capturedFile);
                 }
-            }, handleError).then(refreshTodoItems, handleError);
+            }, handleError).then(function () {
+                $('#output-text').html("Table updated...");
+            }, handleError);
         }
 
         // Handle insert--this replaces the existing handler.
@@ -153,33 +168,73 @@
 
                 var newItem = { text: itemText, complete: false };
                 // Do the capture before we do the insert. If user cancels, just continue.
-                // Launch device camera application, allowing user to capture a single image.                
-                navigator.device.capture.captureImage(function (mediaFiles) {
-                    if (mediaFiles) {
-                        // Set a reference to the captured file.
-                        var capturedFile = mediaFiles[0];
-                        console.debug("capturedFile object: " + JSON.stringify(capturedFile));
+                // Launch device camera application, allowing user to capture a single image. 
+                var srcType;
 
+                if (isSrcCamera == false) {
+                    srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+                }
+                else {
+                    srcType = Camera.PictureSourceType.CAMERA;
+                }
+
+                // For WinPhone, we need to use
+                // our own unique filename due to bug in FileReader.
+                if (device.platform == "windows") {
+                    storeFilename(itemText);
+                }
+                // Use the Camera plugin instead of MediaCapture plugin to
+                // add support for using the FilePicker.
+                navigator.camera.getPicture(function cameraSuccess(imageUri) {
+
+                    window.resolveLocalFileSystemURL(imageUri, function success(entry) {
+
+                        // Set a reference to the captured file.
+                        var capturedFile = entry;
+                        console.debug("capturedFile object: " + JSON.stringify(capturedFile));
+                        // The container name in Azure will be created
+                        // if it's not already present.
+                        newItem.containerName = "pngimages";
                         // Set the properties we need on the inserted item, using the device UUID
                         // to avoid collisions on the server with images from other devices.
-                        newItem.containerName = "todoitemimages";
                         newItem.resourceName = device.uuid.concat("-", capturedFile.name);
-
-                        // Insert the item and upload the blob.
                         insertNewItemWithUpload(newItem, capturedFile);
-                    }
 
-                }, function () {
-                    // Insert the item but not the blob.
+                    }, function fail(entry) {
+                        console.log("no file: " + entry.name);
+                    });
+
+                }, function cameraError(error) {
                     insertNewItemWithUpload(newItem, null);
-                }, { limit: 1 });
+                    console.debug("Unable to obtain picture: " + error, "app");
+
+                }, {
+                    quality: 50,
+                    destinationType: Camera.DestinationType.FILE_URI,
+                    // destinationType: Camera.DestinationType.DATA_URL,
+                    // Dynamically set the picture source
+                    sourceType: srcType,
+                    //sourceType: Camera.PictureSourceType.CAMERA,
+                    encodingType: Camera.EncodingType.JPEG,
+                    mediaType: Camera.MediaType.PICTURE,
+                    allowEdit: true,
+                    correctOrientation: true  //Corrects Android orientation quirks
+                });
             }
+
             textbox.val('').focus();
             evt.preventDefault();
         });
         /******************************************************
         // End upload images to Azure Mobile Services additions.
         *********************************************************/
+
+        // readAsArrayBuffer() does not support the default
+        // filenames generated by Windows Phone Camera app.
+        // We can, however, provide a unique filename to work around this.
+        function storeFilename(fileName) {
+            window.winphone81FileName = fileName;
+        }
 
         $('#refresh').click(function (evt) {
             refreshTodoItems();
@@ -201,6 +256,11 @@
         // Handle delete
         $(document.body).on('click', '.item-delete', function () {
             todoItemTable.del({ id: getTodoItemId(this) }).then(refreshTodoItems, handleError);
+        });
+
+        // Handle changing the picture source.
+        $('#img-source').on('click', function (evt) {
+            isSrcCamera = $(this).prop('checked');
         });
 
         // On initial load, start by fetching the current data
